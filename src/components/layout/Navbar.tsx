@@ -18,10 +18,8 @@ type NavbarProps = {
 export function Navbar({ isInverted }: NavbarProps) {
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-colors duration-700 ease-in-out ${
-        isInverted
-          ? "bg-[var(--negro)] text-[var(--blanco)] theme-inverted"
-          : "bg-[var(--blanco)] text-[var(--negro)] theme-normal"
+      className={`sticky top-0 z-40 w-full bg-[var(--theme-bg)] text-[var(--theme-fg)] ${
+        isInverted ? "theme-inverted" : "theme-normal"
       }`}
     >
       <div className="flex w-full items-center justify-end px-5 py-5 sm:px-8 md:px-12 lg:px-16">

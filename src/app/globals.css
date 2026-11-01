@@ -39,6 +39,20 @@
   font-display: swap;
 }
 
+/* Propiedades CSS registradas de tipo <color> para que fondo, textos, links y bordes
+   se interpolen de forma difuminada exactamente al mismo tiempo y curva (700ms ease-in-out) */
+@property --theme-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fbfbf9;
+}
+
+@property --theme-fg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #0e0e0e;
+}
+
 :root {
   /* Tonalidades especiales:
      --blanco: un toque más oscuro que #FFFFFF pero más claro que blanco invierno (#FBFBF9)
@@ -67,6 +81,53 @@ body {
   background-color: var(--blanco);
   color: var(--negro);
   font-family: var(--font-avenir-roman);
+}
+
+/* Sincronización total (700ms ease-in-out) entre fondo, textos, links y líneas separadoras */
+.public-scope.theme-normal {
+  --theme-bg: #fbfbf9;
+  --theme-fg: #0e0e0e;
+  background-color: var(--theme-bg);
+  color: var(--theme-fg);
+  border-color: var(--theme-fg);
+  transition:
+    --theme-bg 700ms ease-in-out,
+    --theme-fg 700ms ease-in-out,
+    background-color 700ms ease-in-out,
+    color 700ms ease-in-out,
+    border-color 700ms ease-in-out;
+}
+
+.public-scope.theme-inverted {
+  --theme-bg: #0e0e0e;
+  --theme-fg: #fbfbf9;
+  background-color: var(--theme-bg);
+  color: var(--theme-fg);
+  border-color: var(--theme-fg);
+  transition:
+    --theme-bg 700ms ease-in-out,
+    --theme-fg 700ms ease-in-out,
+    background-color 700ms ease-in-out,
+    color 700ms ease-in-out,
+    border-color 700ms ease-in-out;
+}
+
+.public-scope *,
+.public-scope *::before,
+.public-scope *::after {
+  transition-property: color, border-color, background-color;
+  transition-duration: 700ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* El cuadro blanco del popup mantiene siempre sus colores fijos blanco/negro */
+.theme-normal-box,
+.theme-normal-box *,
+.theme-normal-box *::before,
+.theme-normal-box *::after {
+  --theme-bg: #fbfbf9;
+  --theme-fg: #0e0e0e;
+  transition-duration: 0ms;
 }
 
 /* Tipografía utilitaria */
@@ -109,7 +170,8 @@ body {
   font-style: italic;
 }
 
-/* Los hipervínculos nunca van subrayados; solo aplican el resaltado al pasar el mouse por encima */
+/* Los hipervínculos nunca van subrayados; acompañan la transición de 700ms del tema,
+   pero al pasar el mouse por encima (:hover) aplican su resaltado de forma inmediata */
 .public-scope a,
 .hyper-link,
 .editorial-content a {
@@ -119,10 +181,14 @@ body {
 .hyper-link,
 .editorial-content a {
   display: inline-block;
-  color: inherit;
+  color: var(--theme-fg, inherit);
   padding: 0.05em 0.2em;
   margin: -0.05em -0.2em;
-  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.hyper-link:hover,
+.editorial-content a:hover {
+  transition-duration: 0ms !important;
 }
 
 .theme-normal .hyper-link:hover,

@@ -164,10 +164,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
     <PublicShellContext.Provider value={{ isModalOpen, setModalOpen }}>
       <div
         onClickCapture={handleDocumentClick}
-        className={`public-scope min-h-screen flex flex-col transition-colors duration-700 ease-in-out ${
-          isInverted
-            ? "bg-[var(--negro)] text-[var(--blanco)] theme-inverted"
-            : "bg-[var(--blanco)] text-[var(--negro)] theme-normal"
+        className={`public-scope min-h-screen flex flex-col ${
+          isInverted ? "theme-inverted" : "theme-normal"
         }`}
       >
         <Navbar isInverted={isInverted} />
