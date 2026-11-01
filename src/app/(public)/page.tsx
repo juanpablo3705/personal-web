@@ -1,143 +1,184 @@
 import Link from "next/link";
+import { getPublishedPostsPaginated } from "@/components/ui/post-queries";
 
-const SECCIONES_PRINCIPALES = [
-  {
-    href: "/proyectos",
-    titulo: "Proyectos",
-    etiqueta: "Catálogo Dinámico",
-    descripcion:
-      "Selección de trabajos, desarrollos y casos de estudio publicados en orden cronológico.",
-    accion: "Ver proyectos →",
-  },
-  {
-    href: "/blog",
-    titulo: "Blog",
-    etiqueta: "Publicaciones",
-    descripcion:
-      "Artículos, notas técnicas, reflexiones y documentación de procesos.",
-    accion: "Leer el blog →",
-  },
-  {
-    href: "/otros-proyectos",
-    titulo: "Otros Proyectos",
-    etiqueta: "Archivo Modular",
-    descripcion:
-      "Iniciativas paralelas, experimentos, colaboraciones y bloques de contenido complementario.",
-    accion: "Explorar iniciativas →",
-  },
-  {
-    href: "/perfil",
-    titulo: "Perfil Profesional",
-    etiqueta: "Trayectoria y CV",
-    descripcion:
-      "Resumen biográfico, experiencia profesional, formación académica y descarga directa de CV en PDF.",
-    accion: "Ver perfil y CV →",
-  },
-  {
-    href: "/contacto",
-    titulo: "Contacto",
-    etiqueta: "Comunicación Directa",
-    descripcion:
-      "Formulario directo para consultas profesionales, propuestas de colaboración o mensajes.",
-    accion: "Enviar un mensaje →",
-  },
-] as const;
+export default async function InicioPage() {
+  const [{ posts: proyectos }, { posts: entradasBlog }] = await Promise.all([
+    getPublishedPostsPaginated("project", 1, 4),
+    getPublishedPostsPaginated("blog", 1, 3),
+  ]);
 
-export default function InicioPage() {
   return (
-    <div className="space-y-10">
-      {/* Bloque Hero / Bienvenida Principal */}
+    <div className="space-y-32">
+      {/* 1. LANDING DE PANTALLA COMPLETA (referencia: home-home.png) */}
       <section
-        aria-labelledby="inicio-titulo"
-        className="space-y-6 border border-neutral-300 bg-white p-8 sm:p-10"
+        aria-labelledby="landing-nombre"
+        className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-between pt-4 pb-16 sm:pt-8 sm:pb-24"
       >
-        <div className="space-y-3">
-          <p className="text-xs font-medium uppercase tracking-wider text-neutral-500">
-            Bienvenida
-          </p>
+        {/* Bloque superior izquierdo: Nombre y Rol */}
+        <div className="max-w-md space-y-0.5">
           <h1
-            id="inicio-titulo"
-            className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl"
+            id="landing-nombre"
+            className="font-heavy text-base tracking-wide sm:text-lg"
           >
-            Portafolio, Publicaciones y Archivo Personal
+            Juan Pablo Oyanedel
           </h1>
-          <p className="max-w-2xl text-base leading-relaxed text-neutral-700">
-            Espacio digital dedicado a reunir mis proyectos principales,
-            artículos de blog, iniciativas complementarias y trayectoria
-            profesional.
+          <p className="font-heavy text-base tracking-wide sm:text-lg">
+            Analista Programador
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 pt-2">
+        {/* Columna izquierda: Texto biográfico de referencia */}
+        <div className="my-auto max-w-xl space-y-8 pt-12 sm:pt-16">
+          <p className="indent-8 font-roman text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
+            Desarrollo de software, arquitectura de sistemas y construcción de
+            soluciones digitales donde la precisión técnica converge con la
+            claridad estructural para dar forma a herramientas funcionales y
+            perdurables.
+          </p>
+          <p className="indent-8 font-roman text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
+            El pensamiento analítico combinado con métodos de programación
+            contemporáneos permite diseñar flujos, interfaces y estructuras de
+            datos pensadas desde la simplicidad y el rigor.
+          </p>
+        </div>
+      </section>
+
+      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (referencia: home-proyectos.png) */}
+      <section aria-labelledby="home-proyectos-titulo" className="space-y-12 pt-8">
+        <header className="text-center">
+          <h2
+            id="home-proyectos-titulo"
+            className="font-heavy text-lg uppercase tracking-widest sm:text-xl"
+          >
+            PROYECTOS
+          </h2>
+        </header>
+
+        {proyectos.length === 0 ? (
+          <p className="border-t border-current pt-8 text-center text-sm">
+            No hay proyectos publicados por el momento.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {proyectos.map((project) => (
+              <article
+                key={project.id}
+                className="flex flex-col justify-between"
+              >
+                {/* Título superior con línea separadora negra */}
+                <div className="border-b border-current pb-3 text-center">
+                  <h3 className="font-heavy text-sm uppercase tracking-wider sm:text-base">
+                    <Link
+                      href={`/proyectos/${project.slug}`}
+                      className="hyper-link"
+                    >
+                      {project.title}
+                    </Link>
+                  </h3>
+                </div>
+
+                {/* Cuerpo visual / resumen del proyecto */}
+                <div className="my-6 flex flex-1 flex-col justify-between space-y-4">
+                  {project.thumbnail_url && (
+                    <Link
+                      href={`/proyectos/${project.slug}`}
+                      className="block aspect-[4/3] w-full overflow-hidden"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={project.thumbnail_url}
+                        alt={project.title}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </Link>
+                  )}
+
+                  {project.summary && (
+                    <p className="font-editorial-serif line-clamp-4 text-sm leading-relaxed">
+                      {project.summary}
+                    </p>
+                  )}
+                </div>
+
+                {/* Enlace inferior enmarcado entre líneas separadoras negras */}
+                <div className="border-y border-current py-3 text-center">
+                  <Link
+                    href={`/proyectos/${project.slug}`}
+                    className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+                  >
+                    Leer más &gt;
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        <div className="pt-2 text-center">
           <Link
             href="/proyectos"
-            className="inline-flex items-center justify-center border border-neutral-900 bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+            className="hyper-link font-heavy text-xs tracking-wider sm:text-sm"
           >
-            Explorar Proyectos
-          </Link>
-          <Link
-            href="/perfil"
-            className="inline-flex items-center justify-center border border-neutral-300 bg-white px-5 py-2.5 text-sm font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
-          >
-            Perfil Profesional y CV
-          </Link>
-          <Link
-            href="/contacto"
-            className="inline-flex items-center justify-center border border-neutral-300 bg-white px-5 py-2.5 text-sm font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
-          >
-            Contacto
+            Ver todos los proyectos &gt;
           </Link>
         </div>
       </section>
 
-      {/* Mapa de Secciones conectado al Menú Principal */}
-      <section aria-labelledby="secciones-titulo" className="space-y-4">
-        <header className="flex flex-wrap items-baseline justify-between gap-2 border-b border-neutral-300 pb-3">
+      {/* 3. SECCIÓN DE RESUMEN DE BLOG (referencia: home-blog.png) */}
+      <section aria-labelledby="home-blog-titulo" className="space-y-8 pb-12">
+        {/* Título de la sección + línea separadora negra de ancho completo */}
+        <header className="border-b border-current pb-4 text-center">
           <h2
-            id="secciones-titulo"
-            className="text-lg font-bold tracking-tight text-neutral-900"
+            id="home-blog-titulo"
+            className="font-heavy text-lg uppercase tracking-widest sm:text-xl"
           >
-            Secciones del Sitio
+            BLOG
           </h2>
-          <span className="text-xs text-neutral-500">
-            Acceso directo a los módulos principales
-          </span>
         </header>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {SECCIONES_PRINCIPALES.map((seccion) => (
-            <article
-              key={seccion.href}
-              className="flex flex-col justify-between border border-neutral-300 bg-white p-6 transition-colors hover:border-neutral-900"
-            >
-              <div className="space-y-2">
-                <span className="inline-block text-xs font-medium uppercase tracking-wider text-neutral-500">
-                  {seccion.etiqueta}
-                </span>
-                <h3 className="text-lg font-bold text-neutral-900">
-                  <Link
-                    href={seccion.href}
-                    className="hover:underline underline-offset-4"
-                  >
-                    {seccion.titulo}
-                  </Link>
-                </h3>
-                <p className="text-sm leading-relaxed text-neutral-600">
-                  {seccion.descripcion}
-                </p>
-              </div>
+        {entradasBlog.length === 0 ? (
+          <p className="pt-4 text-center text-sm">
+            No hay entradas de blog publicadas por el momento.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-10 pt-2 md:grid-cols-3 lg:gap-14">
+            {entradasBlog.map((post) => (
+              <article
+                key={post.id}
+                className="flex flex-col justify-between space-y-6"
+              >
+                <div className="space-y-5">
+                  {/* Título del post */}
+                  <h3 className="text-center font-heavy text-sm uppercase tracking-wider sm:text-base">
+                    <Link href={`/blog/${post.slug}`} className="hyper-link">
+                      {post.title}
+                    </Link>
+                  </h3>
 
-              <div className="mt-6 border-t border-neutral-200 pt-3">
-                <Link
-                  href={seccion.href}
-                  className="inline-flex items-center text-xs font-semibold text-neutral-900 hover:underline underline-offset-4"
-                >
-                  {seccion.accion}
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+                  {/* Texto del post (Noto Serif Regular, sin thumbnail) */}
+                  {post.summary && (
+                    <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+                      {post.summary}
+                    </p>
+                  )}
+                </div>
+
+                {/* Enlace "Leer más >" */}
+                <div className="pt-2">
+                  <div className="inline-block border-b border-current pb-1">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="hyper-link font-roman text-xs tracking-wide sm:text-sm"
+                    >
+                      Leer más &gt;
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

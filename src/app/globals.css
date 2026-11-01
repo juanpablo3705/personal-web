@@ -1,18 +1,132 @@
 @import "tailwindcss";
 
+/* Fuentes Avenir: AvenirLT-Roman para texto general y Avenir LT 85 Heavy para títulos y negritas */
+@font-face {
+  font-family: "AvenirLT-Roman";
+  src:
+    local("AvenirLT-Roman"),
+    local("Avenir LT 55 Roman"),
+    local("Avenir LT Std 55 Roman"),
+    local("Avenir-Roman"),
+    local("Avenir"),
+    local("Avenir Next Regular"),
+    url("https://fonts.cdnfonts.com/s/36611/AvenirLTStd-Roman.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Avenir LT 85 Heavy";
+  src:
+    local("Avenir LT 85 Heavy"),
+    local("AvenirLT-Heavy"),
+    local("Avenir LT Std 85 Heavy"),
+    local("Avenir-Heavy"),
+    local("Avenir-Black"),
+    local("Avenir Next Bold"),
+    url("https://fonts.cdnfonts.com/s/36611/AvenirLTStd-Heavy.woff") format("woff");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Tonalidades especiales:
+     --blanco: un toque más oscuro que #FFFFFF pero más claro que blanco invierno (#FBFBF9)
+     --negro: un toque más claro que #000000 pero sin llegar a gris (#0E0E0E) */
+  --blanco: #fbfbf9;
+  --negro: #0e0e0e;
+  --background: var(--blanco);
+  --foreground: var(--negro);
+  --font-avenir-roman: "AvenirLT-Roman", "Avenir", "Avenir Next", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-avenir-heavy: "Avenir LT 85 Heavy", "Avenir-Heavy", "Avenir", "Avenir Next", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-blanco: var(--blanco);
+  --color-negro: var(--negro);
+  --font-sans: var(--font-avenir-roman);
+  --font-heavy: var(--font-avenir-heavy);
+  --font-serif: var(--font-noto-serif), "Noto Serif", Georgia, serif;
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--blanco);
+  color: var(--negro);
+  font-family: var(--font-avenir-roman);
+}
+
+/* Tipografía utilitaria */
+.font-roman {
+  font-family: var(--font-avenir-roman);
+  font-weight: 400;
+}
+
+.font-heavy,
+.public-scope h1,
+.public-scope h2,
+.public-scope h3,
+.public-scope h4,
+.public-scope strong,
+.public-scope b {
+  font-family: var(--font-avenir-heavy);
+  font-weight: 800;
+}
+
+/* Cuerpo de texto exclusivo para Blog y Proyectos (Noto Serif Regular y familia) */
+.font-editorial-serif {
+  font-family: var(--font-noto-serif), "Noto Serif", Georgia, serif;
+  font-weight: 400;
+}
+
+.font-editorial-serif strong,
+.font-editorial-serif b {
+  font-family: var(--font-noto-serif), "Noto Serif", Georgia, serif;
+  font-weight: 700;
+}
+
+.font-editorial-serif em,
+.font-editorial-serif i {
+  font-family: var(--font-noto-serif), "Noto Serif", Georgia, serif;
+  font-style: italic;
+}
+
+/* Hipervínculos: texto en negro y resaltado de fondo negro con fuente blanca en hover (e inverso cuando el fondo es negro) */
+.hyper-link {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  padding: 0.05em 0.2em;
+  margin: -0.05em -0.2em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.theme-normal .hyper-link:hover,
+.theme-normal-box .hyper-link:hover {
+  background-color: var(--negro);
+  color: var(--blanco);
+}
+
+.theme-inverted .hyper-link:hover {
+  background-color: var(--blanco);
+  color: var(--negro);
+}
+
+/* Enlaces dentro del HTML enriquecido de artículos y proyectos */
+.editorial-content a {
+  color: var(--negro);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.05em 0.15em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.editorial-content a:hover {
+  background-color: var(--negro);
+  color: var(--blanco);
+  text-decoration: none;
 }

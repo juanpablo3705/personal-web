@@ -19,32 +19,22 @@ export default function ContactoPage() {
   );
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8">
-      <header className="space-y-2 border-b border-neutral-300 pb-5">
-        <p className="text-xs font-medium uppercase tracking-wider text-neutral-500">
-          Formulario de Contacto
-        </p>
-        <h1 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
-          Contacto
+    <div className="mx-auto max-w-2xl space-y-8 pt-6">
+      <header>
+        <h1 className="font-heavy text-2xl tracking-tight sm:text-3xl">
+          Formulario de contacto
         </h1>
-        <p className="text-sm leading-relaxed text-neutral-600">
-          Completa el siguiente formulario para enviarme un mensaje directo. Te
-          responderé al correo electrónico que indiques.
-        </p>
       </header>
 
-      <section
-        aria-label="Formulario para enviar mensaje"
-        className="border border-neutral-300 bg-white p-6 sm:p-8"
-      >
+      <section aria-label="Formulario para enviar mensaje">
         {state.success && state.message && (
           <div
             role="status"
             aria-live="polite"
-            className="mb-6 border border-neutral-900 bg-neutral-100 p-4 text-sm text-neutral-900"
+            className="mb-6 border-b border-current pb-4 text-sm"
           >
-            <p className="font-semibold">¡Correo enviado con éxito!</p>
-            <p className="mt-1 text-neutral-700">{state.message}</p>
+            <p className="font-heavy">¡Correo enviado con éxito!</p>
+            <p className="mt-1 font-roman">{state.message}</p>
           </div>
         )}
 
@@ -52,13 +42,13 @@ export default function ContactoPage() {
           <div
             role="alert"
             aria-live="polite"
-            className="mb-6 border border-neutral-900 bg-neutral-50 p-4 text-sm text-neutral-900"
+            className="mb-6 border-b border-current pb-4 text-sm"
           >
             {state.error}
           </div>
         )}
 
-        <form action={formAction} className="space-y-5" noValidate>
+        <form action={formAction} className="space-y-6" noValidate>
           {/*
             NOTA FUTURA (Anti-spam / Honeypot):
             Si en el futuro se necesita agregar un campo honeypot contra bots sin usar captchas,
@@ -80,7 +70,7 @@ export default function ContactoPage() {
           <div className="space-y-2">
             <label
               htmlFor="nombre"
-              className="block text-sm font-medium text-neutral-900"
+              className="block font-roman text-sm"
             >
               Nombre
             </label>
@@ -94,10 +84,10 @@ export default function ContactoPage() {
               defaultValue={state.values?.nombre ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.nombre)}
-              className="w-full border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100"
+              className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.nombre && (
-              <p className="text-xs text-neutral-700">
+              <p className="font-roman text-xs">
                 {state.fieldErrors.nombre}
               </p>
             )}
@@ -107,7 +97,7 @@ export default function ContactoPage() {
           <div className="space-y-2">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-neutral-900"
+              className="block font-roman text-sm"
             >
               Correo electrónico
             </label>
@@ -121,10 +111,10 @@ export default function ContactoPage() {
               defaultValue={state.values?.email ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.email)}
-              className="w-full border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100"
+              className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.email && (
-              <p className="text-xs text-neutral-700">
+              <p className="font-roman text-xs">
                 {state.fieldErrors.email}
               </p>
             )}
@@ -134,7 +124,7 @@ export default function ContactoPage() {
           <div className="space-y-2">
             <label
               htmlFor="asunto"
-              className="block text-sm font-medium text-neutral-900"
+              className="block font-roman text-sm"
             >
               Asunto
             </label>
@@ -147,10 +137,10 @@ export default function ContactoPage() {
               defaultValue={state.values?.asunto ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.asunto)}
-              className="w-full border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100"
+              className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.asunto && (
-              <p className="text-xs text-neutral-700">
+              <p className="font-roman text-xs">
                 {state.fieldErrors.asunto}
               </p>
             )}
@@ -160,7 +150,7 @@ export default function ContactoPage() {
           <div className="space-y-2">
             <label
               htmlFor="mensaje"
-              className="block text-sm font-medium text-neutral-900"
+              className="block font-roman text-sm"
             >
               Mensaje
             </label>
@@ -173,10 +163,10 @@ export default function ContactoPage() {
               defaultValue={state.values?.mensaje ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.mensaje)}
-              className="w-full resize-y border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100"
+              className="w-full resize-y border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.mensaje && (
-              <p className="text-xs text-neutral-700">
+              <p className="font-roman text-xs">
                 {state.fieldErrors.mensaje}
               </p>
             )}
@@ -186,7 +176,7 @@ export default function ContactoPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full border border-neutral-900 bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+              className="hyper-link cursor-pointer font-heavy text-sm tracking-wide disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
             >
               {isPending ? "Enviando mensaje..." : "Enviar mensaje"}
             </button>

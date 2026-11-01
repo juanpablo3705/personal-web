@@ -31,43 +31,33 @@ export function Pagination({
   return (
     <nav
       aria-label="Paginación de publicaciones"
-      className="flex items-center justify-between border-t border-neutral-300 pt-6"
+      className="flex items-center justify-between border-t border-current pt-6"
     >
-      {hasPrevPage ? (
-        <Link
-          href={prevHref}
-          className="inline-flex items-center border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
-        >
-          ← Anterior
-        </Link>
-      ) : (
-        <span
-          aria-disabled="true"
-          className="inline-flex cursor-not-allowed items-center border border-neutral-200 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-400"
-        >
-          ← Anterior
-        </span>
-      )}
+      <div>
+        {hasPrevPage && (
+          <Link
+            href={prevHref}
+            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+          >
+            ← Anterior
+          </Link>
+        )}
+      </div>
 
-      <span className="text-xs font-medium text-neutral-600">
+      <span className="font-roman text-xs">
         Página {currentPage} de {totalPages}
       </span>
 
-      {hasNextPage ? (
-        <Link
-          href={nextHref}
-          className="inline-flex items-center border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
-        >
-          Siguiente →
-        </Link>
-      ) : (
-        <span
-          aria-disabled="true"
-          className="inline-flex cursor-not-allowed items-center border border-neutral-200 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-400"
-        >
-          Siguiente →
-        </span>
-      )}
+      <div>
+        {hasNextPage && (
+          <Link
+            href={nextHref}
+            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+          >
+            Siguiente →
+          </Link>
+        )}
+      </div>
     </nav>
   );
 }
