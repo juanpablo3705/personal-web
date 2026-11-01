@@ -1,10 +1,3 @@
--- =============================================================================
--- SCRIPT DE CONFIGURACIÓN AUTOMÁTICA DE SUPABASE (BASE DE DATOS + STORAGE + RLS)
--- Proyecto: Sitio Web Personal (Blog, Proyectos y CV)
--- Instrucciones: Copia todo este contenido, pégalo en el "SQL Editor" de tu
--- panel de Supabase y haz clic en el botón "Run".
--- =============================================================================
-
 -- 1. EXTENSIÓN PARA GENERACIÓN DE UUIDs
 create extension if not exists "pgcrypto";
 

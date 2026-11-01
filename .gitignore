@@ -41,3 +41,7 @@ credenciales
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# internal docs
+CONTEXTO_ARQUITECTURA.md
+guia_equipo.md
