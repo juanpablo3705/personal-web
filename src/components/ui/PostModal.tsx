@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -92,16 +93,16 @@ export function PostModal({
     contentScrollRef.current?.scrollTo({ top: 0 });
   }, [post.slug]);
 
-  if (!isVisible) {
+  if (!isVisible || typeof document === "undefined") {
     return null;
   }
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-post-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 sm:p-6 md:p-10"
+      className="public-scope fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 sm:p-6 md:p-10"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           handleClose();
@@ -109,14 +110,10 @@ export function PostModal({
       }}
     >
       <motion.div
-        initial={{ opacity: 0, filter: "blur(8px)" }}
-        animate={
-          isFading
-            ? { opacity: 0, filter: "blur(8px)" }
-            : { opacity: 1, filter: "blur(0px)" }
-        }
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isFading ? 0 : 1 }}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="theme-normal-box flex max-h-[90vh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
+        className="theme-normal-box flex max-h-[88vh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
       >
         {/* Espacio en blanco exclusivo superior con hipervínculo "X" (sin etiqueta "blog"/"proyecto" ni bordes) */}
         <header className="flex shrink-0 items-center justify-end bg-[var(--blanco)] px-6 py-4 sm:px-10">
@@ -191,6 +188,7 @@ export function PostModal({
           </div>
         </footer>
       </motion.div>
-    </div>
+    </div>,
+    document.body
   );
 }

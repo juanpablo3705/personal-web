@@ -10,14 +10,14 @@ export default async function InicioPage() {
   return (
     <div className="space-y-32">
       {/* 1. LANDING DE PANTALLA COMPLETA (referencia: home-home.png)
-          Contenido elevado a la altura del menú superior */}
+          Ubicado inmediatamente debajo de la barra de menú sin interferir con ella */}
       <section
         aria-labelledby="landing-nombre"
-        className="relative z-40 flex min-h-[calc(100vh-1rem)] flex-col justify-start pb-16 lg:-mt-[3.5rem] lg:pointer-events-none"
+        className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start pt-2 pb-16"
       >
-        {/* Bloque superior izquierdo a la altura del menú:
+        {/* Bloque superior izquierdo:
             Juan Pablo Oyanedel (sin negrita) y Analista Programador (con negrita), fuente más pequeña */}
-        <div className="max-w-xs space-y-0.5 lg:pointer-events-auto">
+        <div className="max-w-xs space-y-0.5">
           <h1
             id="landing-nombre"
             className="font-roman text-xs tracking-wide sm:text-sm"
@@ -30,7 +30,7 @@ export default async function InicioPage() {
         </div>
 
         {/* Columna izquierda elevada debajo del encabezado */}
-        <div className="mt-10 max-w-xl space-y-8 sm:mt-14 lg:pointer-events-auto">
+        <div className="mt-10 max-w-xl space-y-8 sm:mt-14">
           <p className="indent-8 font-roman text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
             Desarrollo de software, arquitectura de sistemas y construcción de
             soluciones digitales donde la precisión técnica converge con la

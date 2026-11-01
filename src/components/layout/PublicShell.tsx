@@ -173,12 +173,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
         <Navbar isInverted={isInverted} />
 
         <motion.main
-          initial={{ opacity: 0, filter: "blur(8px)" }}
-          animate={
-            isFadingOut
-              ? { opacity: 0, filter: "blur(8px)" }
-              : { opacity: 1, filter: "blur(0px)" }
-          }
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isFadingOut ? 0 : 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="w-full flex-1 px-5 pb-20 sm:px-8 md:px-12 lg:px-16"
         >
