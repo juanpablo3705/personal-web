@@ -46,6 +46,7 @@ export default async function ProyectosPage({
               href={`/proyectos/${project.slug}`}
               scroll={false}
               data-no-scroll="true"
+              data-modal-trigger="true"
               className="group flex aspect-square flex-col overflow-hidden"
             >
               {/* Mitad superior del cuadrado invisible: Thumbnail */}
@@ -69,7 +70,7 @@ export default async function ProyectosPage({
               <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
                 <div className="space-y-2 overflow-hidden">
                   <h2 className="line-clamp-2 font-heavy text-base leading-snug">
-                    <span className="hyper-link group-hover:bg-[var(--negro)] group-hover:text-[var(--blanco)]">
+                    <span className="hyper-link">
                       {project.title}
                     </span>
                   </h2>

@@ -18,14 +18,19 @@ type NavbarProps = {
 export function Navbar({ isInverted }: NavbarProps) {
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-colors duration-700 ease-in-out ${
+      className={`sticky top-0 z-40 w-full pointer-events-none transition-colors duration-700 ease-in-out ${
         isInverted
-          ? "bg-[var(--negro)] text-[var(--blanco)] theme-inverted"
+          ? "bg-transparent text-[var(--blanco)] theme-inverted"
           : "bg-[var(--blanco)] text-[var(--negro)] theme-normal"
       }`}
     >
       <div className="flex w-full items-center justify-end px-5 py-5 sm:px-8 md:px-12 lg:px-16">
-        <nav aria-label="Navegación principal" className="w-full">
+        <nav
+          aria-label="Navegación principal"
+          className={`pointer-events-auto ml-auto w-fit transition-colors duration-700 ease-in-out ${
+            isInverted ? "bg-[var(--negro)]" : "bg-[var(--blanco)]"
+          }`}
+        >
           <ul className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 text-xs tracking-widest sm:gap-x-10 sm:text-sm md:gap-x-14">
             {NAV_LINKS.map((item) => (
               <li key={item.href}>

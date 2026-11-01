@@ -62,8 +62,8 @@ body {
 
 /* Tipografía utilitaria */
 .font-roman {
-  font-family: var(--font-avenir-roman);
-  font-weight: 400;
+  font-family: var(--font-avenir-roman) !important;
+  font-weight: 400 !important;
 }
 
 .font-heavy,
@@ -95,18 +95,25 @@ body {
   font-style: italic;
 }
 
-/* Hipervínculos: texto en negro y resaltado de fondo negro con fuente blanca en hover (e inverso cuando el fondo es negro) */
-.hyper-link {
+/* Los hipervínculos nunca van subrayados; solo aplican el resaltado al pasar el mouse por encima */
+.public-scope a,
+.hyper-link,
+.editorial-content a {
+  text-decoration: none !important;
+}
+
+.hyper-link,
+.editorial-content a {
   display: inline-block;
   color: inherit;
-  text-decoration: none;
   padding: 0.05em 0.2em;
   margin: -0.05em -0.2em;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .theme-normal .hyper-link:hover,
-.theme-normal-box .hyper-link:hover {
+.theme-normal-box .hyper-link:hover,
+.editorial-content a:hover {
   background-color: var(--negro);
   color: var(--blanco);
 }
@@ -114,19 +121,4 @@ body {
 .theme-inverted .hyper-link:hover {
   background-color: var(--blanco);
   color: var(--negro);
-}
-
-/* Enlaces dentro del HTML enriquecido de artículos y proyectos */
-.editorial-content a {
-  color: var(--negro);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  padding: 0.05em 0.15em;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.editorial-content a:hover {
-  background-color: var(--negro);
-  color: var(--blanco);
-  text-decoration: none;
 }

@@ -32,13 +32,10 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isHomeAtTop, setIsHomeAtTop] = useState(true);
-  const [fadingFromPath, setFadingFromPath] = useState<string | null>(null);
-  const [forcingWhiteFromPath, setForcingWhiteFromPath] = useState<
-    string | null
-  >(null);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [forcingWhiteBg, setForcingWhiteBg] = useState(false);
 
   const navTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const fadeInTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isHomePage = pathname === "/";
 
@@ -63,19 +60,24 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
     };
   }, [isHomePage]);
 
-  // Limpiar temporizadores al cambiar de ruta
+  // Cuando la nueva ruta ya se montó, iniciar en el siguiente frame el difuminado de entrada (sin flicker de la vista anterior)
   useEffect(() => {
     if (navTimeoutRef.current) {
       clearTimeout(navTimeoutRef.current);
       navTimeoutRef.current = null;
     }
-    if (fadeInTimeoutRef.current) {
-      clearTimeout(fadeInTimeoutRef.current);
-      fadeInTimeoutRef.current = null;
-    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      setIsFadingOut(false);
+      setForcingWhiteBg(false);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
   }, [pathname]);
 
-  // Interceptación de hipervínculos internos: 0,5s de difuminado de salida antes de cargar la nueva vista
+  // Interceptación de hipervínculos de cambio de sección
   const handleDocumentClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (
@@ -106,13 +108,23 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      const currentUrl =
-        typeof window !== "undefined"
-          ? `${window.location.pathname}${window.location.search}`
-          : pathname;
+      // Cuando se abre un popup en /proyectos o /blog, NO difuminar ni ocultar la página de fondo:
+      // solo invertir los colores de inmediato mientras se abre el popup.
+      const isModalTrigger =
+        anchor.getAttribute("data-modal-trigger") === "true" ||
+        (pathname === "/proyectos" && href.startsWith("/proyectos/")) ||
+        (pathname === "/blog" && href.startsWith("/blog/"));
 
-      if (href === currentUrl) {
+      if (isModalTrigger) {
+        setModalOpen(true);
+        return;
+      }
+
+      const targetPathOnly = href.split("?")[0] ?? href;
+
+      if (targetPathOnly === pathname) {
         if (href === "/" && typeof window !== "undefined") {
+          event.preventDefault();
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
         return;
@@ -123,20 +135,15 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       const noScroll = anchor.getAttribute("data-no-scroll") === "true";
       const useReplace = anchor.getAttribute("data-replace") === "true";
 
-      const isOpeningModal =
-        (pathname === "/proyectos" && href.startsWith("/proyectos/")) ||
-        (pathname === "/blog" && href.startsWith("/blog/"));
+      router.prefetch(href);
 
-      setFadingFromPath(pathname);
-      if (!isOpeningModal && href !== "/") {
-        setForcingWhiteFromPath(pathname);
+      setIsFadingOut(true);
+      if (href !== "/") {
+        setForcingWhiteBg(true);
       }
 
       if (navTimeoutRef.current) {
         clearTimeout(navTimeoutRef.current);
-      }
-      if (fadeInTimeoutRef.current) {
-        clearTimeout(fadeInTimeoutRef.current);
       }
 
       navTimeoutRef.current = setTimeout(() => {
@@ -145,19 +152,10 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
         } else {
           router.push(href, { scroll: !noScroll });
         }
-
-        // Si solo cambiaron query params (?page=2) o la misma ruta, reactivar fade-in
-        fadeInTimeoutRef.current = setTimeout(() => {
-          setFadingFromPath(null);
-          setForcingWhiteFromPath(null);
-        }, 60);
       }, 500);
     },
     [pathname, router]
   );
-
-  const isFadingOut = fadingFromPath === pathname;
-  const forcingWhiteBg = forcingWhiteFromPath === pathname;
 
   const isInverted =
     !forcingWhiteBg && (isModalOpen || (isHomePage && isHomeAtTop));

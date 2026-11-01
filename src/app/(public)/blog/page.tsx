@@ -46,6 +46,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   href={`/blog/${post.slug}`}
                   scroll={false}
                   data-no-scroll="true"
+                  data-modal-trigger="true"
                   className="hyper-link"
                 >
                   {post.title}
@@ -63,6 +64,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   href={`/blog/${post.slug}`}
                   scroll={false}
                   data-no-scroll="true"
+                  data-modal-trigger="true"
                   className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
                 >
                   Leer más &gt;

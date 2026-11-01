@@ -13,6 +13,8 @@ type PostModalProps = {
   prevPost: AdjacentPostLink | null;
   nextPost: AdjacentPostLink | null;
   basePath: "/proyectos" | "/blog";
+  onCloseModal?: () => void;
+  onSelectAdjacent?: (slug: string) => void;
 };
 
 export function PostModal({
@@ -20,6 +22,8 @@ export function PostModal({
   prevPost,
   nextPost,
   basePath,
+  onCloseModal,
+  onSelectAdjacent,
 }: PostModalProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -27,16 +31,20 @@ export function PostModal({
   const contentScrollRef = useRef<HTMLDivElement | null>(null);
   const [fadingFromSlug, setFadingFromSlug] = useState<string | null>(null);
 
-  const isVisible = pathname !== basePath;
+  const isVisible = onCloseModal ? true : pathname !== basePath;
   const isFading = fadingFromSlug === post.slug;
 
   const handleClose = useCallback(() => {
     setFadingFromSlug(post.slug);
+    setModalOpen(false);
     setTimeout(() => {
-      setModalOpen(false);
-      router.back();
-    }, 500);
-  }, [post.slug, router, setModalOpen]);
+      if (onCloseModal) {
+        onCloseModal();
+      } else {
+        router.back();
+      }
+    }, 300);
+  }, [onCloseModal, post.slug, router, setModalOpen]);
 
   const handleNavigateAdjacent = (
     event: React.MouseEvent<HTMLAnchorElement>,
@@ -45,8 +53,12 @@ export function PostModal({
     event.preventDefault();
     setFadingFromSlug(post.slug);
     setTimeout(() => {
-      router.replace(`${basePath}/${targetSlug}`, { scroll: false });
-    }, 500);
+      if (onSelectAdjacent) {
+        onSelectAdjacent(targetSlug);
+      } else {
+        router.replace(`${basePath}/${targetSlug}`, { scroll: false });
+      }
+    }, 300);
   };
 
   useEffect(() => {
@@ -89,7 +101,7 @@ export function PostModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-post-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--negro)]/60 p-4 sm:p-6 md:p-10"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 sm:p-6 md:p-10"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           handleClose();
@@ -103,7 +115,7 @@ export function PostModal({
             ? { opacity: 0, filter: "blur(8px)" }
             : { opacity: 1, filter: "blur(0px)" }
         }
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
         className="theme-normal-box flex max-h-[90vh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
       >
         {/* Espacio en blanco exclusivo superior con hipervínculo "X" (sin etiqueta "blog"/"proyecto" ni bordes) */}
@@ -111,7 +123,7 @@ export function PostModal({
           <button
             type="button"
             onClick={handleClose}
-            aria-label="Cerrar ventana y volver al catálogo"
+            aria-label="Cerrar ventana y volver"
             className="hyper-link cursor-pointer font-heavy text-sm sm:text-base"
           >
             X

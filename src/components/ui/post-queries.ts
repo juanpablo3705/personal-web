@@ -94,6 +94,28 @@ export async function getPublishedPostsPaginated(
   };
 }
 
+export async function getPublishedPostsFull(
+  type: PostType,
+  limit: number = 20
+): Promise<Post[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("type", type)
+    .eq("status", "published")
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(limit);
+
+  if (error || !data) {
+    return [];
+  }
+
+  return data as Post[];
+}
+
 export async function getPublishedPostWithNeighbors(
   type: PostType,
   rawSlug: string
