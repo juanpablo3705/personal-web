@@ -44,7 +44,7 @@ export function PostModal({
       } else {
         router.back();
       }
-    }, 300);
+    }, 500);
   }, [onCloseModal, post.slug, router, setModalOpen]);
 
   const handleNavigateAdjacent = (
@@ -59,7 +59,7 @@ export function PostModal({
       } else {
         router.replace(`${basePath}/${targetSlug}`, { scroll: false });
       }
-    }, 300);
+    }, 500);
   };
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export function PostModal({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isFading ? 0 : 1 }}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
         className="theme-normal-box flex max-h-[88vh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
       >
         {/* Espacio en blanco exclusivo superior con hipervínculo "X" (sin etiqueta "blog"/"proyecto" ni bordes) */}

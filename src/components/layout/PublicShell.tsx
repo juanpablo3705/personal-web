@@ -168,7 +168,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           isInverted ? "theme-inverted" : "theme-normal"
         }`}
       >
-        <Navbar isInverted={isInverted} />
+        <Navbar />
 
         <motion.main
           initial={{ opacity: 0 }}

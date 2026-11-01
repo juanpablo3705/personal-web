@@ -39,8 +39,9 @@
   font-display: swap;
 }
 
-/* Propiedades CSS registradas de tipo <color> para que fondo, textos, links y bordes
-   se interpolen de forma difuminada exactamente al mismo tiempo y curva (700ms ease-in-out) */
+/* Propiedades CSS registradas de tipo <color>:
+   Un único reloj de interpolación (500ms ease-in-out) que alimenta al mismo tiempo
+   el color de fondo, el color de texto, los links y los bordes sin retraso ni doble transición */
 @property --theme-bg {
   syntax: "<color>";
   inherits: true;
@@ -54,9 +55,6 @@
 }
 
 :root {
-  /* Tonalidades especiales:
-     --blanco: un toque más oscuro que #FFFFFF pero más claro que blanco invierno (#FBFBF9)
-     --negro: un toque más claro que #000000 pero sin llegar a gris (#0E0E0E) */
   --blanco: #fbfbf9;
   --negro: #0e0e0e;
   --background: var(--blanco);
@@ -83,51 +81,34 @@ body {
   font-family: var(--font-avenir-roman);
 }
 
-/* Sincronización total (700ms ease-in-out) entre fondo, textos, links y líneas separadoras */
-.public-scope.theme-normal {
-  --theme-bg: #fbfbf9;
-  --theme-fg: #0e0e0e;
+/* Duración única universal (500ms ease-in-out) en todo el sitio:
+   solo se interpolan --theme-bg y --theme-fg en la raíz pública y todos los hijos
+   leen ese valor en el mismo frame exacto sin agregar retrasos secundarios */
+.public-scope {
   background-color: var(--theme-bg);
   color: var(--theme-fg);
   border-color: var(--theme-fg);
   transition:
-    --theme-bg 700ms ease-in-out,
-    --theme-fg 700ms ease-in-out,
-    background-color 700ms ease-in-out,
-    color 700ms ease-in-out,
-    border-color 700ms ease-in-out;
+    --theme-bg 500ms ease-in-out,
+    --theme-fg 500ms ease-in-out;
+}
+
+.public-scope.theme-normal {
+  --theme-bg: #fbfbf9;
+  --theme-fg: #0e0e0e;
 }
 
 .public-scope.theme-inverted {
   --theme-bg: #0e0e0e;
   --theme-fg: #fbfbf9;
-  background-color: var(--theme-bg);
-  color: var(--theme-fg);
-  border-color: var(--theme-fg);
-  transition:
-    --theme-bg 700ms ease-in-out,
-    --theme-fg 700ms ease-in-out,
-    background-color 700ms ease-in-out,
-    color 700ms ease-in-out,
-    border-color 700ms ease-in-out;
-}
-
-.public-scope *,
-.public-scope *::before,
-.public-scope *::after {
-  transition-property: color, border-color, background-color;
-  transition-duration: 700ms;
-  transition-timing-function: ease-in-out;
 }
 
 /* El cuadro blanco del popup mantiene siempre sus colores fijos blanco/negro */
-.theme-normal-box,
-.theme-normal-box *,
-.theme-normal-box *::before,
-.theme-normal-box *::after {
+.theme-normal-box {
   --theme-bg: #fbfbf9;
   --theme-fg: #0e0e0e;
-  transition-duration: 0ms;
+  background-color: #fbfbf9;
+  color: #0e0e0e;
 }
 
 /* Tipografía utilitaria */
@@ -170,8 +151,7 @@ body {
   font-style: italic;
 }
 
-/* Los hipervínculos nunca van subrayados; acompañan la transición de 700ms del tema,
-   pero al pasar el mouse por encima (:hover) aplican su resaltado de forma inmediata */
+/* Los hipervínculos nunca van subrayados; leen directamente --theme-fg en cada frame */
 .public-scope a,
 .hyper-link,
 .editorial-content a {
@@ -181,24 +161,13 @@ body {
 .hyper-link,
 .editorial-content a {
   display: inline-block;
-  color: var(--theme-fg, inherit);
+  color: var(--theme-fg);
   padding: 0.05em 0.2em;
   margin: -0.05em -0.2em;
 }
 
 .hyper-link:hover,
 .editorial-content a:hover {
-  transition-duration: 0ms !important;
-}
-
-.theme-normal .hyper-link:hover,
-.theme-normal-box .hyper-link:hover,
-.editorial-content a:hover {
-  background-color: var(--negro);
-  color: var(--blanco);
-}
-
-.theme-inverted .hyper-link:hover {
-  background-color: var(--blanco);
-  color: var(--negro);
+  background-color: var(--theme-fg);
+  color: var(--theme-bg);
 }
