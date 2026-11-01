@@ -88,11 +88,11 @@ export default function PerfilPage() {
         <div className="max-w-xs space-y-0.5">
           <h1
             id="perfil-nombre"
-            className="font-roman text-xs sm:text-sm"
+            className="font-roman text-sm sm:text-base"
           >
             Juan Pablo Oyanedel
           </h1>
-          <p className="font-heavy text-xs sm:text-sm">
+          <p className="font-heavy text-sm sm:text-base">
             Analista Programador
           </p>
         </div>
