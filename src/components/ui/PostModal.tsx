@@ -102,7 +102,7 @@ export function PostModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-post-title"
-      className="public-scope fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 sm:p-6 md:p-10"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 sm:p-6 md:p-10"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           handleClose();
@@ -113,7 +113,7 @@ export function PostModal({
         initial={{ opacity: 0 }}
         animate={{ opacity: isFading ? 0 : 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="theme-normal-box flex max-h-[88vh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
+        className="public-scope theme-normal-box flex max-h-[88vh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
       >
         {/* Espacio en blanco exclusivo superior con hipervínculo "X" (sin etiqueta "blog"/"proyecto" ni bordes) */}
         <header className="flex shrink-0 items-center justify-end bg-[var(--blanco)] px-6 py-4 sm:px-10">
