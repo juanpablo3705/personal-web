@@ -23,7 +23,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   } = await getPublishedPostsPaginated("blog", page);
 
   return (
-    <section className="space-y-8 pt-6">
+    <section className="space-y-10 pt-6">
       <header className="border-b border-current pb-4">
         <h1 className="font-heavy text-2xl tracking-tight sm:text-3xl">Blog</h1>
       </header>

@@ -9,35 +9,34 @@ export default async function InicioPage() {
 
   return (
     <div className="space-y-32">
-      {/* 1. LANDING DE PANTALLA COMPLETA (referencia: home-home.png)
-          Ubicado inmediatamente debajo de la barra de menú sin interferir con ella */}
+      {/* 1. LANDING DE PANTALLA COMPLETA (referencia: home-home.png) */}
       <section
         aria-labelledby="landing-nombre"
         className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start pt-2 pb-16"
       >
         {/* Bloque superior izquierdo:
-            Juan Pablo Oyanedel (sin negrita) y Analista Programador (con negrita), fuente más pequeña */}
+            Juan Pablo Oyanedel (AvenirLT-Roman) y Analista Programador (Avenir LT 85 Heavy) */}
         <div className="max-w-xs space-y-0.5">
           <h1
             id="landing-nombre"
-            className="font-roman text-xs tracking-wide sm:text-sm"
+            className="font-roman text-xs sm:text-sm"
           >
             Juan Pablo Oyanedel
           </h1>
-          <p className="font-heavy text-xs tracking-wide sm:text-sm">
+          <p className="font-heavy text-xs sm:text-sm">
             Analista Programador
           </p>
         </div>
 
-        {/* Columna izquierda elevada debajo del encabezado */}
+        {/* Columna izquierda debajo del encabezado */}
         <div className="mt-10 max-w-xl space-y-8 sm:mt-14">
-          <p className="indent-8 font-roman text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
+          <p className="indent-8 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
             Desarrollo de software, arquitectura de sistemas y construcción de
             soluciones digitales donde la precisión técnica converge con la
             claridad estructural para dar forma a herramientas funcionales y
             perdurables.
           </p>
-          <p className="indent-8 font-roman text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
+          <p className="indent-8 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
             El pensamiento analítico combinado con métodos de programación
             contemporáneos permite diseñar flujos, interfaces y estructuras de
             datos pensadas desde la simplicidad y el rigor.

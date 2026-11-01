@@ -78,119 +78,145 @@ export default function PerfilPage() {
   const cvPublicUrl = getCvPublicUrl();
 
   return (
-    <div className="space-y-16 pt-6">
-      {/* Cabecera: Nombre completo en negritas y dos líneas de ejemplo */}
-      <header className="space-y-3">
-        <h1 className="font-heavy text-2xl tracking-tight sm:text-3xl">
-          Juan Pablo Oyanedel
-        </h1>
-        <div className="space-y-1 font-roman text-sm leading-relaxed sm:text-base">
-          <p>
-            Analista Programador enfocado en el desarrollo de software, diseño
-            de sistemas y arquitectura de aplicaciones web.
-          </p>
-          <p>
-            Construcción de soluciones tecnológicas claras, mantenibles y
-            orientadas a la precisión funcional.
+    <div className="space-y-32">
+      {/* 1. LANDING DE PERFIL (misma estructura, dimensiones y posicionamiento que el Home, sobre fondo blanco) */}
+      <section
+        aria-labelledby="perfil-nombre"
+        className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start pt-2 pb-16"
+      >
+        {/* Bloque superior izquierdo idéntico al Home */}
+        <div className="max-w-xs space-y-0.5">
+          <h1
+            id="perfil-nombre"
+            className="font-roman text-xs sm:text-sm"
+          >
+            Juan Pablo Oyanedel
+          </h1>
+          <p className="font-heavy text-xs sm:text-sm">
+            Analista Programador
           </p>
         </div>
-      </header>
 
-      {/* Hipervínculo centrado y grande en negritas para descargar CV en PDF */}
-      <div className="py-6 text-center">
-        <a
-          href={cvPublicUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          download="cv_actual.pdf"
-          className="hyper-link font-heavy text-2xl tracking-tight sm:text-3xl md:text-4xl"
-        >
-          Descargar CV en PDF
-        </a>
-      </div>
+        {/* Columna izquierda con fuente más pequeña y delgada para mayor densidad de texto + enlace final al CV */}
+        <div className="mt-10 max-w-xl space-y-6 sm:mt-14">
+          <p className="indent-8 font-light-avenir text-base leading-[1.48] sm:text-lg lg:text-xl">
+            Analista Programador dedicado al diseño, construcción y
+            mantenimiento de sistemas de software, aplicaciones web y
+            estructuras de datos con énfasis en la claridad arquitectónica, la
+            eficiencia operativa y la durabilidad técnica.
+          </p>
+          <p className="indent-8 font-light-avenir text-base leading-[1.48] sm:text-lg lg:text-xl">
+            A lo largo de mi trayectoria he articulado el desarrollo práctico de
+            código con el análisis riguroso de requerimientos, la documentación
+            continua de procesos y la integración de herramientas modernas que
+            simplifican flujos complejos sin sacrificar estabilidad ni control.
+          </p>
+          <p className="indent-8 font-light-avenir text-base leading-[1.48] sm:text-lg lg:text-xl">
+            Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
+            personas que las utilizan y mantienen, buscando siempre el equilibrio
+            entre precisión funcional, rendimiento y coherencia visual en cada
+            etapa del ciclo de vida de un proyecto.
+          </p>
 
-      {/* Experiencia Profesional (sin cajas contenedoras, con líneas separadoras negras) */}
-      <section aria-labelledby="experiencia-titulo" className="space-y-4">
-        <h2
-          id="experiencia-titulo"
-          className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
-        >
-          Experiencia Profesional
-        </h2>
-
-        <div className="divide-y divide-current">
-          {EXPERIENCIA_PROFESIONAL.map((item) => (
-            <article
-              key={item.id}
-              className="space-y-2 py-6 first:pt-2 last:pb-2"
+          <div className="pt-2">
+            <a
+              href={cvPublicUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="cv_actual.pdf"
+              className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
             >
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-heavy text-base">{item.cargo}</h3>
-                <span className="font-roman text-xs">{item.periodo}</span>
-              </div>
-              <p className="font-heavy text-xs uppercase tracking-wider">
-                {item.organizacion}
-              </p>
-              <p className="font-roman text-sm leading-relaxed">
-                {item.descripcion}
-              </p>
-            </article>
-          ))}
+              Descargar CV en PDF
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Formación Académica y Áreas de Especialidad */}
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
-        <section aria-labelledby="formacion-titulo" className="space-y-4">
+      {/* 2. CONTENIDO INFERIOR DESDE EXPERIENCIA PROFESIONAL HACIA ABAJO */}
+      <div className="space-y-16 pb-12">
+        {/* Experiencia Profesional */}
+        <section aria-labelledby="experiencia-titulo" className="space-y-4">
           <h2
-            id="formacion-titulo"
+            id="experiencia-titulo"
             className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
           >
-            Formación Académica
+            Experiencia Profesional
           </h2>
 
           <div className="divide-y divide-current">
-            {FORMACION_ACADEMICA.map((item) => (
+            {EXPERIENCIA_PROFESIONAL.map((item) => (
               <article
                 key={item.id}
-                className="space-y-1.5 py-5 first:pt-2 last:pb-2"
+                className="space-y-2 py-6 first:pt-2 last:pb-2"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-heavy text-sm sm:text-base">
-                    {item.titulo}
-                  </h3>
+                  <h3 className="font-heavy text-base">{item.cargo}</h3>
                   <span className="font-roman text-xs">{item.periodo}</span>
                 </div>
                 <p className="font-heavy text-xs uppercase tracking-wider">
-                  {item.institucion}
+                  {item.organizacion}
                 </p>
-                <p className="font-roman text-xs leading-relaxed sm:text-sm">
-                  {item.detalle}
+                <p className="font-roman text-sm leading-relaxed">
+                  {item.descripcion}
                 </p>
               </article>
             ))}
           </div>
         </section>
 
-        <section aria-labelledby="competencias-titulo" className="space-y-4">
-          <h2
-            id="competencias-titulo"
-            className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
-          >
-            Áreas de Especialidad
-          </h2>
+        {/* Formación Académica y Áreas de Especialidad */}
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
+          <section aria-labelledby="formacion-titulo" className="space-y-4">
+            <h2
+              id="formacion-titulo"
+              className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
+            >
+              Formación Académica
+            </h2>
 
-          <ul className="grid grid-cols-1 gap-x-8 pt-1 sm:grid-cols-2">
-            {AREAS_COMPETENCIA.map((area) => (
-              <li
-                key={area}
-                className="border-b border-current py-3 font-roman text-xs sm:text-sm"
-              >
-                {area}
-              </li>
-            ))}
-          </ul>
-        </section>
+            <div className="divide-y divide-current">
+              {FORMACION_ACADEMICA.map((item) => (
+                <article
+                  key={item.id}
+                  className="space-y-1.5 py-5 first:pt-2 last:pb-2"
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="font-heavy text-sm sm:text-base">
+                      {item.titulo}
+                    </h3>
+                    <span className="font-roman text-xs">{item.periodo}</span>
+                  </div>
+                  <p className="font-heavy text-xs uppercase tracking-wider">
+                    {item.institucion}
+                  </p>
+                  <p className="font-roman text-xs leading-relaxed sm:text-sm">
+                    {item.detalle}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section aria-labelledby="competencias-titulo" className="space-y-4">
+            <h2
+              id="competencias-titulo"
+              className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
+            >
+              Áreas de Especialidad
+            </h2>
+
+            <ul className="grid grid-cols-1 gap-x-8 pt-1 sm:grid-cols-2">
+              {AREAS_COMPETENCIA.map((area) => (
+                <li
+                  key={area}
+                  className="border-b border-current py-3 font-roman text-xs sm:text-sm"
+                >
+                  {area}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
       </div>
     </div>
   );

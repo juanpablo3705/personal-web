@@ -19,14 +19,14 @@ export default function ContactoPage() {
   );
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8 pt-6">
-      <header>
+    <section className="space-y-10 pt-6">
+      <header className="border-b border-current pb-4">
         <h1 className="font-heavy text-2xl tracking-tight sm:text-3xl">
           Formulario de contacto
         </h1>
       </header>
 
-      <section aria-label="Formulario para enviar mensaje">
+      <div aria-label="Formulario para enviar mensaje" className="max-w-2xl">
         {state.success && state.message && (
           <div
             role="status"
@@ -68,10 +68,7 @@ export default function ContactoPage() {
 
           {/* Campo 1: Nombre */}
           <div className="space-y-2">
-            <label
-              htmlFor="nombre"
-              className="block font-roman text-sm"
-            >
+            <label htmlFor="nombre" className="block font-roman text-sm">
               Nombre
             </label>
             <input
@@ -87,18 +84,13 @@ export default function ContactoPage() {
               className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.nombre && (
-              <p className="font-roman text-xs">
-                {state.fieldErrors.nombre}
-              </p>
+              <p className="font-roman text-xs">{state.fieldErrors.nombre}</p>
             )}
           </div>
 
           {/* Campo 2: Correo electrónico */}
           <div className="space-y-2">
-            <label
-              htmlFor="email"
-              className="block font-roman text-sm"
-            >
+            <label htmlFor="email" className="block font-roman text-sm">
               Correo electrónico
             </label>
             <input
@@ -114,18 +106,13 @@ export default function ContactoPage() {
               className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.email && (
-              <p className="font-roman text-xs">
-                {state.fieldErrors.email}
-              </p>
+              <p className="font-roman text-xs">{state.fieldErrors.email}</p>
             )}
           </div>
 
           {/* Campo 3: Asunto */}
           <div className="space-y-2">
-            <label
-              htmlFor="asunto"
-              className="block font-roman text-sm"
-            >
+            <label htmlFor="asunto" className="block font-roman text-sm">
               Asunto
             </label>
             <input
@@ -140,18 +127,13 @@ export default function ContactoPage() {
               className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.asunto && (
-              <p className="font-roman text-xs">
-                {state.fieldErrors.asunto}
-              </p>
+              <p className="font-roman text-xs">{state.fieldErrors.asunto}</p>
             )}
           </div>
 
           {/* Campo 4: Mensaje */}
           <div className="space-y-2">
-            <label
-              htmlFor="mensaje"
-              className="block font-roman text-sm"
-            >
+            <label htmlFor="mensaje" className="block font-roman text-sm">
               Mensaje
             </label>
             <textarea
@@ -166,9 +148,7 @@ export default function ContactoPage() {
               className="w-full resize-y border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
             {state.fieldErrors?.mensaje && (
-              <p className="font-roman text-xs">
-                {state.fieldErrors.mensaje}
-              </p>
+              <p className="font-roman text-xs">{state.fieldErrors.mensaje}</p>
             )}
           </div>
 
@@ -176,13 +156,13 @@ export default function ContactoPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="hyper-link cursor-pointer font-heavy text-sm tracking-wide disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+              className="hyper-link cursor-pointer font-heavy text-sm disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
             >
               {isPending ? "Enviando mensaje..." : "Enviar mensaje"}
             </button>
           </div>
         </form>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

@@ -26,7 +26,7 @@ export function Navbar({ isInverted }: NavbarProps) {
     >
       <div className="flex w-full items-center justify-end px-5 py-5 sm:px-8 md:px-12 lg:px-16">
         <nav aria-label="Navegación principal" className="w-full">
-          <ul className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 text-xs tracking-widest sm:gap-x-10 sm:text-sm md:gap-x-14">
+          <ul className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 text-xs sm:gap-x-10 sm:text-sm md:gap-x-14">
             {NAV_LINKS.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="hyper-link font-roman uppercase">

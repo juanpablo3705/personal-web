@@ -1,6 +1,18 @@
 @import "tailwindcss";
 
-/* Fuentes Avenir: AvenirLT-Roman para texto general y Avenir LT 85 Heavy para títulos y negritas */
+/* Fuentes Avenir auto-alojadas en /public/fonts para garantizar renderizado idéntico en todos los sistemas */
+@font-face {
+  font-family: "AvenirLT-Light";
+  src:
+    local("Avenir LT 35 Light"),
+    local("AvenirLT-Light"),
+    local("Avenir-Light"),
+    url("/fonts/AvenirLTStd-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: "AvenirLT-Roman";
   src:
@@ -8,9 +20,7 @@
     local("Avenir LT 55 Roman"),
     local("Avenir LT Std 55 Roman"),
     local("Avenir-Roman"),
-    local("Avenir"),
-    local("Avenir Next Regular"),
-    url("https://fonts.cdnfonts.com/s/36611/AvenirLTStd-Roman.woff") format("woff");
+    url("/fonts/AvenirLTStd-Roman.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -23,9 +33,7 @@
     local("AvenirLT-Heavy"),
     local("Avenir LT Std 85 Heavy"),
     local("Avenir-Heavy"),
-    local("Avenir-Black"),
-    local("Avenir Next Bold"),
-    url("https://fonts.cdnfonts.com/s/36611/AvenirLTStd-Heavy.woff") format("woff");
+    url("/fonts/AvenirLTStd-Heavy.woff") format("woff");
   font-weight: 700 900;
   font-style: normal;
   font-display: swap;
@@ -39,8 +47,9 @@
   --negro: #0e0e0e;
   --background: var(--blanco);
   --foreground: var(--negro);
-  --font-avenir-roman: "AvenirLT-Roman", "Avenir", "Avenir Next", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-avenir-heavy: "Avenir LT 85 Heavy", "Avenir-Heavy", "Avenir", "Avenir Next", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-avenir-light: "AvenirLT-Light", "AvenirLT-Roman", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-avenir-roman: "AvenirLT-Roman", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-avenir-heavy: "Avenir LT 85 Heavy", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @theme inline {
@@ -61,6 +70,11 @@ body {
 }
 
 /* Tipografía utilitaria */
+.font-light-avenir {
+  font-family: var(--font-avenir-light) !important;
+  font-weight: 300 !important;
+}
+
 .font-roman {
   font-family: var(--font-avenir-roman) !important;
   font-weight: 400 !important;

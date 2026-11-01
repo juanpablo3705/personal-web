@@ -69,7 +69,7 @@ export function HomeCatalogSections({
 
   return (
     <>
-      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 3 entradas, diseño uniforme con Blog) */}
+      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 3 entradas, separador solo en el subtítulo PROYECTOS) */}
       <section aria-labelledby="home-proyectos-titulo" className="space-y-8 pt-8">
         <header className="border-b border-current pb-4 text-center">
           <h2
@@ -92,8 +92,8 @@ export function HomeCatalogSections({
                 className="flex flex-col justify-between space-y-5"
               >
                 <div className="space-y-5">
-                  {/* Título + Separador */}
-                  <div className="border-b border-current pb-3 text-center">
+                  {/* Título del proyecto (sin barra separadora individual) */}
+                  <div className="text-center">
                     <h3 className="font-heavy text-sm uppercase tracking-wider sm:text-base">
                       <button
                         type="button"
@@ -135,7 +135,7 @@ export function HomeCatalogSections({
                   <button
                     type="button"
                     onClick={() => openModal("project", project.slug)}
-                    className="hyper-link cursor-pointer font-roman text-xs tracking-wide sm:text-sm"
+                    className="hyper-link cursor-pointer font-roman text-xs sm:text-sm"
                   >
                     Ver más &gt;
                   </button>
@@ -148,14 +148,14 @@ export function HomeCatalogSections({
         <div className="pt-4 text-center">
           <Link
             href="/proyectos"
-            className="hyper-link font-heavy text-xs tracking-wider sm:text-sm"
+            className="hyper-link font-heavy text-xs sm:text-sm"
           >
             Ver todos los proyectos &gt;
           </Link>
         </div>
       </section>
 
-      {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 3 entradas, diseño uniforme con Proyectos) */}
+      {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 3 entradas, separador solo en el subtítulo BLOG) */}
       <section aria-labelledby="home-blog-titulo" className="space-y-8 pb-12">
         <header className="border-b border-current pb-4 text-center">
           <h2
@@ -178,8 +178,8 @@ export function HomeCatalogSections({
                 className="flex flex-col justify-between space-y-5"
               >
                 <div className="space-y-5">
-                  {/* Título + Separador */}
-                  <div className="border-b border-current pb-3 text-center">
+                  {/* Título de la entrada (sin barra separadora individual) */}
+                  <div className="text-center">
                     <h3 className="font-heavy text-sm uppercase tracking-wider sm:text-base">
                       <button
                         type="button"
@@ -204,7 +204,7 @@ export function HomeCatalogSections({
                   <button
                     type="button"
                     onClick={() => openModal("blog", post.slug)}
-                    className="hyper-link cursor-pointer font-roman text-xs tracking-wide sm:text-sm"
+                    className="hyper-link cursor-pointer font-roman text-xs sm:text-sm"
                   >
                     Leer más &gt;
                   </button>
@@ -217,7 +217,7 @@ export function HomeCatalogSections({
         <div className="pt-4 text-center">
           <Link
             href="/blog"
-            className="hyper-link font-heavy text-xs tracking-wider sm:text-sm"
+            className="hyper-link font-heavy text-xs sm:text-sm"
           >
             Ver todo el blog &gt;
           </Link>
