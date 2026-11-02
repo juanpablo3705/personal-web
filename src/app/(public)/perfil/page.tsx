@@ -124,7 +124,7 @@ export default function PerfilPage() {
               target="_blank"
               rel="noopener noreferrer"
               download="CV_JuanPabloOyanedel.pdf"
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-base tracking-wide sm:text-lg"
             >
               Descargar CV en PDF &gt;
             </a>
@@ -132,13 +132,13 @@ export default function PerfilPage() {
               href="https://github.com/juanpablo3705"
               target="_blank"
               rel="noopener noreferrer"
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-base tracking-wide sm:text-lg"
             >
               Perfil de GitHub &gt;
             </a>
             <a
               href="mailto:juanpablo3705@gmail.com"
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-base tracking-wide sm:text-lg"
             >
               Enviar correo &gt;
             </a>
@@ -153,7 +153,7 @@ export default function PerfilPage() {
         <section aria-labelledby="experiencia-titulo" className="space-y-6">
           <h2
             id="experiencia-titulo"
-            className="border-b border-current pb-3 font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
+            className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
           >
             EXPERIENCIA PROFESIONAL
           </h2>
@@ -181,7 +181,7 @@ export default function PerfilPage() {
           <section aria-labelledby="formacion-titulo" className="space-y-6">
             <h2
               id="formacion-titulo"
-              className="border-b border-current pb-3 font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
+              className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
             >
               FORMACIÓN ACADÉMICA
             </h2>
@@ -209,7 +209,7 @@ export default function PerfilPage() {
           <section aria-labelledby="competencias-titulo" className="space-y-6">
             <h2
               id="competencias-titulo"
-              className="border-b border-current pb-3 font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
+              className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
             >
               ÁREAS DE ESPECIALIDAD
             </h2>

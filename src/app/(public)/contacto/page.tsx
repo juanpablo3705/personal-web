@@ -21,7 +21,7 @@ export default function ContactoPage() {
   return (
     <section className="space-y-10 pt-6">
       <header className="border-b border-current pb-4">
-        <h1 className="font-heavy text-2xl uppercase tracking-tight sm:text-3xl">
+        <h1 className="font-heavy text-lg uppercase tracking-tight sm:text-xl">
           FORMULARIO DE CONTACTO
         </h1>
       </header>

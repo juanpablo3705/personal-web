@@ -48,8 +48,8 @@ export function HomeCatalogSections({
   const { setModalOpen } = usePublicShell();
   const [activeModal, setActiveModal] = useState<ActiveHomeModal>(null);
 
-  const proyectosVisibles = proyectos.slice(0, 3);
-  const blogVisibles = entradasBlog.slice(0, 3);
+  const proyectosVisibles = proyectos.slice(0, 4);
+  const blogVisibles = entradasBlog.slice(0, 4);
 
   const openModal = (type: "project" | "blog", slug: string) => {
     setModalOpen(true);
@@ -69,12 +69,12 @@ export function HomeCatalogSections({
 
   return (
     <>
-      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 3 entradas, separador solo en el subtítulo PROYECTOS) */}
+      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 4 entradas, separador solo en el subtítulo PROYECTOS) */}
       <section aria-labelledby="home-proyectos-titulo" className="space-y-8 pt-8">
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-proyectos-titulo"
-            className="font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
+            className="font-heavy text-lg uppercase tracking-tight sm:text-xl"
           >
             PROYECTOS
           </h2>
@@ -85,62 +85,58 @@ export function HomeCatalogSections({
             No hay proyectos publicados por el momento.
           </p>
         ) : (
-          <div className="grid grid-cols-1 gap-10 pt-2 md:grid-cols-3 lg:gap-14">
+          <div className="grid grid-cols-1 gap-8 pt-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {proyectosVisibles.map((project) => (
-              <article
+              <div
                 key={project.id}
-                className="flex flex-col justify-between space-y-5"
+                role="button"
+                tabIndex={0}
+                onClick={() => openModal("project", project.slug)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openModal("project", project.slug);
+                  }
+                }}
+                className="group flex aspect-square cursor-pointer flex-col overflow-hidden text-left"
               >
-                <div className="space-y-5">
-                  {/* Título del proyecto (sin barra separadora individual) */}
-                  <div className="text-center">
-                    <h3 className="font-heavy text-base leading-snug uppercase tracking-wider">
-                      <button
-                        type="button"
-                        onClick={() => openModal("project", project.slug)}
-                        className="hyper-link cursor-pointer font-heavy uppercase"
-                      >
-                        {project.title}
-                      </button>
+                {/* Mitad superior del cuadrado invisible: Thumbnail */}
+                <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
+                  {project.thumbnail_url ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={project.thumbnail_url}
+                      alt={project.title}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-xs uppercase tracking-wider">
+                      Sin imagen
+                    </div>
+                  )}
+                </div>
+
+                {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
+                <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
+                  <div className="space-y-2 overflow-hidden">
+                    <h3 className="line-clamp-2 font-heavy text-base leading-snug">
+                      <span className="hyper-link">{project.title}</span>
                     </h3>
+                    {project.summary && (
+                      <p className="font-editorial-serif line-clamp-2 text-xs leading-relaxed sm:text-sm">
+                        {project.summary}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Thumbnail */}
-                  {project.thumbnail_url && (
-                    <button
-                      type="button"
-                      onClick={() => openModal("project", project.slug)}
-                      className="block aspect-[4/3] w-full cursor-pointer overflow-hidden text-left"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={project.thumbnail_url}
-                        alt={project.title}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    </button>
-                  )}
-
-                  {/* Texto resumen */}
-                  {project.summary && (
-                    <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
-                      {project.summary}
-                    </p>
-                  )}
+                  <div className="pt-2">
+                    <span className="hyper-link font-heavy text-xs tracking-wide sm:text-sm">
+                      Ver más &gt;
+                    </span>
+                  </div>
                 </div>
-
-                {/* Link "Ver más >" */}
-                <div className="pt-2">
-                  <button
-                    type="button"
-                    onClick={() => openModal("project", project.slug)}
-                    className="hyper-link cursor-pointer font-roman text-xs tracking-wide sm:text-sm"
-                  >
-                    Ver más &gt;
-                  </button>
-                </div>
-              </article>
+              </div>
             ))}
           </div>
         )}
@@ -155,12 +151,12 @@ export function HomeCatalogSections({
         </div>
       </section>
 
-      {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 3 entradas, separador solo en el subtítulo BLOG) */}
+      {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 4 entradas, separador solo en el subtítulo BLOG) */}
       <section aria-labelledby="home-blog-titulo" className="space-y-8 pb-12">
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-blog-titulo"
-            className="font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
+            className="font-heavy text-lg uppercase tracking-tight sm:text-xl"
           >
             BLOG
           </h2>
@@ -171,20 +167,20 @@ export function HomeCatalogSections({
             No hay entradas de blog publicadas por el momento.
           </p>
         ) : (
-          <div className="grid grid-cols-1 gap-10 pt-2 md:grid-cols-3 lg:gap-14">
+          <div className="grid grid-cols-1 gap-8 pt-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {blogVisibles.map((post) => (
               <article
                 key={post.id}
                 className="flex flex-col justify-between space-y-5"
               >
-                <div className="space-y-5">
-                  {/* Título de la entrada (sin barra separadora individual) */}
-                  <div className="text-center">
-                    <h3 className="font-heavy text-base leading-snug uppercase tracking-wider">
+                <div className="space-y-2">
+                  {/* Título de la entrada (sin barra separadora individual ni mayúsculas forzadas) */}
+                  <div>
+                    <h3 className="font-heavy text-base leading-snug">
                       <button
                         type="button"
                         onClick={() => openModal("blog", post.slug)}
-                        className="hyper-link cursor-pointer font-heavy uppercase"
+                        className="hyper-link cursor-pointer text-left font-heavy"
                       >
                         {post.title}
                       </button>
@@ -204,7 +200,7 @@ export function HomeCatalogSections({
                   <button
                     type="button"
                     onClick={() => openModal("blog", post.slug)}
-                    className="hyper-link cursor-pointer font-roman text-xs tracking-wide sm:text-sm"
+                    className="hyper-link cursor-pointer font-heavy text-xs tracking-wide sm:text-sm"
                   >
                     Leer más &gt;
                   </button>
