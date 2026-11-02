@@ -36,6 +36,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const [forcingWhiteBg, setForcingWhiteBg] = useState(false);
 
   const navTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const shouldScrollTopRef = useRef(false);
 
   const isHomePage = pathname === "/";
 
@@ -67,7 +68,17 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       navTimeoutRef.current = null;
     }
 
+    const resetScrollToTop = shouldScrollTopRef.current;
+    shouldScrollTopRef.current = false;
+
+    if (resetScrollToTop) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+
     const frameId = window.requestAnimationFrame(() => {
+      if (resetScrollToTop) {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
       setIsFadingOut(false);
       setForcingWhiteBg(false);
     });
@@ -135,6 +146,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       const noScroll = anchor.getAttribute("data-no-scroll") === "true";
       const useReplace = anchor.getAttribute("data-replace") === "true";
 
+      shouldScrollTopRef.current = !noScroll;
+
       router.prefetch(href);
 
       setIsFadingOut(true);
@@ -147,10 +160,13 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       }
 
       navTimeoutRef.current = setTimeout(() => {
+        if (!noScroll) {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }
         if (useReplace) {
-          router.replace(href, { scroll: !noScroll });
+          router.replace(href, { scroll: false });
         } else {
-          router.push(href, { scroll: !noScroll });
+          router.push(href, { scroll: false });
         }
       }, 500);
     },
