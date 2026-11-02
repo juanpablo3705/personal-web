@@ -12,11 +12,25 @@ const initialState: ContactoActionState = {
   error: null,
 };
 
+function getCvPublicUrl(): string {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim().replace(
+    /\/+$/,
+    ""
+  );
+
+  if (!supabaseUrl) {
+    return "/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf";
+  }
+
+  return `${supabaseUrl}/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf`;
+}
+
 export default function ContactoPage() {
   const [state, formAction, isPending] = useActionState(
     sendContactEmailAction,
     initialState
   );
+  const cvPublicUrl = getCvPublicUrl();
 
   return (
     <section className="space-y-10 pt-6">
@@ -152,7 +166,7 @@ export default function ContactoPage() {
             )}
           </div>
 
-          <div className="pt-2">
+          <div className="flex flex-col items-start gap-4 pt-2">
             <button
               type="submit"
               disabled={isPending}
@@ -160,6 +174,29 @@ export default function ContactoPage() {
             >
               {isPending ? "Enviando mensaje... >" : "Enviar mensaje >"}
             </button>
+            <a
+              href={cvPublicUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="CV_JuanPabloOyanedel.pdf"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
+            >
+              Descargar CV en PDF &gt;
+            </a>
+            <a
+              href="https://github.com/juanpablo3705"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
+            >
+              Perfil de GitHub &gt;
+            </a>
+            <a
+              href="mailto:juanpablo3705@gmail.com"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
+            >
+              Enviar correo &gt;
+            </a>
           </div>
         </form>
       </div>
