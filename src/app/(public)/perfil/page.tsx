@@ -99,19 +99,19 @@ export default function PerfilPage() {
 
         {/* Columna izquierda con fuente más pequeña y delgada para mayor densidad de texto + enlace final al CV */}
         <div className="mt-10 max-w-xl space-y-6 sm:mt-14">
-          <p className="indent-8 font-light-avenir text-xs leading-relaxed sm:text-sm">
+          <p className="indent-8 font-editorial-serif text-xs leading-relaxed sm:text-sm">
             Analista Programador dedicado al diseño, construcción y
             mantenimiento de sistemas de software, aplicaciones web y
             estructuras de datos con énfasis en la claridad arquitectónica, la
             eficiencia operativa y la durabilidad técnica.
           </p>
-          <p className="indent-8 font-light-avenir text-xs leading-relaxed sm:text-sm">
+          <p className="indent-8 font-editorial-serif text-xs leading-relaxed sm:text-sm">
             A lo largo de mi trayectoria he articulado el desarrollo práctico de
             código con el análisis riguroso de requerimientos, la documentación
             continua de procesos y la integración de herramientas modernas que
             simplifican flujos complejos sin sacrificar estabilidad ni control.
           </p>
-          <p className="indent-8 font-light-avenir text-xs leading-relaxed sm:text-sm">
+          <p className="indent-8 font-editorial-serif text-xs leading-relaxed sm:text-sm">
             Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
             personas que las utilizan y mantienen, buscando siempre el equilibrio
             entre precisión funcional, rendimiento y coherencia visual en cada
@@ -163,12 +163,12 @@ export default function PerfilPage() {
               <article key={item.id} className="space-y-2">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h3 className="font-heavy text-base leading-snug">{item.cargo}</h3>
-                  <span className="font-roman text-xs sm:text-sm">{item.periodo}</span>
+                  <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">{item.periodo}</span>
                 </div>
                 <p className="font-heavy text-xs uppercase tracking-wider sm:text-sm">
                   {item.organizacion}
                 </p>
-                <p className="font-roman text-xs leading-relaxed sm:text-sm">
+                <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
                   {item.descripcion}
                 </p>
               </article>
@@ -193,12 +193,12 @@ export default function PerfilPage() {
                     <h3 className="font-heavy text-base leading-snug">
                       {item.titulo}
                     </h3>
-                    <span className="font-roman text-xs sm:text-sm">{item.periodo}</span>
+                    <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">{item.periodo}</span>
                   </div>
                   <p className="font-heavy text-xs uppercase tracking-wider sm:text-sm">
                     {item.institucion}
                   </p>
-                  <p className="font-roman text-xs leading-relaxed sm:text-sm">
+                  <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
                     {item.detalle}
                   </p>
                 </article>
@@ -216,7 +216,7 @@ export default function PerfilPage() {
 
             <ul className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
               {AREAS_COMPETENCIA.map((area) => (
-                <li key={area} className="font-roman text-xs leading-relaxed sm:text-sm">
+                <li key={area} className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
                   {area}
                 </li>
               ))}

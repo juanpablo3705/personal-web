@@ -32,7 +32,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
       {posts.length === 0 ? (
         <div className="py-12">
-          <p className="font-roman text-sm">
+          <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
             No hay entradas de blog publicadas por el momento.
           </p>
         </div>

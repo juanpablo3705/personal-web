@@ -44,7 +44,7 @@ export function Pagination({
         )}
       </div>
 
-      <span className="font-roman text-xs">
+      <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
         Página {currentPage} de {totalPages}
       </span>
 

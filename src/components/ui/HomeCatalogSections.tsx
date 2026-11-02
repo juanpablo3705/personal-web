@@ -81,7 +81,7 @@ export function HomeCatalogSections({
         </header>
 
         {proyectosVisibles.length === 0 ? (
-          <p className="pt-4 text-center text-sm">
+          <p className="pt-4 text-center font-editorial-serif text-xs leading-relaxed sm:text-sm">
             No hay proyectos publicados por el momento.
           </p>
         ) : (
@@ -163,7 +163,7 @@ export function HomeCatalogSections({
         </header>
 
         {blogVisibles.length === 0 ? (
-          <p className="pt-4 text-center text-sm">
+          <p className="pt-4 text-center font-editorial-serif text-xs leading-relaxed sm:text-sm">
             No hay entradas de blog publicadas por el momento.
           </p>
         ) : (

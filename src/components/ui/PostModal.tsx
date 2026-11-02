@@ -171,11 +171,11 @@ export function PostModal({
 
             {post.content ? (
               <div
-                className="font-editorial-serif editorial-content text-base leading-relaxed text-[var(--negro)] [&_p]:mb-5 [&_img]:my-6 [&_img]:h-auto [&_img]:max-w-full [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-5 [&_ol]:list-decimal [&_ol]:pl-6 [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:font-heavy [&_h2]:text-xl [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-heavy [&_h3]:text-lg [&_blockquote]:my-5 [&_blockquote]:border-l [&_blockquote]:border-[var(--negro)] [&_blockquote]:pl-4 [&_blockquote]:italic"
+                className="font-editorial-serif editorial-content text-xs leading-relaxed text-[var(--negro)] sm:text-sm [&_p]:mb-5 [&_img]:my-6 [&_img]:h-auto [&_img]:max-w-full [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-5 [&_ol]:list-decimal [&_ol]:pl-6 [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:font-heavy [&_h2]:text-xl [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-heavy [&_h3]:text-lg [&_blockquote]:my-5 [&_blockquote]:border-l [&_blockquote]:border-[var(--negro)] [&_blockquote]:pl-4 [&_blockquote]:italic"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
             ) : post.summary ? (
-              <p className="font-editorial-serif text-base leading-relaxed text-[var(--negro)]">
+              <p className="font-editorial-serif text-xs leading-relaxed text-[var(--negro)] sm:text-sm">
                 {post.summary}
               </p>
             ) : null}

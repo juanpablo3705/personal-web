@@ -34,7 +34,7 @@ export default async function ProyectosPage({
 
       {posts.length === 0 ? (
         <div className="py-12">
-          <p className="font-roman text-sm">
+          <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
             No hay proyectos publicados por el momento.
           </p>
         </div>
