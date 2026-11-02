@@ -60,25 +60,29 @@ export default async function ProyectosPage({
                     loading="lazy"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center border-b border-current text-xs uppercase tracking-wider">
+                  <div className="flex h-full w-full items-center justify-center text-xs uppercase tracking-wider">
                     Sin imagen
                   </div>
                 )}
               </div>
 
-              {/* Mitad inferior del cuadrado invisible: Título y Resumen breve */}
+              {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
               <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
                 <div className="space-y-2 overflow-hidden">
                   <h2 className="line-clamp-2 font-heavy text-base leading-snug">
-                    <span className="hyper-link">
-                      {project.title}
-                    </span>
+                    <span className="hyper-link">{project.title}</span>
                   </h2>
                   {project.summary && (
-                    <p className="font-editorial-serif line-clamp-3 text-xs leading-relaxed sm:text-sm">
+                    <p className="font-editorial-serif line-clamp-2 text-xs leading-relaxed sm:text-sm">
                       {project.summary}
                     </p>
                   )}
+                </div>
+
+                <div className="pt-2">
+                  <span className="hyper-link font-heavy text-xs tracking-wide sm:text-sm">
+                    Ver más &gt;
+                  </span>
                 </div>
               </div>
             </Link>

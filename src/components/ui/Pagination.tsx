@@ -31,7 +31,7 @@ export function Pagination({
   return (
     <nav
       aria-label="Paginación de publicaciones"
-      className="flex items-center justify-between border-t border-current pt-6"
+      className="flex items-center justify-between pt-6"
     >
       <div>
         {hasPrevPage && (
@@ -39,7 +39,7 @@ export function Pagination({
             href={prevHref}
             className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
           >
-            ← Anterior
+            &lt; Anterior
           </Link>
         )}
       </div>
@@ -54,7 +54,7 @@ export function Pagination({
             href={nextHref}
             className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
           >
-            Siguiente →
+            Siguiente &gt;
           </Link>
         )}
       </div>

@@ -35,11 +35,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           </p>
         </div>
       ) : (
-        <div className="divide-y divide-current">
+        <div className="space-y-10">
           {posts.map((post) => (
             <article
               key={post.id}
-              className="flex w-full flex-col gap-3 py-6 first:pt-2"
+              className="flex w-full flex-col gap-3"
             >
               <h2 className="font-heavy text-lg leading-snug sm:text-xl">
                 <Link

@@ -126,16 +126,17 @@ export default function PerfilPage() {
               download="cv_actual.pdf"
               className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
             >
-              Descargar CV en PDF
+              Descargar CV en PDF &gt;
             </a>
           </div>
         </div>
       </section>
 
-      {/* 2. CONTENIDO INFERIOR DESDE EXPERIENCIA PROFESIONAL HACIA ABAJO */}
+      {/* 2. CONTENIDO INFERIOR DESDE EXPERIENCIA PROFESIONAL HACIA ABAJO
+          (separadores únicamente en los subtítulos; elementos de lista sueltos) */}
       <div className="space-y-16 pb-12">
         {/* Experiencia Profesional */}
-        <section aria-labelledby="experiencia-titulo" className="space-y-4">
+        <section aria-labelledby="experiencia-titulo" className="space-y-6">
           <h2
             id="experiencia-titulo"
             className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
@@ -143,12 +144,9 @@ export default function PerfilPage() {
             Experiencia Profesional
           </h2>
 
-          <div className="divide-y divide-current">
+          <div className="space-y-8">
             {EXPERIENCIA_PROFESIONAL.map((item) => (
-              <article
-                key={item.id}
-                className="space-y-2 py-6 first:pt-2 last:pb-2"
-              >
+              <article key={item.id} className="space-y-2">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h3 className="font-heavy text-base">{item.cargo}</h3>
                   <span className="font-roman text-xs">{item.periodo}</span>
@@ -166,7 +164,7 @@ export default function PerfilPage() {
 
         {/* Formación Académica y Áreas de Especialidad */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
-          <section aria-labelledby="formacion-titulo" className="space-y-4">
+          <section aria-labelledby="formacion-titulo" className="space-y-6">
             <h2
               id="formacion-titulo"
               className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
@@ -174,12 +172,9 @@ export default function PerfilPage() {
               Formación Académica
             </h2>
 
-            <div className="divide-y divide-current">
+            <div className="space-y-6">
               {FORMACION_ACADEMICA.map((item) => (
-                <article
-                  key={item.id}
-                  className="space-y-1.5 py-5 first:pt-2 last:pb-2"
-                >
+                <article key={item.id} className="space-y-1.5">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="font-heavy text-sm sm:text-base">
                       {item.titulo}
@@ -197,7 +192,7 @@ export default function PerfilPage() {
             </div>
           </section>
 
-          <section aria-labelledby="competencias-titulo" className="space-y-4">
+          <section aria-labelledby="competencias-titulo" className="space-y-6">
             <h2
               id="competencias-titulo"
               className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
@@ -205,12 +200,9 @@ export default function PerfilPage() {
               Áreas de Especialidad
             </h2>
 
-            <ul className="grid grid-cols-1 gap-x-8 pt-1 sm:grid-cols-2">
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
               {AREAS_COMPETENCIA.map((area) => (
-                <li
-                  key={area}
-                  className="border-b border-current py-3 font-roman text-xs sm:text-sm"
-                >
+                <li key={area} className="font-roman text-xs sm:text-sm">
                   {area}
                 </li>
               ))}

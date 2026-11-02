@@ -153,7 +153,7 @@ export function PostModal({
           </article>
         </div>
 
-        {/* Espacio en blanco exclusivo inferior con hipervínculos "← Anterior" y "Siguiente →" (sin cajas ni bordes) */}
+        {/* Espacio en blanco exclusivo inferior con hipervínculos "Anterior >" y "Siguiente >" (sin cajas ni bordes) */}
         <footer className="flex shrink-0 items-center justify-between gap-4 bg-[var(--blanco)] px-6 py-4 sm:px-10">
           <div>
             {prevPost && (
@@ -166,7 +166,7 @@ export function PostModal({
                 title={prevPost.title}
                 className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
               >
-                ← Anterior
+                &lt; Anterior
               </Link>
             )}
           </div>
@@ -182,7 +182,7 @@ export function PostModal({
                 title={nextPost.title}
                 className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
               >
-                Siguiente →
+                Siguiente &gt;
               </Link>
             )}
           </div>

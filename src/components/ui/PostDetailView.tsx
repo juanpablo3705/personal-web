@@ -16,7 +16,7 @@ export function PostDetailView({
   basePath,
 }: PostDetailViewProps) {
   const backLabel =
-    basePath === "/proyectos" ? "← Volver a Proyectos" : "← Volver al Blog";
+    basePath === "/proyectos" ? "< Volver a Proyectos" : "< Volver al Blog";
 
   return (
     <article className="mx-auto max-w-4xl space-y-8 pt-6">
@@ -49,7 +49,7 @@ export function PostDetailView({
       </div>
 
       {/* Barra inferior con hipervínculos Anterior / Siguiente */}
-      <footer className="flex items-center justify-between gap-4 border-t border-current pt-4">
+      <footer className="flex items-center justify-between gap-4 pt-4">
         <div>
           {prevPost && (
             <Link
@@ -57,7 +57,7 @@ export function PostDetailView({
               title={prevPost.title}
               className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
             >
-              ← Anterior
+              &lt; Anterior
             </Link>
           )}
         </div>
@@ -69,7 +69,7 @@ export function PostDetailView({
               title={nextPost.title}
               className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
             >
-              Siguiente →
+              Siguiente &gt;
             </Link>
           )}
         </div>

@@ -31,7 +31,7 @@ export default function ContactoPage() {
           <div
             role="status"
             aria-live="polite"
-            className="mb-6 border-b border-current pb-4 text-sm"
+            className="mb-6 pb-4 text-sm"
           >
             <p className="font-heavy">¡Correo enviado con éxito!</p>
             <p className="mt-1 font-roman">{state.message}</p>
@@ -42,7 +42,7 @@ export default function ContactoPage() {
           <div
             role="alert"
             aria-live="polite"
-            className="mb-6 border-b border-current pb-4 text-sm"
+            className="mb-6 pb-4 text-sm"
           >
             {state.error}
           </div>
@@ -158,7 +158,7 @@ export default function ContactoPage() {
               disabled={isPending}
               className="hyper-link cursor-pointer font-heavy text-sm disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
             >
-              {isPending ? "Enviando mensaje..." : "Enviar mensaje"}
+              {isPending ? "Enviando mensaje... >" : "Enviar mensaje >"}
             </button>
           </div>
         </form>
