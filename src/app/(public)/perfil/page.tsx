@@ -191,10 +191,10 @@ export default function PerfilPage() {
                       {item.periodo}
                     </span>
                   </div>
-                  <p className="font-editorial-serif text-sm italic sm:text-base">
+                  <p className="font-roman text-sm italic sm:text-base">
                     {item.cargo}
                   </p>
-                  <p className="font-editorial-serif text-sm italic sm:text-base">
+                  <p className="font-roman text-sm italic sm:text-base">
                     {item.ubicacion}
                   </p>
                 </div>
@@ -230,7 +230,7 @@ export default function PerfilPage() {
                       {item.periodo}
                     </span>
                   </div>
-                  <p className="font-editorial-serif text-sm italic sm:text-base">
+                  <p className="font-roman text-sm italic sm:text-base">
                     {item.carrera}
                   </p>
                 </div>
