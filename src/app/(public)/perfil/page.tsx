@@ -165,7 +165,7 @@ export default function PerfilPage() {
                   <h3 className="font-heavy text-base leading-snug">{item.cargo}</h3>
                   <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">{item.periodo}</span>
                 </div>
-                <p className="font-heavy text-xs uppercase tracking-wider sm:text-sm">
+                <p className="font-heavy text-xs leading-snug sm:text-sm">
                   {item.organizacion}
                 </p>
                 <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
@@ -195,7 +195,7 @@ export default function PerfilPage() {
                     </h3>
                     <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">{item.periodo}</span>
                   </div>
-                  <p className="font-heavy text-xs uppercase tracking-wider sm:text-sm">
+                  <p className="font-heavy text-xs leading-snug sm:text-sm">
                     {item.institucion}
                   </p>
                   <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
