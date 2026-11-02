@@ -1,64 +1,85 @@
 type ExperienciaItem = {
   id: string;
-  cargo: string;
   organizacion: string;
   periodo: string;
-  descripcion: string;
+  cargo: string;
+  ubicacion: string;
+  puntos: string[];
 };
 
-type FormacionItem = {
+type EducacionItem = {
   id: string;
-  titulo: string;
   institucion: string;
   periodo: string;
-  detalle: string;
+  carrera: string;
+  puntos?: string[];
 };
 
-const EXPERIENCIA_PROFESIONAL: ExperienciaItem[] = [
+const EXPERIENCIA_LABORAL: ExperienciaItem[] = [
   {
     id: "exp-1",
-    cargo: "Rol Profesional Principal / Especialista",
-    organizacion: "Organización o Práctica Independiente",
-    periodo: "Actualidad",
-    descripcion:
-      "Dirección, desarrollo y ejecución de proyectos estratégicos, combinando rigor técnico, comunicación clara y orientación a resultados.",
+    organizacion: "Estudio de arquitectura 890 ARQ SpA.",
+    periodo: "2024 - 2026",
+    cargo:
+      "Comunicación organizacional, soporte informático y atención al cliente",
+    ubicacion: "Valparaíso",
+    puntos: [
+      "Encargado de comunicaciones y marketing digital para difusión de marca.",
+      "Soporte técnico TI integral. Gestión de actualizaciones y mantenimiento de sitio web.",
+      "Administración de plataforma CRM HubSpot para el registro, seguimiento y resolución de incidencias en flujos de atención y datos de clientes.",
+      "Atención al cliente enfocada en la elaboración de presupuestos de proyectos y visitas en terreno.",
+    ],
   },
   {
     id: "exp-2",
-    cargo: "Coordinación y Desarrollo de Proyectos",
-    organizacion: "Equipo / Institución Previa",
-    periodo: "Etapa Anterior",
-    descripcion:
-      "Planificación e implementación de soluciones integrales, gestión de entregables y colaboración con equipos multidisciplinarios.",
+    organizacion: "Transportes Travel Tours LTDA.",
+    periodo: "2018 - 2020",
+    cargo: "Analista de licitaciones públicas y soporte informático",
+    ubicacion: "Viña del Mar",
+    puntos: [
+      "Evaluación y postulación a procesos en Mercado Público (L1, LE, LP, Convenio Marco y Trato Directo), gestionando bases administrativas, ofertas económicas y administración de garantías.",
+      "Implementación integral de plataforma Zoho One: gestión de actualizaciones, resolución de incidencias y capacitación de usuarios para optimizar procesos.",
+    ],
+  },
+  {
+    id: "exp-3",
+    organizacion: "Betazeta Networks S.A",
+    periodo: "2010 - 2016",
+    cargo: "Director de contenidos",
+    ubicacion: "Santiago",
+    puntos: [
+      "Coordinación de pauta y creación de contenido escrito y audiovisual para medios de comunicación digitales enfocados al área de tecnología y hardware (FayerWayer, CHW y Wayerless).",
+      "Revisión y soporte de equipos informáticos para benchmarks y contenidos digitales.",
+      "Redacción de contenido por encargo para Diario La Tercera, sección tecnología.",
+      "Encargado de benchmarks y reviews de equipos por encargo para NetNow S.A. (Acer Chile).",
+    ],
   },
 ];
 
-const FORMACION_ACADEMICA: FormacionItem[] = [
+const EDUCACION: EducacionItem[] = [
   {
-    id: "form-1",
-    titulo: "Título Profesional / Grado Académico",
-    institucion: "Universidad / Institución Educativa",
-    periodo: "Formación Superior",
-    detalle:
-      "Formación base y especialización aplicada al desarrollo de proyectos y resolución de problemas.",
+    id: "edu-1",
+    institucion: "DUOC UC, Sede Viña del Mar",
+    periodo: "2026 - 2028 (en curso)",
+    carrera: "Analista Programador",
+    puntos: [
+      "Manejo de lenguajes de programación Java y Python.",
+      "Dominio de plataformas Linux, Amazon AWS y Oracle SQL.",
+      "Certificación Artificial Intelligence Professional Certificate (CAIPC).",
+      "En proceso de obtención de certificación Red Hat Certified System Administrator (RHCSA).",
+    ],
   },
   {
-    id: "form-2",
-    titulo: "Actualización Continua y Especializaciones",
-    institucion: "Programas y Certificaciones",
-    periodo: "Continuo",
-    detalle:
-      "Perfeccionamiento constante en metodologías, herramientas modernas y gestión de proyectos.",
+    id: "edu-2",
+    institucion: "Pontificia Universidad Católica de Valparaíso",
+    periodo: "2008 - 2011 (4to año, incompleto)",
+    carrera: "Periodismo y Licenciatura en Comunicaciones",
   },
 ];
 
-const AREAS_COMPETENCIA = [
-  "Gestión y Desarrollo de Proyectos",
-  "Arquitectura y Diseño de Soluciones",
-  "Comunicación Técnica y Documentación",
-  "Investigación y Análisis",
-  "Trabajo Colaborativo",
-  "Mejora Continua",
+const OTRAS_HABILIDADES = [
+  "Inglés oral y escrito nivel C1 Advanced (Fluidez profesional oral y escrita).",
+  "Excelente comunicación efectiva y empatía para la atención de usuarios y el trabajo colaborativo, con sólida capacidad de resolución de problemas, manejo de objeciones y capacidad de autogestión en entornos de alta exigencia con ritmo dinámico.",
 ] as const;
 
 function getCvPublicUrl(): string {
@@ -146,83 +167,101 @@ export default function PerfilPage() {
         </div>
       </section>
 
-      {/* 2. CONTENIDO INFERIOR DESDE EXPERIENCIA PROFESIONAL HACIA ABAJO
-          (separadores únicamente en los subtítulos; elementos de lista sueltos) */}
+      {/* 2. CONTENIDO INFERIOR DESDE EXPERIENCIA LABORAL HACIA ABAJO
+          (misma estructura tipográfica que Blog y Proyectos) */}
       <div className="space-y-16 pb-12">
-        {/* Experiencia Profesional */}
+        {/* Experiencia Laboral */}
         <section aria-labelledby="experiencia-titulo" className="space-y-6">
           <h2
             id="experiencia-titulo"
             className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
           >
-            EXPERIENCIA PROFESIONAL
+            EXPERIENCIA LABORAL
           </h2>
 
-          <div className="space-y-8">
-            {EXPERIENCIA_PROFESIONAL.map((item) => (
-              <article key={item.id} className="space-y-2">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-heavy text-base leading-snug">{item.cargo}</h3>
-                  <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">{item.periodo}</span>
+          <div className="space-y-10">
+            {EXPERIENCIA_LABORAL.map((item) => (
+              <article key={item.id} className="flex w-full flex-col gap-3">
+                <div className="space-y-1">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="font-heavy text-base leading-snug">
+                      {item.organizacion}
+                    </h3>
+                    <span className="font-heavy text-base leading-snug">
+                      {item.periodo}
+                    </span>
+                  </div>
+                  <p className="font-editorial-serif text-xs italic leading-relaxed sm:text-sm">
+                    {item.cargo}
+                  </p>
+                  <p className="font-editorial-serif text-xs italic leading-relaxed sm:text-sm">
+                    {item.ubicacion}
+                  </p>
                 </div>
-                <p className="font-heavy text-xs leading-snug sm:text-sm">
-                  {item.organizacion}
-                </p>
-                <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
-                  {item.descripcion}
-                </p>
+
+                <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+                  {item.puntos.map((punto) => (
+                    <li key={punto}>{punto}</li>
+                  ))}
+                </ul>
               </article>
             ))}
           </div>
         </section>
 
-        {/* Formación Académica y Áreas de Especialidad */}
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
-          <section aria-labelledby="formacion-titulo" className="space-y-6">
-            <h2
-              id="formacion-titulo"
-              className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
-            >
-              FORMACIÓN ACADÉMICA
-            </h2>
+        {/* Educación */}
+        <section aria-labelledby="educacion-titulo" className="space-y-6">
+          <h2
+            id="educacion-titulo"
+            className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
+          >
+            EDUCACIÓN
+          </h2>
 
-            <div className="space-y-6">
-              {FORMACION_ACADEMICA.map((item) => (
-                <article key={item.id} className="space-y-1.5">
+          <div className="space-y-10">
+            {EDUCACION.map((item) => (
+              <article key={item.id} className="flex w-full flex-col gap-3">
+                <div className="space-y-1">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="font-heavy text-base leading-snug">
-                      {item.titulo}
+                      {item.institucion}
                     </h3>
-                    <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">{item.periodo}</span>
+                    <span className="font-heavy text-base leading-snug">
+                      {item.periodo}
+                    </span>
                   </div>
-                  <p className="font-heavy text-xs leading-snug sm:text-sm">
-                    {item.institucion}
+                  <p className="font-editorial-serif text-xs italic leading-relaxed sm:text-sm">
+                    {item.carrera}
                   </p>
-                  <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
-                    {item.detalle}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </section>
+                </div>
 
-          <section aria-labelledby="competencias-titulo" className="space-y-6">
-            <h2
-              id="competencias-titulo"
-              className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
-            >
-              ÁREAS DE ESPECIALIDAD
-            </h2>
+                {item.puntos && item.puntos.length > 0 && (
+                  <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+                    {item.puntos.map((punto) => (
+                      <li key={punto}>{punto}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
 
-            <ul className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-              {AREAS_COMPETENCIA.map((area) => (
-                <li key={area} className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
-                  {area}
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
+        {/* Otras Habilidades */}
+        <section aria-labelledby="habilidades-titulo" className="space-y-6">
+          <h2
+            id="habilidades-titulo"
+            className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
+          >
+            OTRAS HABILIDADES
+          </h2>
+
+          <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+            {OTRAS_HABILIDADES.map((habilidad) => (
+              <li key={habilidad}>{habilidad}</li>
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
   );
