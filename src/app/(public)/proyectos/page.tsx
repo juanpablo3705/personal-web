@@ -34,7 +34,7 @@ export default async function ProyectosPage({
 
       {posts.length === 0 ? (
         <div className="py-12">
-          <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+          <p className="font-editorial-serif text-sm sm:text-base">
             No hay proyectos publicados por el momento.
           </p>
         </div>
@@ -69,11 +69,11 @@ export default async function ProyectosPage({
               {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
               <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
                 <div className="space-y-2 overflow-hidden">
-                  <h2 className="line-clamp-2 font-heavy text-sm leading-snug sm:text-base">
+                  <h2 className="line-clamp-2 font-heavy text-sm sm:text-base">
                     <span className="hyper-link">{project.title}</span>
                   </h2>
                   {project.summary && (
-                    <p className="font-editorial-serif line-clamp-2 text-sm leading-relaxed sm:text-base">
+                    <p className="font-editorial-serif line-clamp-2 text-sm sm:text-base">
                       {project.summary}
                     </p>
                   )}

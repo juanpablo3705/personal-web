@@ -81,7 +81,7 @@ export function HomeCatalogSections({
         </header>
 
         {proyectosVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-editorial-serif text-sm leading-relaxed sm:text-base">
+          <p className="pt-4 text-center font-editorial-serif text-sm sm:text-base">
             No hay proyectos publicados por el momento.
           </p>
         ) : (
@@ -120,11 +120,11 @@ export function HomeCatalogSections({
                 {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
                 <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
                   <div className="space-y-2 overflow-hidden">
-                    <h3 className="line-clamp-2 font-heavy text-sm leading-snug sm:text-base">
+                    <h3 className="line-clamp-2 font-heavy text-sm sm:text-base">
                       <span className="hyper-link">{project.title}</span>
                     </h3>
                     {project.summary && (
-                      <p className="font-editorial-serif line-clamp-2 text-sm leading-relaxed sm:text-base">
+                      <p className="font-editorial-serif line-clamp-2 text-sm sm:text-base">
                         {project.summary}
                       </p>
                     )}
@@ -163,7 +163,7 @@ export function HomeCatalogSections({
         </header>
 
         {blogVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-editorial-serif text-sm leading-relaxed sm:text-base">
+          <p className="pt-4 text-center font-editorial-serif text-sm sm:text-base">
             No hay entradas de blog publicadas por el momento.
           </p>
         ) : (
@@ -176,7 +176,7 @@ export function HomeCatalogSections({
                 <div className="space-y-2">
                   {/* Título de la entrada (sin barra separadora individual ni mayúsculas forzadas) */}
                   <div>
-                    <h3 className="font-heavy text-sm leading-snug sm:text-base">
+                    <h3 className="font-heavy text-sm sm:text-base">
                       <button
                         type="button"
                         onClick={() => openModal("blog", post.slug)}
@@ -189,7 +189,7 @@ export function HomeCatalogSections({
 
                   {/* Texto resumen */}
                   {post.summary && (
-                    <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+                    <p className="font-editorial-serif text-sm sm:text-base">
                       {post.summary}
                     </p>
                   )}

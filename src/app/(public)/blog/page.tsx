@@ -32,7 +32,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
       {posts.length === 0 ? (
         <div className="py-12">
-          <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+          <p className="font-editorial-serif text-sm sm:text-base">
             No hay entradas de blog publicadas por el momento.
           </p>
         </div>
@@ -43,7 +43,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               key={post.id}
               className="flex w-full flex-col gap-3"
             >
-              <h2 className="font-heavy text-sm leading-snug sm:text-base">
+              <h2 className="font-heavy text-sm sm:text-base">
                 <Link
                   href={`/blog/${post.slug}`}
                   scroll={false}
@@ -56,7 +56,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               </h2>
 
               {post.summary && (
-                <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+                <p className="font-editorial-serif text-sm sm:text-base">
                   {post.summary}
                 </p>
               )}
