@@ -69,19 +69,19 @@ export function HomeCatalogSections({
 
   return (
     <>
-      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 4 entradas, separador solo en el subtítulo PROYECTOS) */}
+      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 4 entradas, separador solo en el subtítulo Proyectos) */}
       <section aria-labelledby="home-proyectos-titulo" className="space-y-8 pt-8">
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-proyectos-titulo"
-            className="font-heavy text-lg uppercase tracking-tight sm:text-xl"
+            className="font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]"
           >
-            PROYECTOS
+            Proyectos
           </h2>
         </header>
 
         {proyectosVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="pt-4 text-center font-editorial-serif text-sm leading-relaxed sm:text-base">
             No hay proyectos publicados por el momento.
           </p>
         ) : (
@@ -111,7 +111,7 @@ export function HomeCatalogSections({
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs uppercase tracking-wider">
+                    <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-wider sm:text-base">
                       Sin imagen
                     </div>
                   )}
@@ -120,18 +120,18 @@ export function HomeCatalogSections({
                 {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
                 <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
                   <div className="space-y-2 overflow-hidden">
-                    <h3 className="line-clamp-2 font-heavy text-base leading-snug">
+                    <h3 className="line-clamp-2 font-heavy text-sm leading-snug sm:text-base">
                       <span className="hyper-link">{project.title}</span>
                     </h3>
                     {project.summary && (
-                      <p className="font-editorial-serif line-clamp-2 text-xs leading-relaxed sm:text-sm">
+                      <p className="font-editorial-serif line-clamp-2 text-sm leading-relaxed sm:text-base">
                         {project.summary}
                       </p>
                     )}
                   </div>
 
                   <div className="pt-2">
-                    <span className="hyper-link font-heavy text-xs tracking-wide sm:text-sm">
+                    <span className="hyper-link font-heavy text-sm tracking-wide sm:text-base">
                       Ver más &gt;
                     </span>
                   </div>
@@ -144,26 +144,26 @@ export function HomeCatalogSections({
         <div className="pt-4 text-center">
           <Link
             href="/proyectos"
-            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+            className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
           >
             Ver todos los proyectos &gt;
           </Link>
         </div>
       </section>
 
-      {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 4 entradas, separador solo en el subtítulo BLOG) */}
+      {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 4 entradas, separador solo en el subtítulo Blog) */}
       <section aria-labelledby="home-blog-titulo" className="space-y-8 pb-12">
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-blog-titulo"
-            className="font-heavy text-lg uppercase tracking-tight sm:text-xl"
+            className="font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]"
           >
-            BLOG
+            Blog
           </h2>
         </header>
 
         {blogVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="pt-4 text-center font-editorial-serif text-sm leading-relaxed sm:text-base">
             No hay entradas de blog publicadas por el momento.
           </p>
         ) : (
@@ -176,7 +176,7 @@ export function HomeCatalogSections({
                 <div className="space-y-2">
                   {/* Título de la entrada (sin barra separadora individual ni mayúsculas forzadas) */}
                   <div>
-                    <h3 className="font-heavy text-base leading-snug">
+                    <h3 className="font-heavy text-sm leading-snug sm:text-base">
                       <button
                         type="button"
                         onClick={() => openModal("blog", post.slug)}
@@ -189,7 +189,7 @@ export function HomeCatalogSections({
 
                   {/* Texto resumen */}
                   {post.summary && (
-                    <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
+                    <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
                       {post.summary}
                     </p>
                   )}
@@ -200,7 +200,7 @@ export function HomeCatalogSections({
                   <button
                     type="button"
                     onClick={() => openModal("blog", post.slug)}
-                    className="hyper-link cursor-pointer font-heavy text-xs tracking-wide sm:text-sm"
+                    className="hyper-link cursor-pointer font-heavy text-sm tracking-wide sm:text-base"
                   >
                     Leer más &gt;
                   </button>
@@ -213,7 +213,7 @@ export function HomeCatalogSections({
         <div className="pt-4 text-center">
           <Link
             href="/blog"
-            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+            className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
           >
             Ver todo el blog &gt;
           </Link>

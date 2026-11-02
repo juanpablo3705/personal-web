@@ -37,14 +37,14 @@ export function Pagination({
         {hasPrevPage && (
           <Link
             href={prevHref}
-            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+            className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
           >
             &lt; Anterior
           </Link>
         )}
       </div>
 
-      <span className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
+      <span className="font-editorial-serif text-sm leading-relaxed sm:text-base">
         Página {currentPage} de {totalPages}
       </span>
 
@@ -52,7 +52,7 @@ export function Pagination({
         {hasNextPage && (
           <Link
             href={nextHref}
-            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+            className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
           >
             Siguiente &gt;
           </Link>

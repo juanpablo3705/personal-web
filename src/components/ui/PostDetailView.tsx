@@ -24,7 +24,7 @@ export function PostDetailView({
       <header className="flex items-center justify-between border-b border-current pb-4">
         <Link
           href={basePath}
-          className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+          className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
         >
           {backLabel}
         </Link>
@@ -32,17 +32,17 @@ export function PostDetailView({
 
       {/* Cuerpo principal con Título y HTML del contenido */}
       <div className="space-y-6 py-4">
-        <h1 className="font-heavy text-2xl tracking-tight sm:text-3xl">
+        <h1 className="font-heavy text-sm leading-snug sm:text-base">
           {post.title}
         </h1>
 
         {post.content ? (
           <div
-            className="font-editorial-serif editorial-content text-xs leading-relaxed sm:text-sm [&_p]:mb-5 [&_img]:my-6 [&_img]:h-auto [&_img]:max-w-full [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-5 [&_ol]:list-decimal [&_ol]:pl-6 [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:font-heavy [&_h2]:text-xl [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-heavy [&_h3]:text-lg [&_blockquote]:my-5 [&_blockquote]:border-l [&_blockquote]:border-current [&_blockquote]:pl-4 [&_blockquote]:italic"
+            className="font-editorial-serif editorial-content text-sm leading-relaxed sm:text-base [&_p]:mb-5 [&_img]:my-6 [&_img]:h-auto [&_img]:max-w-full [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-5 [&_ol]:list-decimal [&_ol]:pl-6 [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:font-heavy [&_h2]:text-sm sm:[&_h2]:text-base [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-heavy [&_h3]:text-sm sm:[&_h3]:text-base [&_blockquote]:my-5 [&_blockquote]:border-l [&_blockquote]:border-current [&_blockquote]:pl-4 [&_blockquote]:italic"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         ) : post.summary ? (
-          <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
             {post.summary}
           </p>
         ) : null}
@@ -55,7 +55,7 @@ export function PostDetailView({
             <Link
               href={`${basePath}/${prevPost.slug}`}
               title={prevPost.title}
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
             >
               &lt; Anterior
             </Link>
@@ -67,7 +67,7 @@ export function PostDetailView({
             <Link
               href={`${basePath}/${nextPost.slug}`}
               title={nextPost.title}
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
             >
               Siguiente &gt;
             </Link>

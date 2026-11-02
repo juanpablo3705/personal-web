@@ -25,14 +25,14 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <section className="space-y-10 pt-6">
       <header className="border-b border-current pb-4">
-        <h1 className="font-heavy text-lg uppercase tracking-tight sm:text-xl">
-          BLOG
+        <h1 className="font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
+          Blog
         </h1>
       </header>
 
       {posts.length === 0 ? (
         <div className="py-12">
-          <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
             No hay entradas de blog publicadas por el momento.
           </p>
         </div>
@@ -43,7 +43,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               key={post.id}
               className="flex w-full flex-col gap-3"
             >
-              <h2 className="font-heavy text-base leading-snug">
+              <h2 className="font-heavy text-sm leading-snug sm:text-base">
                 <Link
                   href={`/blog/${post.slug}`}
                   scroll={false}
@@ -56,7 +56,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               </h2>
 
               {post.summary && (
-                <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
+                <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
                   {post.summary}
                 </p>
               )}
@@ -67,7 +67,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   scroll={false}
                   data-no-scroll="true"
                   data-modal-trigger="true"
-                  className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+                  className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
                 >
                   Leer más &gt;
                 </Link>

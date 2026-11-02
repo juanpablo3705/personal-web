@@ -120,19 +120,19 @@ export default function PerfilPage() {
 
         {/* Columna izquierda con fuente más pequeña y delgada para mayor densidad de texto + enlace final al CV */}
         <div className="mt-10 max-w-xl space-y-6 sm:mt-14">
-          <p className="indent-8 font-editorial-serif text-xs sm:text-sm leading-[2.25] sm:leading-[2.25]">
+          <p className="indent-8 font-editorial-serif text-sm sm:text-base leading-[2.25] sm:leading-[2.25]">
             Analista Programador dedicado al diseño, construcción y
             mantenimiento de sistemas de software, aplicaciones web y
             estructuras de datos con énfasis en la claridad arquitectónica, la
             eficiencia operativa y la durabilidad técnica.
           </p>
-          <p className="indent-8 font-editorial-serif text-xs sm:text-sm leading-[2.25] sm:leading-[2.25]">
+          <p className="indent-8 font-editorial-serif text-sm sm:text-base leading-[2.25] sm:leading-[2.25]">
             A lo largo de mi trayectoria he articulado el desarrollo práctico de
             código con el análisis riguroso de requerimientos, la documentación
             continua de procesos y la integración de herramientas modernas que
             simplifican flujos complejos sin sacrificar estabilidad ni control.
           </p>
-          <p className="indent-8 font-editorial-serif text-xs sm:text-sm leading-[2.25] sm:leading-[2.25]">
+          <p className="indent-8 font-editorial-serif text-sm sm:text-base leading-[2.25] sm:leading-[2.25]">
             Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
             personas que las utilizan y mantienen, buscando siempre el equilibrio
             entre precisión funcional, rendimiento y coherencia visual en cada
@@ -145,7 +145,7 @@ export default function PerfilPage() {
               target="_blank"
               rel="noopener noreferrer"
               download="CV_JuanPabloOyanedel.pdf"
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
             >
               Descargar CV en PDF &gt;
             </a>
@@ -153,13 +153,13 @@ export default function PerfilPage() {
               href="https://github.com/juanpablo3705"
               target="_blank"
               rel="noopener noreferrer"
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
             >
               Perfil de GitHub &gt;
             </a>
             <a
               href="mailto:juanpablo3705@gmail.com"
-              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
             >
               Enviar correo &gt;
             </a>
@@ -174,9 +174,9 @@ export default function PerfilPage() {
         <section aria-labelledby="experiencia-titulo" className="space-y-6">
           <h2
             id="experiencia-titulo"
-            className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
+            className="border-b border-current pb-3 font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]"
           >
-            EXPERIENCIA LABORAL
+            Experiencia laboral
           </h2>
 
           <div className="space-y-10">
@@ -184,22 +184,22 @@ export default function PerfilPage() {
               <article key={item.id} className="flex w-full flex-col gap-3">
                 <div className="space-y-1">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="font-heavy text-base leading-snug">
+                    <h3 className="font-heavy text-sm leading-snug sm:text-base">
                       {item.organizacion}
                     </h3>
-                    <span className="font-heavy text-base leading-snug">
+                    <span className="font-heavy text-sm leading-snug sm:text-base">
                       {item.periodo}
                     </span>
                   </div>
-                  <p className="font-editorial-serif text-xs italic leading-relaxed sm:text-sm">
+                  <p className="font-editorial-serif text-sm italic leading-relaxed sm:text-base">
                     {item.cargo}
                   </p>
-                  <p className="font-editorial-serif text-xs italic leading-relaxed sm:text-sm">
+                  <p className="font-editorial-serif text-sm italic leading-relaxed sm:text-base">
                     {item.ubicacion}
                   </p>
                 </div>
 
-                <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+                <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-sm leading-relaxed sm:text-base">
                   {item.puntos.map((punto) => (
                     <li key={punto}>{punto}</li>
                   ))}
@@ -213,9 +213,9 @@ export default function PerfilPage() {
         <section aria-labelledby="educacion-titulo" className="space-y-6">
           <h2
             id="educacion-titulo"
-            className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
+            className="border-b border-current pb-3 font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]"
           >
-            EDUCACIÓN
+            Educación
           </h2>
 
           <div className="space-y-10">
@@ -223,20 +223,20 @@ export default function PerfilPage() {
               <article key={item.id} className="flex w-full flex-col gap-3">
                 <div className="space-y-1">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="font-heavy text-base leading-snug">
+                    <h3 className="font-heavy text-sm leading-snug sm:text-base">
                       {item.institucion}
                     </h3>
-                    <span className="font-heavy text-base leading-snug">
+                    <span className="font-heavy text-sm leading-snug sm:text-base">
                       {item.periodo}
                     </span>
                   </div>
-                  <p className="font-editorial-serif text-xs italic leading-relaxed sm:text-sm">
+                  <p className="font-editorial-serif text-sm italic leading-relaxed sm:text-base">
                     {item.carrera}
                   </p>
                 </div>
 
                 {item.puntos && item.puntos.length > 0 && (
-                  <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+                  <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-sm leading-relaxed sm:text-base">
                     {item.puntos.map((punto) => (
                       <li key={punto}>{punto}</li>
                     ))}
@@ -251,12 +251,12 @@ export default function PerfilPage() {
         <section aria-labelledby="habilidades-titulo" className="space-y-6">
           <h2
             id="habilidades-titulo"
-            className="border-b border-current pb-3 font-heavy text-lg uppercase tracking-tight sm:text-xl"
+            className="border-b border-current pb-3 font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]"
           >
-            OTRAS HABILIDADES
+            Otras habilidades
           </h2>
 
-          <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-sm leading-relaxed sm:text-base">
             {OTRAS_HABILIDADES.map((habilidad) => (
               <li key={habilidad}>{habilidad}</li>
             ))}

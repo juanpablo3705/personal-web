@@ -27,14 +27,14 @@ export default async function ProyectosPage({
   return (
     <section className="space-y-10 pt-6">
       <header className="border-b border-current pb-4">
-        <h1 className="font-heavy text-lg uppercase tracking-tight sm:text-xl">
-          PROYECTOS
+        <h1 className="font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
+          Proyectos
         </h1>
       </header>
 
       {posts.length === 0 ? (
         <div className="py-12">
-          <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
             No hay proyectos publicados por el momento.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default async function ProyectosPage({
                     loading="lazy"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-xs uppercase tracking-wider">
+                  <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-wider sm:text-base">
                     Sin imagen
                   </div>
                 )}
@@ -69,18 +69,18 @@ export default async function ProyectosPage({
               {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
               <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
                 <div className="space-y-2 overflow-hidden">
-                  <h2 className="line-clamp-2 font-heavy text-base leading-snug">
+                  <h2 className="line-clamp-2 font-heavy text-sm leading-snug sm:text-base">
                     <span className="hyper-link">{project.title}</span>
                   </h2>
                   {project.summary && (
-                    <p className="font-editorial-serif line-clamp-2 text-xs leading-relaxed sm:text-sm">
+                    <p className="font-editorial-serif line-clamp-2 text-sm leading-relaxed sm:text-base">
                       {project.summary}
                     </p>
                   )}
                 </div>
 
                 <div className="pt-2">
-                  <span className="hyper-link font-heavy text-xs tracking-wide sm:text-sm">
+                  <span className="hyper-link font-heavy text-sm tracking-wide sm:text-base">
                     Ver más &gt;
                   </span>
                 </div>
