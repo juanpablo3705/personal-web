@@ -229,6 +229,7 @@ export async function savePostAction(
     }
   }
 
+  revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath("/proyectos");
   revalidatePath(`/blog/${finalSlug}`);
@@ -267,24 +268,12 @@ export async function togglePostStatusAction(
     return { error: error.message };
   }
 
+  revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath("/proyectos");
   revalidatePath("/dashboard");
 
   return { error: null };
-}
-
-export async function togglePostStatusFormAction(
-  formData: FormData
-): Promise<void> {
-  const id = String(formData.get("id") ?? "");
-  const currentStatus = String(
-    formData.get("currentStatus") ?? "draft"
-  ) as PostStatus;
-
-  if (!id) return;
-
-  await togglePostStatusAction(id, currentStatus);
 }
 
 export async function deletePostAction(
@@ -306,16 +295,10 @@ export async function deletePostAction(
     return { error: error.message };
   }
 
+  revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath("/proyectos");
   revalidatePath("/dashboard");
 
   return { error: null };
-}
-
-export async function deletePostFormAction(formData: FormData): Promise<void> {
-  const id = String(formData.get("id") ?? "");
-  if (!id) return;
-
-  await deletePostAction(id);
 }

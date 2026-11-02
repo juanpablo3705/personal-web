@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import PostEditorForm from "@/components/admin/PostEditorForm";
 import { createClient } from "@/lib/supabase/server";
 import type { Post, PostType } from "@/lib/types/database";
@@ -14,6 +14,15 @@ type EditorPageProps = {
 export default async function DashboardEditorPage({
   searchParams,
 }: EditorPageProps) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const params = await searchParams;
   const postId = params.id?.trim();
   const requestedType: PostType =
@@ -22,7 +31,6 @@ export default async function DashboardEditorPage({
   let initialPost: Post | null = null;
 
   if (postId) {
-    const supabase = await createClient();
     const { data, error } = await supabase
       .from("posts")
       .select("*")

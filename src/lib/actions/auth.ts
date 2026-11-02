@@ -62,7 +62,3 @@ export async function logoutAction(): Promise<void> {
   revalidatePath("/", "layout");
   redirect("/login");
 }
-
-export const signIn = loginAction;
-export const signOut = logoutAction;
-export const logout = logoutAction;

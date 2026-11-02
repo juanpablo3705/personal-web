@@ -30,15 +30,37 @@ export function PostModal({
   const pathname = usePathname();
   const { setModalOpen } = usePublicShell();
   const contentScrollRef = useRef<HTMLDivElement | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isClosingRef = useRef(false);
   const [fadingFromSlug, setFadingFromSlug] = useState<string | null>(null);
 
   const isVisible = onCloseModal ? true : pathname !== basePath;
   const isFading = fadingFromSlug === post.slug;
 
+  useEffect(() => {
+    isClosingRef.current = false;
+  }, [post.slug]);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   const handleClose = useCallback(() => {
+    if (isClosingRef.current) return;
+    isClosingRef.current = true;
+
     setFadingFromSlug(post.slug);
     setModalOpen(false);
-    setTimeout(() => {
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
       if (onCloseModal) {
         onCloseModal();
       } else {
@@ -52,8 +74,15 @@ export function PostModal({
     targetSlug: string
   ) => {
     event.preventDefault();
+    if (isClosingRef.current) return;
+
     setFadingFromSlug(post.slug);
-    setTimeout(() => {
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
       if (onSelectAdjacent) {
         onSelectAdjacent(targetSlug);
       } else {

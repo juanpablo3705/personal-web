@@ -120,11 +120,13 @@ export async function sendContactEmailAction(
       process.env.CONTACT_FROM_EMAIL?.trim() ||
       "Sitio Personal <onboarding@resend.dev>";
 
+    const safeSubject = asunto.replace(/[\r\n]+/g, " ").trim();
+
     const { error: resendError } = await resend.emails.send({
       from: fromEmail,
       to: [receiverEmail],
       replyTo: email,
-      subject: `[Contacto Web] ${asunto}`,
+      subject: `[Contacto Web] ${safeSubject}`,
       text: [
         "Nuevo mensaje recibido desde el formulario de contacto:",
         "",

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import CvUploader from "@/components/admin/CvUploader";
 import PostList from "@/components/admin/PostList";
 import { logoutAction } from "@/lib/actions/auth";
@@ -10,6 +11,10 @@ export default async function DashboardPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   const { data: postsData, error } = await supabase
     .from("posts")

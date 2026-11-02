@@ -123,27 +123,27 @@ export async function getPublishedPostWithNeighbors(
   const slug = decodeURIComponent(rawSlug);
   const supabase = await createClient();
 
-  const { data: post, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("type", type)
-    .eq("status", "published")
-    .eq("slug", slug)
-    .maybeSingle();
+  // Ejecutar ambas consultas en paralelo para reducir la latencia a la mitad
+  const [{ data: post, error }, { data: orderedList }] = await Promise.all([
+    supabase
+      .from("posts")
+      .select("*")
+      .eq("type", type)
+      .eq("status", "published")
+      .eq("slug", slug)
+      .maybeSingle(),
+    supabase
+      .from("posts")
+      .select("slug, title")
+      .eq("type", type)
+      .eq("status", "published")
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false }),
+  ]);
 
   if (error || !post) {
     return null;
   }
-
-  // Consultar la lista ordenada cronológicamente (created_at DESC) del mismo tipo
-  // para determinar con exactitud la entrada anterior y siguiente.
-  const { data: orderedList } = await supabase
-    .from("posts")
-    .select("slug, title")
-    .eq("type", type)
-    .eq("status", "published")
-    .order("created_at", { ascending: false })
-    .order("id", { ascending: false });
 
   let prevPost: AdjacentPostLink | null = null;
   let nextPost: AdjacentPostLink | null = null;
