@@ -164,7 +164,7 @@ export function PostModal({
           <article className="space-y-6">
             <h1
               id="modal-post-title"
-              className="font-heavy text-sm leading-snug text-[var(--negro)] sm:text-base"
+              className="font-roman text-2xl leading-[1.32] text-[var(--negro)] sm:text-3xl lg:text-[2.1rem]"
             >
               {post.title}
             </h1>
