@@ -68,10 +68,10 @@ function getCvPublicUrl(): string {
   );
 
   if (!supabaseUrl) {
-    return "/storage/v1/object/public/documents/cv_actual.pdf";
+    return "/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf";
   }
 
-  return `${supabaseUrl}/storage/v1/object/public/documents/cv_actual.pdf`;
+  return `${supabaseUrl}/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf`;
 }
 
 export default function PerfilPage() {
@@ -123,7 +123,7 @@ export default function PerfilPage() {
               href={cvPublicUrl}
               target="_blank"
               rel="noopener noreferrer"
-              download="cv_actual.pdf"
+              download="CV_JuanPabloOyanedel.pdf"
               className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
             >
               Descargar CV en PDF &gt;
