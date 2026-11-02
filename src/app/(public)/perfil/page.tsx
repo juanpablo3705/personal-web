@@ -118,7 +118,7 @@ export default function PerfilPage() {
             etapa del ciclo de vida de un proyecto.
           </p>
 
-          <div className="pt-2">
+          <div className="flex flex-col items-start space-y-2 pt-2">
             <a
               href={cvPublicUrl}
               target="_blank"
@@ -127,6 +127,20 @@ export default function PerfilPage() {
               className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
             >
               Descargar CV en PDF &gt;
+            </a>
+            <a
+              href="https://github.com/juanpablo3705"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
+            >
+              Perfil de GitHub &gt;
+            </a>
+            <a
+              href="mailto:juanpablo3705@gmail.com"
+              className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
+            >
+              Enviar correo &gt;
             </a>
           </div>
         </div>
