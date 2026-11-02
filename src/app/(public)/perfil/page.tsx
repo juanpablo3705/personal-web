@@ -78,11 +78,11 @@ export default function PerfilPage() {
   const cvPublicUrl = getCvPublicUrl();
 
   return (
-    <div className="space-y-32">
+    <div className="space-y-16">
       {/* 1. LANDING DE PERFIL (misma estructura, dimensiones y posicionamiento que el Home, sobre fondo blanco) */}
       <section
         aria-labelledby="perfil-nombre"
-        className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start pt-2 pb-16"
+        className="flex flex-col justify-start pt-2 pb-8"
       >
         {/* Bloque superior izquierdo idéntico al Home */}
         <div className="max-w-xs space-y-0.5">
@@ -99,19 +99,19 @@ export default function PerfilPage() {
 
         {/* Columna izquierda con fuente más pequeña y delgada para mayor densidad de texto + enlace final al CV */}
         <div className="mt-10 max-w-xl space-y-6 sm:mt-14">
-          <p className="indent-8 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="indent-8 font-editorial-serif text-xs sm:text-sm leading-[2.25] sm:leading-[2.25]">
             Analista Programador dedicado al diseño, construcción y
             mantenimiento de sistemas de software, aplicaciones web y
             estructuras de datos con énfasis en la claridad arquitectónica, la
             eficiencia operativa y la durabilidad técnica.
           </p>
-          <p className="indent-8 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="indent-8 font-editorial-serif text-xs sm:text-sm leading-[2.25] sm:leading-[2.25]">
             A lo largo de mi trayectoria he articulado el desarrollo práctico de
             código con el análisis riguroso de requerimientos, la documentación
             continua de procesos y la integración de herramientas modernas que
             simplifican flujos complejos sin sacrificar estabilidad ni control.
           </p>
-          <p className="indent-8 font-editorial-serif text-xs leading-relaxed sm:text-sm">
+          <p className="indent-8 font-editorial-serif text-xs sm:text-sm leading-[2.25] sm:leading-[2.25]">
             Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
             personas que las utilizan y mantienen, buscando siempre el equilibrio
             entre precisión funcional, rendimiento y coherencia visual en cada
