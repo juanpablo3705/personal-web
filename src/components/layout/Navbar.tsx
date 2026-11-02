@@ -3,12 +3,12 @@
 import Link from "next/link";
 
 const NAV_LINKS = [
-  { href: "/", label: "INICIO" },
-  { href: "/perfil", label: "PERFIL" },
-  { href: "/proyectos", label: "PROYECTOS" },
-  { href: "/blog", label: "BLOG" },
-  { href: "/otros-proyectos", label: "IDEAS" },
-  { href: "/contacto", label: "CONTACTO" },
+  { href: "/", label: "Inicio" },
+  { href: "/perfil", label: "Perfil" },
+  { href: "/proyectos", label: "Proyectos" },
+  { href: "/blog", label: "Blog" },
+  { href: "/otros-proyectos", label: "Ideas" },
+  { href: "/contacto", label: "Contacto" },
 ] as const;
 
 export function Navbar() {
@@ -19,7 +19,7 @@ export function Navbar() {
           <ul className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 text-sm sm:gap-x-10 sm:text-base md:gap-x-14">
             {NAV_LINKS.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="hyper-link font-roman uppercase">
+                <Link href={item.href} className="hyper-link font-roman">
                   {item.label}
                 </Link>
               </li>

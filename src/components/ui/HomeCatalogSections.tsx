@@ -74,7 +74,7 @@ export function HomeCatalogSections({
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-proyectos-titulo"
-            className="font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]"
+            className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
           >
             Proyectos
           </h2>
@@ -156,7 +156,7 @@ export function HomeCatalogSections({
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-blog-titulo"
-            className="font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]"
+            className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
           >
             Blog
           </h2>

@@ -25,7 +25,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <section className="space-y-10 pt-6">
       <header className="border-b border-current pb-4">
-        <h1 className="font-heavy text-2xl leading-[1.32] tracking-tight sm:text-3xl lg:text-[2.1rem]">
+        <h1 className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
           Blog
         </h1>
       </header>
