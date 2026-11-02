@@ -68,7 +68,7 @@ export default function ContactoPage() {
 
           {/* Campo 1: Nombre */}
           <div className="space-y-2">
-            <label htmlFor="nombre" className="block font-roman text-base leading-snug">
+            <label htmlFor="nombre" className="block font-roman text-xs leading-relaxed sm:text-sm">
               Nombre
             </label>
             <input
@@ -90,7 +90,7 @@ export default function ContactoPage() {
 
           {/* Campo 2: Correo electrónico */}
           <div className="space-y-2">
-            <label htmlFor="email" className="block font-roman text-base leading-snug">
+            <label htmlFor="email" className="block font-roman text-xs leading-relaxed sm:text-sm">
               Correo electrónico
             </label>
             <input
@@ -112,7 +112,7 @@ export default function ContactoPage() {
 
           {/* Campo 3: Asunto */}
           <div className="space-y-2">
-            <label htmlFor="asunto" className="block font-roman text-base leading-snug">
+            <label htmlFor="asunto" className="block font-roman text-xs leading-relaxed sm:text-sm">
               Asunto
             </label>
             <input
@@ -133,7 +133,7 @@ export default function ContactoPage() {
 
           {/* Campo 4: Mensaje */}
           <div className="space-y-2">
-            <label htmlFor="mensaje" className="block font-roman text-base leading-snug">
+            <label htmlFor="mensaje" className="block font-roman text-xs leading-relaxed sm:text-sm">
               Mensaje
             </label>
             <textarea
