@@ -41,7 +41,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               key={post.id}
               className="flex w-full flex-col gap-3"
             >
-              <h2 className="font-heavy text-lg leading-snug sm:text-xl">
+              <h2 className="font-heavy text-base leading-snug">
                 <Link
                   href={`/blog/${post.slug}`}
                   scroll={false}
@@ -54,7 +54,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               </h2>
 
               {post.summary && (
-                <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+                <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
                   {post.summary}
                 </p>
               )}
