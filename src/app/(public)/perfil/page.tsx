@@ -124,7 +124,7 @@ export default function PerfilPage() {
               target="_blank"
               rel="noopener noreferrer"
               download="CV_JuanPabloOyanedel.pdf"
-              className="hyper-link font-heavy text-sm sm:text-base"
+              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
             >
               Descargar CV en PDF &gt;
             </a>
@@ -132,13 +132,13 @@ export default function PerfilPage() {
               href="https://github.com/juanpablo3705"
               target="_blank"
               rel="noopener noreferrer"
-              className="hyper-link font-heavy text-sm sm:text-base"
+              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
             >
               Perfil de GitHub &gt;
             </a>
             <a
               href="mailto:juanpablo3705@gmail.com"
-              className="hyper-link font-heavy text-sm sm:text-base"
+              className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
             >
               Enviar correo &gt;
             </a>
@@ -153,22 +153,22 @@ export default function PerfilPage() {
         <section aria-labelledby="experiencia-titulo" className="space-y-6">
           <h2
             id="experiencia-titulo"
-            className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
+            className="border-b border-current pb-3 font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
           >
-            Experiencia Profesional
+            EXPERIENCIA PROFESIONAL
           </h2>
 
           <div className="space-y-8">
             {EXPERIENCIA_PROFESIONAL.map((item) => (
               <article key={item.id} className="space-y-2">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-heavy text-base">{item.cargo}</h3>
+                  <h3 className="font-heavy text-base leading-snug">{item.cargo}</h3>
                   <span className="font-roman text-xs">{item.periodo}</span>
                 </div>
                 <p className="font-heavy text-xs uppercase tracking-wider">
                   {item.organizacion}
                 </p>
-                <p className="font-roman text-sm leading-relaxed">
+                <p className="font-roman text-xs leading-relaxed sm:text-sm">
                   {item.descripcion}
                 </p>
               </article>
@@ -181,16 +181,16 @@ export default function PerfilPage() {
           <section aria-labelledby="formacion-titulo" className="space-y-6">
             <h2
               id="formacion-titulo"
-              className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
+              className="border-b border-current pb-3 font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
             >
-              Formación Académica
+              FORMACIÓN ACADÉMICA
             </h2>
 
             <div className="space-y-6">
               {FORMACION_ACADEMICA.map((item) => (
                 <article key={item.id} className="space-y-1.5">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="font-heavy text-sm sm:text-base">
+                    <h3 className="font-heavy text-base leading-snug">
                       {item.titulo}
                     </h3>
                     <span className="font-roman text-xs">{item.periodo}</span>
@@ -209,14 +209,14 @@ export default function PerfilPage() {
           <section aria-labelledby="competencias-titulo" className="space-y-6">
             <h2
               id="competencias-titulo"
-              className="border-b border-current pb-3 font-heavy text-lg tracking-tight sm:text-xl"
+              className="border-b border-current pb-3 font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
             >
-              Áreas de Especialidad
+              ÁREAS DE ESPECIALIDAD
             </h2>
 
             <ul className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
               {AREAS_COMPETENCIA.map((area) => (
-                <li key={area} className="font-roman text-xs sm:text-sm">
+                <li key={area} className="font-roman text-xs leading-relaxed sm:text-sm">
                   {area}
                 </li>
               ))}

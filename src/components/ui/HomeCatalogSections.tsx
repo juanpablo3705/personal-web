@@ -74,7 +74,7 @@ export function HomeCatalogSections({
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-proyectos-titulo"
-            className="font-heavy text-lg uppercase tracking-widest sm:text-xl"
+            className="font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
           >
             PROYECTOS
           </h2>
@@ -94,7 +94,7 @@ export function HomeCatalogSections({
                 <div className="space-y-5">
                   {/* Título del proyecto (sin barra separadora individual) */}
                   <div className="text-center">
-                    <h3 className="font-heavy text-sm uppercase tracking-wider sm:text-base">
+                    <h3 className="font-heavy text-base leading-snug uppercase tracking-wider">
                       <button
                         type="button"
                         onClick={() => openModal("project", project.slug)}
@@ -124,7 +124,7 @@ export function HomeCatalogSections({
 
                   {/* Texto resumen */}
                   {project.summary && (
-                    <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+                    <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
                       {project.summary}
                     </p>
                   )}
@@ -135,7 +135,7 @@ export function HomeCatalogSections({
                   <button
                     type="button"
                     onClick={() => openModal("project", project.slug)}
-                    className="hyper-link cursor-pointer font-roman text-xs sm:text-sm"
+                    className="hyper-link cursor-pointer font-roman text-xs tracking-wide sm:text-sm"
                   >
                     Ver más &gt;
                   </button>
@@ -148,7 +148,7 @@ export function HomeCatalogSections({
         <div className="pt-4 text-center">
           <Link
             href="/proyectos"
-            className="hyper-link font-heavy text-xs sm:text-sm"
+            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
           >
             Ver todos los proyectos &gt;
           </Link>
@@ -160,7 +160,7 @@ export function HomeCatalogSections({
         <header className="border-b border-current pb-4 text-center">
           <h2
             id="home-blog-titulo"
-            className="font-heavy text-lg uppercase tracking-widest sm:text-xl"
+            className="font-heavy text-2xl uppercase tracking-tight sm:text-3xl"
           >
             BLOG
           </h2>
@@ -180,7 +180,7 @@ export function HomeCatalogSections({
                 <div className="space-y-5">
                   {/* Título de la entrada (sin barra separadora individual) */}
                   <div className="text-center">
-                    <h3 className="font-heavy text-sm uppercase tracking-wider sm:text-base">
+                    <h3 className="font-heavy text-base leading-snug uppercase tracking-wider">
                       <button
                         type="button"
                         onClick={() => openModal("blog", post.slug)}
@@ -193,7 +193,7 @@ export function HomeCatalogSections({
 
                   {/* Texto resumen */}
                   {post.summary && (
-                    <p className="font-editorial-serif text-sm leading-relaxed sm:text-base">
+                    <p className="font-editorial-serif text-xs leading-relaxed sm:text-sm">
                       {post.summary}
                     </p>
                   )}
@@ -204,7 +204,7 @@ export function HomeCatalogSections({
                   <button
                     type="button"
                     onClick={() => openModal("blog", post.slug)}
-                    className="hyper-link cursor-pointer font-roman text-xs sm:text-sm"
+                    className="hyper-link cursor-pointer font-roman text-xs tracking-wide sm:text-sm"
                   >
                     Leer más &gt;
                   </button>
@@ -217,7 +217,7 @@ export function HomeCatalogSections({
         <div className="pt-4 text-center">
           <Link
             href="/blog"
-            className="hyper-link font-heavy text-xs sm:text-sm"
+            className="hyper-link font-heavy text-xs tracking-wide sm:text-sm"
           >
             Ver todo el blog &gt;
           </Link>
