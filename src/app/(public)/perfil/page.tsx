@@ -118,7 +118,7 @@ export default function PerfilPage() {
             etapa del ciclo de vida de un proyecto.
           </p>
 
-          <div className="flex flex-col items-start space-y-2 pt-2">
+          <div className="flex flex-col items-start gap-4 pt-2">
             <a
               href={cvPublicUrl}
               target="_blank"
