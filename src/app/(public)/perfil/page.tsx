@@ -124,7 +124,7 @@ export default function PerfilPage() {
               target="_blank"
               rel="noopener noreferrer"
               download="CV_JuanPabloOyanedel.pdf"
-              className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
+              className="hyper-link font-heavy text-sm sm:text-base"
             >
               Descargar CV en PDF &gt;
             </a>
@@ -132,13 +132,13 @@ export default function PerfilPage() {
               href="https://github.com/juanpablo3705"
               target="_blank"
               rel="noopener noreferrer"
-              className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
+              className="hyper-link font-heavy text-sm sm:text-base"
             >
               Perfil de GitHub &gt;
             </a>
             <a
               href="mailto:juanpablo3705@gmail.com"
-              className="hyper-link font-heavy text-base sm:text-lg lg:text-xl"
+              className="hyper-link font-heavy text-sm sm:text-base"
             >
               Enviar correo &gt;
             </a>
