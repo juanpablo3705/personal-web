@@ -162,7 +162,7 @@ export default function ContactoPage() {
             >
               {isPending ? "Enviando este mensaje... >" : "Enviar este mensaje >"}
             </button>
-            <p className="font-roman text-sm sm:text-base">... o bien:</p>
+            <p className="font-roman text-sm sm:text-base">o:</p>
             <a
               href={cvPublicUrl}
               target="_blank"
