@@ -41,7 +41,7 @@ function findPostAndNeighbors(
   };
 }
 
-const HOME_BLOG_SUMMARY_MAX_CHARS = 220;
+const HOME_BLOG_SUMMARY_MAX_CHARS = 255;
 
 function renderHomeBlogSummary(summary: string, onOpen: () => void) {
   if (summary.length <= HOME_BLOG_SUMMARY_MAX_CHARS) {
@@ -118,10 +118,10 @@ export function HomeCatalogSections({
               {proyectosVisibles.map((project) => (
                 <article
                   key={project.id}
-                  className="flex aspect-square flex-col overflow-hidden text-left"
+                  className="flex flex-col text-left"
                 >
-                  {/* Mitad superior del cuadrado invisible: Thumbnail */}
-                  <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
+                  {/* Thumbnail: proporción 2:1 idéntica a la mitad superior de un cuadrado */}
+                  <div className="relative aspect-[2/1] w-full shrink-0 overflow-hidden">
                     {project.thumbnail_url ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img
@@ -137,9 +137,9 @@ export function HomeCatalogSections({
                     )}
                   </div>
 
-                  {/* Mitad inferior del cuadrado invisible: Título (único link con ">") y Resumen breve */}
-                  <div className="flex flex-1 flex-col overflow-hidden pt-4">
-                    <div className="space-y-2 overflow-hidden">
+                  {/* Título (único link con ">") y Resumen breve */}
+                  <div className="flex flex-col pt-4">
+                    <div className="space-y-2">
                       <h3 className="line-clamp-2 font-heavy text-sm sm:text-base">
                         <button
                           type="button"
@@ -161,7 +161,7 @@ export function HomeCatalogSections({
             </div>
           )}
 
-          <div className="!mt-0 text-center">
+          <div className="pt-4 text-center">
             <Link
               href="/proyectos"
               className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
