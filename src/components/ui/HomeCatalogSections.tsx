@@ -81,24 +81,15 @@ export function HomeCatalogSections({
         </header>
 
         {proyectosVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-editorial-serif text-sm sm:text-base">
+          <p className="pt-4 text-center font-roman text-sm sm:text-base">
             No hay proyectos publicados por el momento.
           </p>
         ) : (
           <div className="grid grid-cols-1 gap-8 pt-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {proyectosVisibles.map((project) => (
-              <div
+              <article
                 key={project.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => openModal("project", project.slug)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    openModal("project", project.slug);
-                  }
-                }}
-                className="group flex aspect-square cursor-pointer flex-col overflow-hidden text-left"
+                className="flex aspect-square flex-col overflow-hidden text-left"
               >
                 {/* Mitad superior del cuadrado invisible: Thumbnail */}
                 <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
@@ -117,26 +108,26 @@ export function HomeCatalogSections({
                   )}
                 </div>
 
-                {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
-                <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
+                {/* Mitad inferior del cuadrado invisible: Título (único link con ">") y Resumen breve */}
+                <div className="flex flex-1 flex-col overflow-hidden pt-4">
                   <div className="space-y-2 overflow-hidden">
                     <h3 className="line-clamp-2 font-heavy text-sm sm:text-base">
-                      <span className="hyper-link">{project.title}</span>
+                      <button
+                        type="button"
+                        onClick={() => openModal("project", project.slug)}
+                        className="hyper-link cursor-pointer text-left font-heavy"
+                      >
+                        {project.title} &gt;
+                      </button>
                     </h3>
                     {project.summary && (
-                      <p className="font-editorial-serif line-clamp-2 text-sm sm:text-base">
+                      <p className="font-roman line-clamp-2 text-sm sm:text-base">
                         {project.summary}
                       </p>
                     )}
                   </div>
-
-                  <div className="pt-2">
-                    <span className="hyper-link font-heavy text-sm tracking-wide sm:text-base">
-                      Ver más &gt;
-                    </span>
-                  </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}
@@ -163,7 +154,7 @@ export function HomeCatalogSections({
         </header>
 
         {blogVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-editorial-serif text-sm sm:text-base">
+          <p className="pt-4 text-center font-roman text-sm sm:text-base">
             No hay entradas de blog publicadas por el momento.
           </p>
         ) : (
@@ -171,40 +162,27 @@ export function HomeCatalogSections({
             {blogVisibles.map((post) => (
               <article
                 key={post.id}
-                className="flex flex-col justify-between space-y-5"
+                className="flex flex-col space-y-2"
               >
-                <div className="space-y-2">
-                  {/* Título de la entrada (sin barra separadora individual ni mayúsculas forzadas) */}
-                  <div>
-                    <h3 className="font-heavy text-sm sm:text-base">
-                      <button
-                        type="button"
-                        onClick={() => openModal("blog", post.slug)}
-                        className="hyper-link cursor-pointer text-left font-heavy"
-                      >
-                        {post.title}
-                      </button>
-                    </h3>
-                  </div>
-
-                  {/* Texto resumen */}
-                  {post.summary && (
-                    <p className="font-editorial-serif text-sm sm:text-base">
-                      {post.summary}
-                    </p>
-                  )}
+                {/* Título de la entrada (único link con ">") */}
+                <div>
+                  <h3 className="font-heavy text-sm sm:text-base">
+                    <button
+                      type="button"
+                      onClick={() => openModal("blog", post.slug)}
+                      className="hyper-link cursor-pointer text-left font-heavy"
+                    >
+                      {post.title} &gt;
+                    </button>
+                  </h3>
                 </div>
 
-                {/* Link "Leer más >" */}
-                <div className="pt-2">
-                  <button
-                    type="button"
-                    onClick={() => openModal("blog", post.slug)}
-                    className="hyper-link cursor-pointer font-heavy text-sm tracking-wide sm:text-base"
-                  >
-                    Leer más &gt;
-                  </button>
-                </div>
+                {/* Texto resumen */}
+                {post.summary && (
+                  <p className="font-roman text-sm sm:text-base">
+                    {post.summary}
+                  </p>
+                )}
               </article>
             ))}
           </div>

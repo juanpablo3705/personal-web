@@ -34,20 +34,16 @@ export default async function ProyectosPage({
 
       {posts.length === 0 ? (
         <div className="py-12">
-          <p className="font-editorial-serif text-sm sm:text-base">
+          <p className="font-roman text-sm sm:text-base">
             No hay proyectos publicados por el momento.
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {posts.map((project) => (
-            <Link
+            <article
               key={project.id}
-              href={`/proyectos/${project.slug}`}
-              scroll={false}
-              data-no-scroll="true"
-              data-modal-trigger="true"
-              className="group flex aspect-square flex-col overflow-hidden"
+              className="flex aspect-square flex-col overflow-hidden"
             >
               {/* Mitad superior del cuadrado invisible: Thumbnail */}
               <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
@@ -66,26 +62,28 @@ export default async function ProyectosPage({
                 )}
               </div>
 
-              {/* Mitad inferior del cuadrado invisible: Título, Resumen breve y "Ver más >" */}
-              <div className="flex flex-1 flex-col justify-between overflow-hidden pt-4">
+              {/* Mitad inferior del cuadrado invisible: Título (único link con ">") y Resumen breve */}
+              <div className="flex flex-1 flex-col overflow-hidden pt-4">
                 <div className="space-y-2 overflow-hidden">
                   <h2 className="line-clamp-2 font-heavy text-sm sm:text-base">
-                    <span className="hyper-link">{project.title}</span>
+                    <Link
+                      href={`/proyectos/${project.slug}`}
+                      scroll={false}
+                      data-no-scroll="true"
+                      data-modal-trigger="true"
+                      className="hyper-link"
+                    >
+                      {project.title} &gt;
+                    </Link>
                   </h2>
                   {project.summary && (
-                    <p className="font-editorial-serif line-clamp-2 text-sm sm:text-base">
+                    <p className="font-roman line-clamp-2 text-sm sm:text-base">
                       {project.summary}
                     </p>
                   )}
                 </div>
-
-                <div className="pt-2">
-                  <span className="hyper-link font-heavy text-sm tracking-wide sm:text-base">
-                    Ver más &gt;
-                  </span>
-                </div>
               </div>
-            </Link>
+            </article>
           ))}
         </div>
       )}

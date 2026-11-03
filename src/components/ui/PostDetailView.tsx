@@ -42,7 +42,7 @@ export function PostDetailView({
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         ) : post.summary ? (
-          <p className="font-editorial-serif text-sm sm:text-base">
+          <p className="font-roman text-sm sm:text-base">
             {post.summary}
           </p>
         ) : null}

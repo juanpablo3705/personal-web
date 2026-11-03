@@ -175,7 +175,7 @@ export function PostModal({
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
             ) : post.summary ? (
-              <p className="font-editorial-serif text-sm text-[var(--negro)] sm:text-base">
+              <p className="font-roman text-sm text-[var(--negro)] sm:text-base">
                 {post.summary}
               </p>
             ) : null}

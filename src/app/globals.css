@@ -129,21 +129,21 @@ body {
   font-weight: 800;
 }
 
-/* Cuerpo de texto exclusivo para Blog y Proyectos (Noto Serif Regular y familia) */
+/* Cuerpo de texto para Blog y Proyectos (unificado en familia Avenir) */
 .font-editorial-serif {
-  font-family: var(--font-noto-serif), "Noto Serif", Georgia, serif;
+  font-family: var(--font-avenir-roman);
   font-weight: 400;
 }
 
 .font-editorial-serif strong,
 .font-editorial-serif b {
-  font-family: var(--font-noto-serif), "Noto Serif", Georgia, serif;
-  font-weight: 700;
+  font-family: var(--font-avenir-heavy);
+  font-weight: 800;
 }
 
 .font-editorial-serif em,
 .font-editorial-serif i {
-  font-family: var(--font-noto-serif), "Noto Serif", Georgia, serif;
+  font-family: var(--font-avenir-roman);
   font-style: italic;
 }
 

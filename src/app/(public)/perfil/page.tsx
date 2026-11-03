@@ -109,19 +109,19 @@ export default function PerfilPage() {
 
         {/* Columna izquierda con fuente más pequeña y delgada para mayor densidad de texto + enlace final al CV */}
         <div className="mt-10 max-w-xl space-y-6 sm:mt-14">
-          <p className="indent-8 font-editorial-serif text-sm sm:text-base">
+          <p className="indent-8 font-roman text-sm sm:text-base">
             Analista Programador dedicado al diseño, construcción y
             mantenimiento de sistemas de software, aplicaciones web y
             estructuras de datos con énfasis en la claridad arquitectónica, la
             eficiencia operativa y la durabilidad técnica.
           </p>
-          <p className="indent-8 font-editorial-serif text-sm sm:text-base">
+          <p className="indent-8 font-roman text-sm sm:text-base">
             A lo largo de mi trayectoria he articulado el desarrollo práctico de
             código con el análisis riguroso de requerimientos, la documentación
             continua de procesos y la integración de herramientas modernas que
             simplifican flujos complejos sin sacrificar estabilidad ni control.
           </p>
-          <p className="indent-8 font-editorial-serif text-sm sm:text-base">
+          <p className="indent-8 font-roman text-sm sm:text-base">
             Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
             personas que las utilizan y mantienen, buscando siempre el equilibrio
             entre precisión funcional, rendimiento y coherencia visual en cada
@@ -188,7 +188,7 @@ export default function PerfilPage() {
                   </p>
                 </div>
 
-                <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-sm sm:text-base">
+                <ul className="list-disc space-y-1.5 pl-6 font-roman text-sm sm:text-base">
                   {item.puntos.map((punto) => (
                     <li key={punto}>{punto}</li>
                   ))}
@@ -225,7 +225,7 @@ export default function PerfilPage() {
                 </div>
 
                 {item.puntos && item.puntos.length > 0 && (
-                  <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-sm sm:text-base">
+                  <ul className="list-disc space-y-1.5 pl-6 font-roman text-sm sm:text-base">
                     {item.puntos.map((punto) => (
                       <li key={punto}>{punto}</li>
                     ))}
@@ -245,7 +245,7 @@ export default function PerfilPage() {
             Otras habilidades
           </h2>
 
-          <ul className="list-disc space-y-1.5 pl-6 font-editorial-serif text-sm sm:text-base">
+          <ul className="list-disc space-y-1.5 pl-6 font-roman text-sm sm:text-base">
             {OTRAS_HABILIDADES.map((habilidad) => (
               <li key={habilidad}>{habilidad}</li>
             ))}
