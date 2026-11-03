@@ -88,11 +88,11 @@ export default function PerfilPage() {
   const cvPublicUrl = getCvPublicUrl();
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-32">
       {/* 1. LANDING DE PERFIL (misma estructura, dimensiones y posicionamiento que el Home, sobre fondo blanco) */}
       <section
         aria-labelledby="perfil-nombre"
-        className="flex flex-col justify-start pt-2 pb-8"
+        className="flex flex-col justify-start pt-2 pb-16"
       >
         {/* Bloque superior izquierdo idéntico al Home */}
         <div className="max-w-xs space-y-0.5">
@@ -166,7 +166,7 @@ export default function PerfilPage() {
 
       {/* 2. CONTENIDO INFERIOR DESDE EXPERIENCIA LABORAL HACIA ABAJO
           (misma estructura tipográfica que Blog y Proyectos) */}
-      <div className="space-y-16 pb-12">
+      <div className="space-y-16 pt-8 pb-12">
         {/* Experiencia Laboral */}
         <section aria-labelledby="experiencia-titulo" className="space-y-6">
           <h2
