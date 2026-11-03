@@ -41,6 +41,34 @@ function findPostAndNeighbors(
   };
 }
 
+const HOME_BLOG_SUMMARY_MAX_CHARS = 220;
+
+function renderHomeBlogSummary(summary: string, onOpen: () => void) {
+  if (summary.length <= HOME_BLOG_SUMMARY_MAX_CHARS) {
+    return summary;
+  }
+
+  let text = summary.slice(0, HOME_BLOG_SUMMARY_MAX_CHARS);
+  const lastSpace = text.lastIndexOf(" ");
+  if (lastSpace > HOME_BLOG_SUMMARY_MAX_CHARS - 40) {
+    text = text.slice(0, lastSpace);
+  }
+  text = text.replace(/[,;.:\s]+$/, "");
+
+  return (
+    <>
+      {text} ...{" "}
+      <button
+        type="button"
+        onClick={onOpen}
+        className="hyper-link cursor-pointer font-heavy"
+      >
+        Leer más &gt;
+      </button>
+    </>
+  );
+}
+
 export function HomeCatalogSections({
   proyectos,
   entradasBlog,
@@ -133,7 +161,7 @@ export function HomeCatalogSections({
             </div>
           )}
 
-          <div className="!mt-4 text-center">
+          <div className="!mt-0 text-center">
             <Link
               href="/proyectos"
               className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
@@ -181,7 +209,9 @@ export function HomeCatalogSections({
                   {/* Texto resumen */}
                   {post.summary && (
                     <p className="font-roman text-sm sm:text-base">
-                      {post.summary}
+                      {renderHomeBlogSummary(post.summary, () =>
+                        openModal("blog", post.slug)
+                      )}
                     </p>
                   )}
                 </article>
