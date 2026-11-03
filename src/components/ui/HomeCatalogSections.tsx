@@ -31,13 +31,16 @@ function findPostAndNeighbors(
   }
 
   const post = list[index] ?? null;
-  const prevItem = index > 0 ? list[index - 1] : null;
-  const nextItem = index < list.length - 1 ? list[index + 1] : null;
+  // list está ordenado de más reciente a más antiguo (created_at DESC).
+  // "Siguiente >" debe llevar a la próxima entrada más nueva (hacia index 0).
+  // "< Anterior" debe llevar a la próxima entrada más antigua (hacia el final de la lista).
+  const newerItem = index > 0 ? list[index - 1] : null;
+  const olderItem = index < list.length - 1 ? list[index + 1] : null;
 
   return {
     post,
-    prevPost: prevItem ? { slug: prevItem.slug, title: prevItem.title } : null,
-    nextPost: nextItem ? { slug: nextItem.slug, title: nextItem.title } : null,
+    prevPost: olderItem ? { slug: olderItem.slug, title: olderItem.title } : null,
+    nextPost: newerItem ? { slug: newerItem.slug, title: newerItem.title } : null,
   };
 }
 

@@ -153,12 +153,15 @@ export async function getPublishedPostWithNeighbors(
       (item) => item.slug === post.slug
     );
 
+    // orderedList está ordenado de más reciente a más antiguo (created_at DESC).
+    // "Siguiente >" debe llevar a la próxima entrada más nueva (hacia index 0).
+    // "< Anterior" debe llevar a la próxima entrada más antigua (hacia el final de la lista).
     if (currentIndex > 0) {
-      prevPost = orderedList[currentIndex - 1] ?? null;
+      nextPost = orderedList[currentIndex - 1] ?? null;
     }
 
     if (currentIndex >= 0 && currentIndex < orderedList.length - 1) {
-      nextPost = orderedList[currentIndex + 1] ?? null;
+      prevPost = orderedList[currentIndex + 1] ?? null;
     }
   }
 
