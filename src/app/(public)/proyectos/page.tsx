@@ -45,8 +45,15 @@ export default async function ProyectosPage({
               key={project.id}
               className="flex aspect-square flex-col overflow-hidden"
             >
-              {/* Mitad superior del cuadrado invisible: Thumbnail */}
-              <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
+              {/* Mitad superior del cuadrado invisible: Thumbnail (click abre popup) */}
+              <Link
+                href={`/proyectos/${project.slug}`}
+                scroll={false}
+                data-no-scroll="true"
+                data-modal-trigger="true"
+                aria-label={`Ver proyecto ${project.title}`}
+                className="relative block h-1/2 w-full shrink-0 cursor-pointer overflow-hidden focus:outline-none"
+              >
                 {project.thumbnail_url ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
@@ -60,7 +67,7 @@ export default async function ProyectosPage({
                     Sin imagen
                   </div>
                 )}
-              </div>
+              </Link>
 
               {/* Mitad inferior del cuadrado invisible: Título (único link con ">") y Resumen breve */}
               <div className="flex flex-1 flex-col overflow-hidden pt-4">

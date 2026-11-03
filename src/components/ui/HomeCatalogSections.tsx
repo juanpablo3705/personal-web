@@ -123,8 +123,13 @@ export function HomeCatalogSections({
                   key={project.id}
                   className="flex flex-col text-left"
                 >
-                  {/* Thumbnail: proporción 2:1 idéntica a la mitad superior de un cuadrado */}
-                  <div className="relative aspect-[2/1] w-full shrink-0 overflow-hidden">
+                  {/* Thumbnail: proporción 2:1 idéntica a la mitad superior de un cuadrado (click abre popup) */}
+                  <button
+                    type="button"
+                    onClick={() => openModal("project", project.slug)}
+                    aria-label={`Ver proyecto ${project.title}`}
+                    className="relative block aspect-[2/1] w-full shrink-0 cursor-pointer overflow-hidden text-left focus:outline-none"
+                  >
                     {project.thumbnail_url ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img
@@ -138,7 +143,7 @@ export function HomeCatalogSections({
                         Sin imagen
                       </div>
                     )}
-                  </div>
+                  </button>
 
                   {/* Título (único link con ">") y Resumen breve */}
                   <div className="flex flex-col pt-4">
