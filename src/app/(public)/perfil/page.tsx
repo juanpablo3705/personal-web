@@ -170,10 +170,10 @@ export default function PerfilPage() {
             Experiencia laboral
           </h2>
 
-          <div className="space-y-10">
+          <div className="space-y-8">
             {EXPERIENCIA_LABORAL.map((item) => (
-              <article key={item.id} className="flex w-full flex-col gap-3">
-                <div className="space-y-1">
+              <article key={item.id} className="flex w-full flex-col gap-2">
+                <div className="space-y-0.5">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="font-heavy text-sm sm:text-base">
                       {item.organizacion}
@@ -190,7 +190,7 @@ export default function PerfilPage() {
                   </p>
                 </div>
 
-                <ul className="list-disc space-y-1.5 pl-6 font-roman text-sm sm:text-base">
+                <ul className="list-disc space-y-1 pl-6 font-roman text-sm sm:text-base">
                   {item.puntos.map((punto) => (
                     <li key={punto}>{punto}</li>
                   ))}
@@ -209,10 +209,10 @@ export default function PerfilPage() {
             Educación
           </h2>
 
-          <div className="space-y-10">
+          <div className="space-y-8">
             {EDUCACION.map((item) => (
-              <article key={item.id} className="flex w-full flex-col gap-3">
-                <div className="space-y-1">
+              <article key={item.id} className="flex w-full flex-col gap-2">
+                <div className="space-y-0.5">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="font-heavy text-sm sm:text-base">
                       {item.institucion}
@@ -227,7 +227,7 @@ export default function PerfilPage() {
                 </div>
 
                 {item.puntos && item.puntos.length > 0 && (
-                  <ul className="list-disc space-y-1.5 pl-6 font-roman text-sm sm:text-base">
+                  <ul className="list-disc space-y-1 pl-6 font-roman text-sm sm:text-base">
                     {item.puntos.map((punto) => (
                       <li key={punto}>{punto}</li>
                     ))}
@@ -247,7 +247,7 @@ export default function PerfilPage() {
             Otras habilidades
           </h2>
 
-          <ul className="list-disc space-y-1.5 pl-6 font-roman text-sm sm:text-base">
+          <ul className="list-disc space-y-1 pl-6 font-roman text-sm sm:text-base">
             {OTRAS_HABILIDADES.map((habilidad) => (
               <li key={habilidad}>{habilidad}</li>
             ))}
