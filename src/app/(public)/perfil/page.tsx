@@ -108,25 +108,31 @@ export default function PerfilPage() {
         </div>
 
         {/* Columna izquierda con fuente más pequeña y delgada para mayor densidad de texto + enlace final al CV */}
-        <div className="mt-10 max-w-xl sm:mt-14">
+        <div className="mt-10 max-w-[650px] sm:mt-14">
           <div className="space-y-6">
             <p className="indent-8 font-roman text-sm sm:text-base">
-              Analista Programador dedicado al diseño, construcción y
-              mantenimiento de sistemas de software, aplicaciones web y
-              estructuras de datos con énfasis en la claridad arquitectónica, la
-              eficiencia operativa y la durabilidad técnica.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
             </p>
             <p className="indent-8 font-roman text-sm sm:text-base">
-              A lo largo de mi trayectoria he articulado el desarrollo práctico de
-              código con el análisis riguroso de requerimientos, la documentación
-              continua de procesos y la integración de herramientas modernas que
-              simplifican flujos complejos sin sacrificar estabilidad ni control.
+              Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+              cupidatat non proident, sunt in culpa qui officia deserunt mollit
+              anim id est laborum.
             </p>
             <p className="indent-8 font-roman text-sm sm:text-base">
-              Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
-              personas que las utilizan y mantienen, buscando siempre el equilibrio
-              entre precisión funcional, rendimiento y coherencia visual en cada
-              etapa del ciclo de vida de un proyecto.
+              Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.
+              Nullam varius, turpis et commodo pharetra, est eros bibendum
+              elit, nec luctus magna felis sollicitudin mauris. Integer in
+              mauris eu nibh euismod gravida.
+            </p>
+            <p className="indent-8 font-roman text-sm sm:text-base">
+              Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a
+              elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros
+              est euismod turpis, id tincidunt sapien risus a quam. Maecenas
+              fermentum consequat mi.
             </p>
           </div>
 
