@@ -69,134 +69,136 @@ export function HomeCatalogSections({
 
   return (
     <>
-      {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 4 entradas, separador solo en el subtítulo Proyectos) */}
-      <section aria-labelledby="home-proyectos-titulo" className="space-y-8 pt-8">
-        <header className="border-b border-current pb-4 text-center">
-          <h2
-            id="home-proyectos-titulo"
-            className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
-          >
-            Proyectos
-          </h2>
-        </header>
+      <div className="space-y-24">
+        {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 4 entradas, separador solo en el subtítulo Proyectos) */}
+        <section aria-labelledby="home-proyectos-titulo" className="space-y-8 pt-8">
+          <header className="border-b border-current pb-4 text-center">
+            <h2
+              id="home-proyectos-titulo"
+              className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
+            >
+              Proyectos
+            </h2>
+          </header>
 
-        {proyectosVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-roman text-sm sm:text-base">
-            No hay proyectos publicados por el momento.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 pt-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {proyectosVisibles.map((project) => (
-              <article
-                key={project.id}
-                className="flex aspect-square flex-col overflow-hidden text-left"
-              >
-                {/* Mitad superior del cuadrado invisible: Thumbnail */}
-                <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
-                  {project.thumbnail_url ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={project.thumbnail_url}
-                      alt={project.title}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-wider sm:text-base">
-                      Sin imagen
-                    </div>
-                  )}
-                </div>
-
-                {/* Mitad inferior del cuadrado invisible: Título (único link con ">") y Resumen breve */}
-                <div className="flex flex-1 flex-col overflow-hidden pt-4">
-                  <div className="space-y-2 overflow-hidden">
-                    <h3 className="line-clamp-2 font-heavy text-sm sm:text-base">
-                      <button
-                        type="button"
-                        onClick={() => openModal("project", project.slug)}
-                        className="hyper-link cursor-pointer text-left font-heavy"
-                      >
-                        {project.title} &gt;
-                      </button>
-                    </h3>
-                    {project.summary && (
-                      <p className="font-roman line-clamp-2 text-sm sm:text-base">
-                        {project.summary}
-                      </p>
+          {proyectosVisibles.length === 0 ? (
+            <p className="pt-4 text-center font-roman text-sm sm:text-base">
+              No hay proyectos publicados por el momento.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 pt-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {proyectosVisibles.map((project) => (
+                <article
+                  key={project.id}
+                  className="flex aspect-square flex-col overflow-hidden text-left"
+                >
+                  {/* Mitad superior del cuadrado invisible: Thumbnail */}
+                  <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
+                    {project.thumbnail_url ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={project.thumbnail_url}
+                        alt={project.title}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-wider sm:text-base">
+                        Sin imagen
+                      </div>
                     )}
                   </div>
-                </div>
-              </article>
-            ))}
+
+                  {/* Mitad inferior del cuadrado invisible: Título (único link con ">") y Resumen breve */}
+                  <div className="flex flex-1 flex-col overflow-hidden pt-4">
+                    <div className="space-y-2 overflow-hidden">
+                      <h3 className="line-clamp-2 font-heavy text-sm sm:text-base">
+                        <button
+                          type="button"
+                          onClick={() => openModal("project", project.slug)}
+                          className="hyper-link cursor-pointer text-left font-heavy"
+                        >
+                          {project.title} &gt;
+                        </button>
+                      </h3>
+                      {project.summary && (
+                        <p className="font-roman line-clamp-2 text-sm sm:text-base">
+                          {project.summary}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+
+          <div className="!mt-4 text-center">
+            <Link
+              href="/proyectos"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
+            >
+              Ver todos los proyectos &gt;
+            </Link>
           </div>
-        )}
+        </section>
 
-        <div className="pt-4 text-center">
-          <Link
-            href="/proyectos"
-            className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
-          >
-            Ver todos los proyectos &gt;
-          </Link>
-        </div>
-      </section>
+        {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 4 entradas, separador solo en el subtítulo Blog) */}
+        <section aria-labelledby="home-blog-titulo" className="space-y-8 pb-12">
+          <header className="border-b border-current pb-4 text-center">
+            <h2
+              id="home-blog-titulo"
+              className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
+            >
+              Blog
+            </h2>
+          </header>
 
-      {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 4 entradas, separador solo en el subtítulo Blog) */}
-      <section aria-labelledby="home-blog-titulo" className="space-y-8 pb-12">
-        <header className="border-b border-current pb-4 text-center">
-          <h2
-            id="home-blog-titulo"
-            className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
-          >
-            Blog
-          </h2>
-        </header>
+          {blogVisibles.length === 0 ? (
+            <p className="pt-4 text-center font-roman text-sm sm:text-base">
+              No hay entradas de blog publicadas por el momento.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 pt-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {blogVisibles.map((post) => (
+                <article
+                  key={post.id}
+                  className="flex flex-col space-y-2"
+                >
+                  {/* Título de la entrada (único link con ">") */}
+                  <div>
+                    <h3 className="font-heavy text-sm sm:text-base">
+                      <button
+                        type="button"
+                        onClick={() => openModal("blog", post.slug)}
+                        className="hyper-link cursor-pointer text-left font-heavy"
+                      >
+                        {post.title} &gt;
+                      </button>
+                    </h3>
+                  </div>
 
-        {blogVisibles.length === 0 ? (
-          <p className="pt-4 text-center font-roman text-sm sm:text-base">
-            No hay entradas de blog publicadas por el momento.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 pt-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {blogVisibles.map((post) => (
-              <article
-                key={post.id}
-                className="flex flex-col space-y-2"
-              >
-                {/* Título de la entrada (único link con ">") */}
-                <div>
-                  <h3 className="font-heavy text-sm sm:text-base">
-                    <button
-                      type="button"
-                      onClick={() => openModal("blog", post.slug)}
-                      className="hyper-link cursor-pointer text-left font-heavy"
-                    >
-                      {post.title} &gt;
-                    </button>
-                  </h3>
-                </div>
+                  {/* Texto resumen */}
+                  {post.summary && (
+                    <p className="font-roman text-sm sm:text-base">
+                      {post.summary}
+                    </p>
+                  )}
+                </article>
+              ))}
+            </div>
+          )}
 
-                {/* Texto resumen */}
-                {post.summary && (
-                  <p className="font-roman text-sm sm:text-base">
-                    {post.summary}
-                  </p>
-                )}
-              </article>
-            ))}
+          <div className="pt-4 text-center">
+            <Link
+              href="/blog"
+              className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
+            >
+              Ver todo el blog &gt;
+            </Link>
           </div>
-        )}
-
-        <div className="pt-4 text-center">
-          <Link
-            href="/blog"
-            className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
-          >
-            Ver todo el blog &gt;
-          </Link>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Popup superpuesto sobre el propio Home (con el Home invertido detrás) */}
       {activeModal && modalPost && (
