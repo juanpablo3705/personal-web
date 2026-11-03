@@ -171,7 +171,7 @@ export default function PerfilPage() {
         <section aria-labelledby="experiencia-titulo" className="space-y-6">
           <h2
             id="experiencia-titulo"
-            className="border-b border-current pb-3 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
+            className="border-b border-current pb-3 text-center font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
           >
             Experiencia laboral
           </h2>
@@ -215,7 +215,7 @@ export default function PerfilPage() {
         <section aria-labelledby="educacion-titulo" className="space-y-6">
           <h2
             id="educacion-titulo"
-            className="border-b border-current pb-3 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
+            className="border-b border-current pb-3 text-center font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
           >
             Educación
           </h2>
@@ -258,7 +258,7 @@ export default function PerfilPage() {
         <section aria-labelledby="habilidades-titulo" className="space-y-6">
           <h2
             id="habilidades-titulo"
-            className="border-b border-current pb-3 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
+            className="border-b border-current pb-3 text-center font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
           >
             Otras habilidades
           </h2>
