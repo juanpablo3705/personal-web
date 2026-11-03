@@ -31,15 +31,15 @@ export default async function InicioPage() {
         {/* Columna izquierda debajo del encabezado */}
         <div className="mt-10 max-w-xl space-y-8 sm:mt-14">
           <p className="indent-8 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
-            Desarrollo de software, arquitectura de sistemas y construcción de
-            soluciones digitales donde la precisión técnica converge con la
-            claridad estructural para dar forma a herramientas funcionales y
-            perdurables.
+            Exploración y desarrollo de software, arquitectura de sistemas y
+            construcción de soluciones digitales donde la precisión técnica
+            converge con la claridad estructural.
           </p>
           <p className="indent-8 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
-            El pensamiento analítico combinado con métodos de programación
-            contemporáneos permite diseñar flujos, interfaces y estructuras de
-            datos pensadas desde la simplicidad y el rigor.
+            El análisis sistemático combinado con métodos de programación
+            contemporáneos permite diseñar flujos inteligibles, interfaces
+            singulares y estructuras de datos coherentes, pensadas desde la
+            esencialidad y el rigor compositivo visual.
           </p>
         </div>
       </section>
