@@ -54,6 +54,7 @@ export function PostDetailView({
           {prevPost && (
             <Link
               href={`${basePath}/${prevPost.slug}`}
+              data-hard-nav="true"
               title={prevPost.title}
               className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
             >
@@ -66,6 +67,7 @@ export function PostDetailView({
           {nextPost && (
             <Link
               href={`${basePath}/${nextPost.slug}`}
+              data-hard-nav="true"
               title={nextPost.title}
               className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
             >

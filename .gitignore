@@ -34,6 +34,8 @@ yarn-error.log*
 .env*
 !.env.example
 credenciales
+# documentos personales sueltos en la raíz (ej. CV local)
+/*.pdf
 
 # vercel
 .vercel

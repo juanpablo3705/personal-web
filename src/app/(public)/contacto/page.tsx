@@ -5,25 +5,13 @@ import {
   sendContactEmailAction,
   type ContactoActionState,
 } from "@/lib/actions/contacto";
+import { getCvPublicUrl } from "@/lib/cv";
 
 const initialState: ContactoActionState = {
   success: false,
   message: null,
   error: null,
 };
-
-function getCvPublicUrl(): string {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim().replace(
-    /\/+$/,
-    ""
-  );
-
-  if (!supabaseUrl) {
-    return "/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf";
-  }
-
-  return `${supabaseUrl}/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf`;
-}
 
 export default function ContactoPage() {
   const [state, formAction, isPending] = useActionState(

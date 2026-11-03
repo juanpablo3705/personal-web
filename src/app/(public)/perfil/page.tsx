@@ -1,3 +1,5 @@
+import { getCvPublicUrl } from "@/lib/cv";
+
 type ExperienciaItem = {
   id: string;
   organizacion: string;
@@ -81,19 +83,6 @@ const OTRAS_HABILIDADES = [
   "Inglés oral y escrito nivel C1 Advanced (Fluidez profesional oral y escrita).",
   "Excelente comunicación efectiva y empatía para la atención de usuarios y el trabajo colaborativo, con sólida capacidad de resolución de problemas, manejo de objeciones y capacidad de autogestión en entornos de alta exigencia con ritmo dinámico.",
 ] as const;
-
-function getCvPublicUrl(): string {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim().replace(
-    /\/+$/,
-    ""
-  );
-
-  if (!supabaseUrl) {
-    return "/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf";
-  }
-
-  return `${supabaseUrl}/storage/v1/object/public/documents/cv_actual.pdf?download=CV_JuanPabloOyanedel.pdf`;
-}
 
 export default function PerfilPage() {
   const cvPublicUrl = getCvPublicUrl();

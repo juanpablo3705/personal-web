@@ -151,10 +151,13 @@ export async function sendContactEmailAction(
     });
 
     if (resendError) {
+      // El detalle técnico queda en los logs de Vercel; al visitante solo se le muestra un mensaje genérico
+      console.error("[contacto] Error de Resend:", resendError);
       return {
         success: false,
         message: null,
-        error: `No se pudo enviar el mensaje: ${resendError.message}`,
+        error:
+          "No se pudo enviar el mensaje en este momento. Por favor, inténtalo más tarde.",
         values: rawValues,
       };
     }
@@ -166,15 +169,13 @@ export async function sendContactEmailAction(
       error: null,
     };
   } catch (err) {
-    const errorMessage =
-      err instanceof Error
-        ? err.message
-        : "Ocurrió un error inesperado al enviar el correo.";
+    console.error("[contacto] Error inesperado al enviar el correo:", err);
 
     return {
       success: false,
       message: null,
-      error: `Error al enviar el mensaje: ${errorMessage}`,
+      error:
+        "Ocurrió un error inesperado al enviar el mensaje. Por favor, inténtalo más tarde.",
       values: rawValues,
     };
   }

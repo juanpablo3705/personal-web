@@ -2,18 +2,6 @@
 
 /* Fuentes Avenir auto-alojadas en /public/fonts para garantizar renderizado idéntico en todos los sistemas */
 @font-face {
-  font-family: "AvenirLT-Light";
-  src:
-    local("Avenir LT 35 Light"),
-    local("AvenirLT-Light"),
-    local("Avenir-Light"),
-    url("/fonts/AvenirLTStd-Light.woff") format("woff");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "AvenirLT-Roman";
   src:
     local("AvenirLT-Roman"),
@@ -59,7 +47,6 @@
   --negro: #0e0e0e;
   --background: var(--blanco);
   --foreground: var(--negro);
-  --font-avenir-light: "AvenirLT-Light", "AvenirLT-Roman", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-avenir-roman: "AvenirLT-Roman", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-avenir-heavy: "Avenir LT 85 Heavy", -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -73,6 +60,20 @@
   --font-heavy: var(--font-avenir-heavy);
   --font-serif: var(--font-noto-serif), "Noto Serif", Georgia, serif;
   --font-mono: var(--font-geist-mono);
+}
+
+/* Reserva siempre el espacio de la barra de scroll para que el menú y el contenido
+   no se desplacen lateralmente al cambiar entre páginas cortas/largas ni al abrir un popup.
+   El lienzo raíz sigue al tema invertido para que esa franja reservada no quede blanca
+   cuando el sitio está en negro (popup abierto). */
+html {
+  scrollbar-gutter: stable;
+  background-color: var(--blanco);
+  transition: background-color 500ms ease-in-out;
+}
+
+html.canvas-inverted {
+  background-color: var(--negro);
 }
 
 body {
@@ -112,11 +113,6 @@ body {
 }
 
 /* Tipografía utilitaria */
-.font-light-avenir {
-  font-family: var(--font-avenir-light) !important;
-  font-weight: 300 !important;
-}
-
 .font-roman {
   font-family: var(--font-avenir-roman) !important;
   font-weight: 400 !important;

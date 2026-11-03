@@ -145,6 +145,9 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
       const noScroll = anchor.getAttribute("data-no-scroll") === "true";
       const useReplace = anchor.getAttribute("data-replace") === "true";
+      // Navegación completa (sin rutas interceptadas): evita que, desde la vista directa
+      // de una entrada, "Anterior / Siguiente" abra un popup encima de la página.
+      const useHardNav = anchor.getAttribute("data-hard-nav") === "true";
 
       shouldScrollTopRef.current = !noScroll;
 
@@ -160,6 +163,10 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       }
 
       navTimeoutRef.current = setTimeout(() => {
+        if (useHardNav) {
+          window.location.assign(href);
+          return;
+        }
         if (!noScroll) {
           window.scrollTo({ top: 0, left: 0, behavior: "instant" });
         }
@@ -175,6 +182,16 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
   const isInverted =
     !forcingWhiteBg && (isModalOpen || (isHomePage && isHomeAtTop));
+
+  // Sincroniza el lienzo raíz (franja reservada de la barra de scroll) con el tema invertido
+  useEffect(() => {
+    if (!isInverted) return;
+    const root = document.documentElement;
+    root.classList.add("canvas-inverted");
+    return () => {
+      root.classList.remove("canvas-inverted");
+    };
+  }, [isInverted]);
 
   return (
     <PublicShellContext.Provider value={{ isModalOpen, setModalOpen }}>
