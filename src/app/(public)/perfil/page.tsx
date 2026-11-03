@@ -190,9 +190,14 @@ export default function PerfilPage() {
                   </p>
                 </div>
 
-                <ul className="list-disc space-y-1 pl-6 font-roman text-sm sm:text-base">
+                <ul className="space-y-0.5 font-roman text-sm sm:text-base">
                   {item.puntos.map((punto) => (
-                    <li key={punto}>{punto}</li>
+                    <li key={punto} className="flex items-start gap-2">
+                      <span className="shrink-0 select-none" aria-hidden="true">
+                        —
+                      </span>
+                      <span className="flex-1">{punto}</span>
+                    </li>
                   ))}
                 </ul>
               </article>
@@ -227,9 +232,14 @@ export default function PerfilPage() {
                 </div>
 
                 {item.puntos && item.puntos.length > 0 && (
-                  <ul className="list-disc space-y-1 pl-6 font-roman text-sm sm:text-base">
+                  <ul className="space-y-0.5 font-roman text-sm sm:text-base">
                     {item.puntos.map((punto) => (
-                      <li key={punto}>{punto}</li>
+                      <li key={punto} className="flex items-start gap-2">
+                        <span className="shrink-0 select-none" aria-hidden="true">
+                          —
+                        </span>
+                        <span className="flex-1">{punto}</span>
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -247,9 +257,14 @@ export default function PerfilPage() {
             Otras habilidades
           </h2>
 
-          <ul className="list-disc space-y-1 pl-6 font-roman text-sm sm:text-base">
+          <ul className="space-y-0.5 font-roman text-sm sm:text-base">
             {OTRAS_HABILIDADES.map((habilidad) => (
-              <li key={habilidad}>{habilidad}</li>
+              <li key={habilidad} className="flex items-start gap-2">
+                <span className="shrink-0 select-none" aria-hidden="true">
+                  —
+                </span>
+                <span className="flex-1">{habilidad}</span>
+              </li>
             ))}
           </ul>
         </section>
