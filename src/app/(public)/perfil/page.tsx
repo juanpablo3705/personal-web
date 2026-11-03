@@ -108,27 +108,29 @@ export default function PerfilPage() {
         </div>
 
         {/* Columna izquierda con fuente más pequeña y delgada para mayor densidad de texto + enlace final al CV */}
-        <div className="mt-10 max-w-xl space-y-6 sm:mt-14">
-          <p className="indent-8 font-roman text-sm sm:text-base">
-            Analista Programador dedicado al diseño, construcción y
-            mantenimiento de sistemas de software, aplicaciones web y
-            estructuras de datos con énfasis en la claridad arquitectónica, la
-            eficiencia operativa y la durabilidad técnica.
-          </p>
-          <p className="indent-8 font-roman text-sm sm:text-base">
-            A lo largo de mi trayectoria he articulado el desarrollo práctico de
-            código con el análisis riguroso de requerimientos, la documentación
-            continua de procesos y la integración de herramientas modernas que
-            simplifican flujos complejos sin sacrificar estabilidad ni control.
-          </p>
-          <p className="indent-8 font-roman text-sm sm:text-base">
-            Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
-            personas que las utilizan y mantienen, buscando siempre el equilibrio
-            entre precisión funcional, rendimiento y coherencia visual en cada
-            etapa del ciclo de vida de un proyecto.
-          </p>
+        <div className="mt-10 max-w-xl sm:mt-14">
+          <div className="space-y-6">
+            <p className="indent-8 font-roman text-sm sm:text-base">
+              Analista Programador dedicado al diseño, construcción y
+              mantenimiento de sistemas de software, aplicaciones web y
+              estructuras de datos con énfasis en la claridad arquitectónica, la
+              eficiencia operativa y la durabilidad técnica.
+            </p>
+            <p className="indent-8 font-roman text-sm sm:text-base">
+              A lo largo de mi trayectoria he articulado el desarrollo práctico de
+              código con el análisis riguroso de requerimientos, la documentación
+              continua de procesos y la integración de herramientas modernas que
+              simplifican flujos complejos sin sacrificar estabilidad ni control.
+            </p>
+            <p className="indent-8 font-roman text-sm sm:text-base">
+              Mi enfoque prioriza soluciones sobrias, legibles y centradas en las
+              personas que las utilizan y mantienen, buscando siempre el equilibrio
+              entre precisión funcional, rendimiento y coherencia visual en cada
+              etapa del ciclo de vida de un proyecto.
+            </p>
+          </div>
 
-          <div className="flex flex-col items-start gap-4 pt-2">
+          <div className="mt-10 flex flex-col items-start gap-4 sm:mt-14">
             <a
               href={cvPublicUrl}
               target="_blank"
