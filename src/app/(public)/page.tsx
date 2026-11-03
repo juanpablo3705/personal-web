@@ -36,7 +36,7 @@ export default async function InicioPage() {
             converge con la claridad estructural.
           </p>
           <p className="indent-8 font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
-            El análisis sistemático combinado con métodos de programación
+            El análisis sistemático, combinado con métodos de programación
             contemporáneos permite diseñar flujos inteligibles, interfaces
             singulares y estructuras de datos coherentes, pensadas desde la
             esencialidad y el rigor compositivo visual.
