@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePublicShell } from "@/components/layout/PublicShell";
 import type { Post } from "@/lib/types/database";
+import { formatBlogDate } from "@/lib/utils";
 import { PostModal } from "./PostModal";
 import type { AdjacentPostLink } from "./post-queries";
 
@@ -213,6 +214,16 @@ export function HomeCatalogSections({
                       </button>
                     </h3>
                   </div>
+
+                  {/* Fecha de publicación */}
+                  {post.created_at && (
+                    <time
+                      dateTime={post.created_at}
+                      className="block font-roman text-sm italic sm:text-base"
+                    >
+                      {formatBlogDate(post.created_at)}
+                    </time>
+                  )}
 
                   {/* Texto resumen */}
                   {post.summary && (

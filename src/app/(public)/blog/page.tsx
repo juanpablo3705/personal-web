@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatBlogDate } from "@/lib/utils";
 import { Pagination } from "@/components/ui/Pagination";
 import {
   getPublishedPostsPaginated,
@@ -84,6 +85,15 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   {post.title} &gt;
                 </Link>
               </h2>
+
+              {post.created_at && (
+                <time
+                  dateTime={post.created_at}
+                  className="block font-roman text-sm italic sm:text-base"
+                >
+                  {formatBlogDate(post.created_at)}
+                </time>
+              )}
 
               {post.summary && (
                 <p className="font-roman text-sm sm:text-base">

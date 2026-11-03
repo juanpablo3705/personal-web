@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Post } from "@/lib/types/database";
+import { formatBlogDate } from "@/lib/utils";
 import type { AdjacentPostLink } from "./post-queries";
 
 type PostDetailViewProps = {
@@ -32,9 +33,20 @@ export function PostDetailView({
 
       {/* Cuerpo principal con Título y HTML del contenido */}
       <div className="space-y-6 py-4">
-        <h1 className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
-          {post.title}
-        </h1>
+        <header className="space-y-2">
+          <h1 className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]">
+            {post.title}
+          </h1>
+
+          {post.type === "blog" && post.created_at && (
+            <time
+              dateTime={post.created_at}
+              className="block font-roman text-sm italic sm:text-base"
+            >
+              {formatBlogDate(post.created_at)}
+            </time>
+          )}
+        </header>
 
         {post.content ? (
           <div

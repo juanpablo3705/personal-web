@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { usePublicShell } from "@/components/layout/PublicShell";
 import type { Post } from "@/lib/types/database";
+import { formatBlogDate } from "@/lib/utils";
 import type { AdjacentPostLink } from "./post-queries";
 
 type PostModalProps = {
@@ -162,12 +163,23 @@ export function PostModal({
           className="flex-1 overflow-y-auto px-6 py-4 sm:px-10 sm:py-6"
         >
           <article className="space-y-6">
-            <h1
-              id="modal-post-title"
-              className="font-roman text-2xl leading-[1.32] text-[var(--negro)] sm:text-3xl lg:text-[2.1rem]"
-            >
-              {post.title}
-            </h1>
+            <header className="space-y-2">
+              <h1
+                id="modal-post-title"
+                className="font-roman text-2xl leading-[1.32] text-[var(--negro)] sm:text-3xl lg:text-[2.1rem]"
+              >
+                {post.title}
+              </h1>
+
+              {post.type === "blog" && post.created_at && (
+                <time
+                  dateTime={post.created_at}
+                  className="block font-roman text-sm italic text-[var(--negro)] sm:text-base"
+                >
+                  {formatBlogDate(post.created_at)}
+                </time>
+              )}
+            </header>
 
             {post.content ? (
               <div
