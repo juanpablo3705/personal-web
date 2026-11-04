@@ -8,7 +8,7 @@ export default async function InicioPage() {
   ]);
 
   return (
-    <div className="space-y-32">
+    <div className="space-y-20">
       {/* 1. LANDING DE PANTALLA COMPLETA (referencia: home-home.png) */}
       <section
         aria-labelledby="landing-nombre"
