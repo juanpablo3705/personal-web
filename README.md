@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Juan Pablo Oyanedel — Plataforma Web Personal, Portafolio & CMS
 
-## Getting Started
+Repositorio del sitio web personal, blog técnico y portafolio de proyectos de Juan Pablo Oyanedel; Analista Programador enfocado en desarrollo de software, arquitectura de sistemas y diseño de soluciones digitales.
 
-First, run the development server:
+La plataforma fue concebida bajo principios de esencialidad visual, contraste analógico y rigor compositivo. La experiencia pública se articula a través de una coreografía de scroll basada en proporciones relativas de pantalla, navegación contextual mediante ventanas modales superpuestas sin pérdida de estado, un sistema de inversión cromática sincronizado en tiempo real y una jerarquía tipográfica milimétrica sustentada en una fuente sans-serif suiza de estructura geométrica y proporciones humanistas, optimizada localmente para garantizar máxima nitidez y cadencia visual.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Asimismo, la plataforma integra un entorno de administración privado (`/dashboard`) protegido mediante autenticación de servidor y middleware criptográfico en Supabase Auth. Este portal interno opera como un gestor de contenidos (CMS) desacoplado a medida que centraliza el control editorial completo: gestión del ciclo de vida de publicaciones (control de borradores y publicaciones activas), redacción estructurada mediante un editor enriquecido WYSIWYG (TipTap), administración y actualización en la nube del archivo PDF del CV en Supabase Storage, y monitoreo directo de solicitudes entrantes del formulario de contacto.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La arquitectura del sistema aprovecha el rendimiento nativo de Server Components y Server Actions en Next.js 16 con Turbopack, garantizando tipado estático estricto, seguridad en mutaciones de datos, tiempos de carga instantáneos y comunicación transaccional a través de Resend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Enlace de Producción:
 
-## Learn More
+<a href="https://personal-web-gamma-six.vercel.app/" target="_blank" rel="noopener noreferrer">https<span>://</span>personal-web-gamma-six<span>.</span>vercel<span>.</span>app/ ↗</a>
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Stack Tecnológico:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* **Framework Web:** Next.js 16 (App Router, Server Components, Server Actions & Turbopack)
+* **Librería de Interfaz:** React 19
+* **Lenguaje:** TypeScript (modo estricto)
+* **Estilos y Maquetación:** Tailwind CSS v4 (CSS `@theme` y variables de interpolación nativas `@property`)
+* **Animaciones y Dinámica:** Motion (Framer Motion)
+* **Panel de Administración Privado (CMS):** Dashboard interno protegido con gestión de publicaciones, control de estados (Borrador/Publicado), visor de mensajes y carga dinámica de CV
+* **Editor de Contenidos:** TipTap (WYSIWYG con HTML estructurado)
+* **Base de Datos, Auth & Storage:** Supabase (PostgreSQL, autenticación SSR por cookies y almacenamiento en buckets)
+* **Validación de Esquemas:** Zod
+* **Servicio de Correo Transaccional:** Resend
+* **Tipografía:** Fuente sans-serif de alta fidelidad auto-alojada localmente (WOFF)
+* **Infraestructura y Despliegue:** Vercel
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Créditos y Autoría:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Diseño de Interfaz & Desarrollo:** Juan Pablo Oyanedel (<a href="https://github.com/juanpablo3705" target="_blank" rel="noopener noreferrer">github<span>.</span>com/juanpablo3705 ↗</a>)
