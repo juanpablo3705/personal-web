@@ -88,6 +88,27 @@ export default function PerfilPage() {
   const cvPublicUrl = getCvPublicUrl();
 
   return (
+    /* =========================================================================
+     * REGLA DE DISEÑO ARQUITECTÓNICO CRÍTICA - LANDING PERFIL (NO MODIFICAR A LA LIGERA)
+     *
+     * 1. PANTALLA COMPLETA GARANTIZADA:
+     *    La sección superior usa `min-h-[calc(100vh-4.5rem)]`. Esto asegura que
+     *    todo lo anterior a "Experiencia laboral" (nombre, biografía y enlaces al CV)
+     *    ocupe como mínimo el 100% de la ventana al cargar la página, sin importar
+     *    el tamaño del monitor ni qué tan corta o larga sea la biografía.
+     *    En la carga inicial (scrollY = 0), "Experiencia laboral" NUNCA es visible.
+     *
+     * 2. APARICIÓN INMEDIATA AL PRIMER TOQUE DE RUEDA:
+     *    El contenedor padre NO debe tener `space-y` para no crear una zona muerta vacía.
+     *    El bloque inferior tiene `pt-4` (16px) como respiro mínimo de seguridad para
+     *    evitar sangrado por subpíxeles al estar arriba del todo. Al primer giro de la
+     *    rueda del mouse hacia abajo (que en cualquier SO desplaza entre 40px y 120px),
+     *    el salto supera inmediatamente esos 16px y "Experiencia laboral" asoma de inmediato.
+     *
+     * ATENCIÓN A FUTUROS AGENTES DE IA O DESARROLLADORES:
+     * NO remover `min-h-[calc(100vh-4.5rem)]` ni agregar márgenes superiores grandes a la
+     * sección del CV sin considerar esta sincronización de pantalla completa e inmediatez.
+     * ========================================================================= */
     <div>
       {/* 1. LANDING DE PERFIL (misma estructura, dimensiones y posicionamiento que el Home, sobre fondo blanco) */}
       <section

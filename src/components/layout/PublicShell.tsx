@@ -46,6 +46,18 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    /* =========================================================================
+     * REGLA DE TRIGGER DE TEMA CRÍTICA (NO CAMBIAR A PÍXELES FIJOS)
+     *
+     * `threshold = window.innerHeight * 0.55` calcula el umbral relativo al 55%
+     * de la altura de la pantalla del usuario en ese momento.
+     *
+     * Esta fórmula proporcional garantiza que la transición fluida de negro a blanco
+     * ocurra exactamente en el mismo punto relativo del recorrido en cualquier monitor
+     * (laptops 768p/900p, monitores 1080p, 2K, 4K o pantallas retina con trackpad).
+     *
+     * NO reemplazar por una distancia fija en píxeles (ej: 400px o 500px).
+     * ========================================================================= */
     const handleScroll = () => {
       const threshold = window.innerHeight * 0.55;
       setIsHomeAtTop(window.scrollY < threshold);

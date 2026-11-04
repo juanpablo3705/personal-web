@@ -8,6 +8,27 @@ export default async function InicioPage() {
   ]);
 
   return (
+    /* =========================================================================
+     * REGLA DE DISEÑO ARQUITECTÓNICO CRÍTICA - LANDING HOME (NO MODIFICAR A LA LIGERA)
+     *
+     * 1. PANTALLA COMPLETA GARANTIZADA:
+     *    La sección superior usa `min-h-[calc(100vh-4.5rem)]` para garantizar que
+     *    en cualquier resolución (desde 768p hasta 4K) el bloque negro llene al 100%
+     *    la primera vista visible. Al cargar la página (arriba del todo), la sección
+     *    "Proyectos" permanece 100% oculta debajo del pliegue de la pantalla.
+     *
+     * 2. COREOGRAFÍA EN 3 ACTOS AL HACER SCROLL:
+     *    - Acto 1 (Carga): Portada limpia 100% negra (garantizada por 100vh).
+     *    - Acto 2 (Scroll inicial): La separación exterior `space-y-20` (80px) sumada
+     *      al `pt-8` (32px) de Proyectos deja un colchón exacto de 112px. Al empezar
+     *      a bajar la rueda, "Proyectos" asoma primero sutilmente en blanco sobre negro.
+     *    - Acto 3 (Inversión de color): Al superar el 55% de la pantalla (calculado en
+     *      `PublicShell.tsx`), el fondo se invierte suavemente a blanco.
+     *
+     * ATENCIÓN A FUTUROS AGENTES DE IA O DESARROLLADORES:
+     * NO remover `min-h-[calc(100vh-4.5rem)]` ni cambiar drásticamente `space-y-20`
+     * sin considerar cómo altera la coreografía visual entre el negro y el blanco.
+     * ========================================================================= */
     <div className="space-y-20">
       {/* 1. LANDING DE PANTALLA COMPLETA (referencia: home-home.png) */}
       <section
