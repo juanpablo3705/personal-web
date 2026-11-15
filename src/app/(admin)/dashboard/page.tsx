@@ -23,43 +23,50 @@ export default async function DashboardPage() {
   return (
     <section aria-labelledby="dashboard-heading" className="space-y-10 pt-6">
       {/* Cabecera del Panel */}
-      <header className="flex flex-wrap items-end justify-between gap-6 border-b border-current pb-4">
-        <div className="space-y-2">
-          <p className="font-heavy text-sm sm:text-base">CMS · Administración</p>
-          <h1
-            id="dashboard-heading"
-            className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
-          >
-            Panel de administración
-          </h1>
-          {user?.email && (
-            <p className="font-roman text-sm sm:text-base">
-              Sesión iniciada como{" "}
-              <span className="font-heavy">{user.email}</span>
-            </p>
-          )}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
-          <Link href="/" className="hyper-link font-roman text-sm sm:text-base">
-            Ver sitio público &gt;
-          </Link>
-          <form action={logoutAction}>
-            <button
-              type="submit"
-              className="hyper-link cursor-pointer font-heavy text-sm sm:text-base"
-            >
-              Cerrar sesión &gt;
-            </button>
-          </form>
-        </div>
+      <header className="border-b border-current pb-4">
+        <h1
+          id="dashboard-heading"
+          className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
+        >
+          Panel de administración
+        </h1>
       </header>
 
-      {/* Bloque superior: acciones de creación y actualización de CV */}
+      {/* Bloque superior: estado de sesión, navegación, creación y actualización de CV */}
       <section
         aria-label="Acciones principales"
         className="space-y-8 border-b border-current pb-10"
       >
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <div className="space-y-1">
+            <p className="font-heavy text-sm sm:text-base">
+              CMS · Administración
+            </p>
+            {user?.email && (
+              <p className="font-roman text-sm sm:text-base">
+                Sesión iniciada como{" "}
+                <span className="font-heavy">{user.email}</span>
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
+            <Link
+              href="/"
+              className="hyper-link font-roman text-sm sm:text-base"
+            >
+              Ver sitio público &gt;
+            </Link>
+            <form action={logoutAction}>
+              <button
+                type="submit"
+                className="hyper-link cursor-pointer font-heavy text-sm sm:text-base"
+              >
+                Cerrar sesión &gt;
+              </button>
+            </form>
+          </div>
+        </div>
         <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
           <Link
             href="/dashboard/editor?type=blog"

@@ -42,42 +42,44 @@ export default async function DashboardEditorPage({
   }
 
   return (
-    <section
-      aria-labelledby="editor-heading"
-      className="mx-auto w-full max-w-4xl space-y-8 pt-6"
-    >
-      <header className="flex flex-wrap items-end justify-between gap-4 border-b border-current pb-4">
-        <div className="space-y-2">
-          <p className="font-heavy text-sm sm:text-base">CMS · Editor</p>
-          <h1
-            id="editor-heading"
-            className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
-          >
-            {initialPost ? "Editar entrada" : "Nueva entrada"}
-          </h1>
-          <p className="font-roman text-sm opacity-75 sm:text-base">
-            {initialPost
-              ? `Editando: ${initialPost.title}`
-              : requestedType === "project"
-                ? "Creando un nuevo proyecto"
-                : "Creando una nueva entrada de blog"}
-          </p>
-        </div>
-
-        <Link
-          href="/dashboard"
-          className="hyper-link font-heavy text-sm sm:text-base"
+    <section aria-labelledby="editor-heading" className="space-y-10 pt-6">
+      <header className="border-b border-current pb-4">
+        <h1
+          id="editor-heading"
+          className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
         >
-          &lt; Volver al panel
-        </Link>
+          {initialPost ? "Editar entrada" : "Nueva entrada"}
+        </h1>
       </header>
 
-      <div className="border border-current p-6 sm:p-8">
-        <PostEditorForm
-          key={initialPost?.id ?? requestedType}
-          initialPost={initialPost}
-          defaultType={requestedType}
-        />
+      <div className="max-w-4xl space-y-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <div className="space-y-1">
+            <p className="font-heavy text-sm sm:text-base">CMS · Editor</p>
+            <p className="font-roman text-sm opacity-75 sm:text-base">
+              {initialPost
+                ? `Editando: ${initialPost.title}`
+                : requestedType === "project"
+                  ? "Creando un nuevo proyecto"
+                  : "Creando una nueva entrada de blog"}
+            </p>
+          </div>
+
+          <Link
+            href="/dashboard"
+            className="hyper-link font-heavy text-sm sm:text-base"
+          >
+            &lt; Volver al panel
+          </Link>
+        </div>
+
+        <div className="border border-current p-6 sm:p-8">
+          <PostEditorForm
+            key={initialPost?.id ?? requestedType}
+            initialPost={initialPost}
+            defaultType={requestedType}
+          />
+        </div>
       </div>
     </section>
   );

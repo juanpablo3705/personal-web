@@ -41,8 +41,7 @@ export default function LoginPage() {
 
   return (
     <section aria-labelledby="login-heading" className="space-y-10 pt-6">
-      <header className="space-y-3 border-b border-current pb-4">
-        <p className="font-heavy text-sm sm:text-base">CMS · Portal privado</p>
+      <header className="border-b border-current pb-4">
         <h1
           id="login-heading"
           className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
@@ -52,10 +51,15 @@ export default function LoginPage() {
       </header>
 
       <div className="max-w-[560px] space-y-8">
-        <p className="font-roman text-sm leading-relaxed sm:text-base">
-          Ingresa con tu cuenta de propietario para gestionar entradas de blog,
-          proyectos y actualizar el CV.
-        </p>
+        <div className="space-y-2">
+          <p className="font-heavy text-sm sm:text-base">
+            CMS · Portal privado
+          </p>
+          <p className="font-roman text-sm leading-relaxed sm:text-base">
+            Ingresa con tu cuenta de propietario para gestionar entradas de
+            blog, proyectos y actualizar el CV.
+          </p>
+        </div>
 
         {activeEmail && (
           <div className="space-y-4 border border-current p-5 font-roman text-sm sm:text-base">
