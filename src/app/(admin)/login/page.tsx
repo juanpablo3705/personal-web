@@ -45,14 +45,11 @@ export default function LoginPage() {
           id="login-heading"
           className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
         >
-          Acceso de administrador
+          CMS / Portal privado
         </h1>
       </header>
 
       <div className="max-w-[560px] space-y-8">
-        <p className="font-heavy text-sm sm:text-base">
-          CMS · Portal privado
-        </p>
 
         {activeEmail && (
           <div className="space-y-4 border border-current p-5 font-roman text-sm sm:text-base">
