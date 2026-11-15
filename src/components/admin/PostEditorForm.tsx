@@ -138,7 +138,7 @@ export default function PostEditorForm({
       {state?.error && (
         <div
           role="alert"
-          className="border border-neutral-900 bg-neutral-100 px-4 py-3 text-sm text-neutral-900"
+          className="border border-current bg-transparent px-4 py-3 font-roman text-sm sm:text-base"
         >
           {state.error}
         </div>
@@ -149,7 +149,7 @@ export default function PostEditorForm({
         <div className="space-y-1.5">
           <label
             htmlFor="type"
-            className="block text-sm font-medium text-neutral-900"
+            className="block font-roman text-sm sm:text-base"
           >
             Tipo
           </label>
@@ -159,7 +159,7 @@ export default function PostEditorForm({
             value={type}
             onChange={(e) => setType(e.target.value as PostType)}
             disabled={isSaving}
-            className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus:border-neutral-900 focus:outline-none"
+            className="w-full border border-current bg-[var(--theme-bg)] px-3 py-2 font-roman text-sm text-[var(--theme-fg)] focus:outline-none sm:text-base"
           >
             <option value="blog">Blog</option>
             <option value="project">Proyecto</option>
@@ -169,7 +169,7 @@ export default function PostEditorForm({
         <div className="space-y-1.5">
           <label
             htmlFor="status"
-            className="block text-sm font-medium text-neutral-900"
+            className="block font-roman text-sm sm:text-base"
           >
             Estado
           </label>
@@ -179,7 +179,7 @@ export default function PostEditorForm({
             value={status}
             onChange={(e) => setStatus(e.target.value as PostStatus)}
             disabled={isSaving}
-            className="w-full border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus:border-neutral-900 focus:outline-none"
+            className="w-full border border-current bg-[var(--theme-bg)] px-3 py-2 font-roman text-sm text-[var(--theme-fg)] focus:outline-none sm:text-base"
           >
             <option value="draft">Borrador</option>
             <option value="published">Publicado</option>
@@ -191,7 +191,7 @@ export default function PostEditorForm({
       <div className="space-y-1.5">
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-neutral-900"
+          className="block font-roman text-sm sm:text-base"
         >
           Título
         </label>
@@ -204,11 +204,11 @@ export default function PostEditorForm({
           onChange={handleTitleChange}
           placeholder="Escribe el título de la publicación..."
           disabled={isSaving}
-          className="w-full border border-neutral-300 bg-white px-3.5 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none"
+          className="w-full border border-current bg-transparent px-3.5 py-2 font-roman text-sm placeholder:opacity-40 focus:outline-none sm:text-base"
         />
-        <p className="text-xs text-neutral-500">
+        <p className="font-roman text-xs opacity-75">
           Slug autogenerado:{" "}
-          <span className="font-mono text-neutral-800">
+          <span className="font-mono">
             /{type === "blog" ? "blog" : "proyectos"}/{slug || "..."}
           </span>
         </p>
@@ -218,11 +218,11 @@ export default function PostEditorForm({
       <div className="space-y-2">
         <label
           htmlFor="thumbnail-input"
-          className="block text-sm font-medium text-neutral-900"
+          className="block font-roman text-sm sm:text-base"
         >
           Subida de Thumbnail
         </label>
-        <div className="border border-neutral-300 bg-neutral-50 p-4 space-y-3">
+        <div className="border border-current bg-transparent p-4 space-y-3">
           <input
             id="thumbnail-input"
             name="thumbnail_file"
@@ -230,39 +230,39 @@ export default function PostEditorForm({
             accept="image/*"
             onChange={handleThumbnailChange}
             disabled={isSaving || isUploadingThumbnail}
-            className="w-full border border-neutral-300 bg-white px-3 py-1.5 text-xs text-neutral-800 file:mr-3 file:border-0 file:bg-neutral-900 file:px-3 file:py-1 file:text-xs file:font-medium file:text-white hover:file:bg-neutral-800"
+            className="w-full border border-current bg-transparent px-3 py-1.5 font-roman text-xs file:mr-3 file:cursor-pointer file:border file:border-current file:bg-[var(--theme-fg)] file:px-3 file:py-1 file:font-heavy file:text-xs file:text-[var(--theme-bg)]"
           />
 
           {isUploadingThumbnail && (
-            <p className="text-xs text-neutral-600">
+            <p className="font-roman text-xs opacity-75">
               Subiendo imagen al bucket media...
             </p>
           )}
 
           {thumbnailError && (
-            <p role="alert" className="text-xs text-neutral-900 font-medium">
+            <p role="alert" className="font-heavy text-xs">
               {thumbnailError}
             </p>
           )}
 
           {thumbnailUrl && (
-            <div className="flex flex-wrap items-center gap-4 border-t border-neutral-300 pt-3">
+            <div className="flex flex-wrap items-center gap-4 border-t border-current pt-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={thumbnailUrl}
                 alt="Vista previa de thumbnail"
-                className="h-20 w-20 border border-neutral-300 bg-white object-cover"
+                className="h-20 w-20 border border-current bg-transparent object-cover"
               />
               <div className="min-w-0 flex-1 space-y-1">
-                <p className="truncate font-mono text-xs text-neutral-600">
+                <p className="truncate font-mono text-xs opacity-75">
                   {thumbnailUrl}
                 </p>
                 <button
                   type="button"
                   onClick={() => setThumbnailUrl("")}
-                  className="border border-neutral-300 bg-white px-2.5 py-1 text-xs font-medium text-neutral-800 hover:border-neutral-900"
+                  className="hyper-link cursor-pointer font-heavy text-xs"
                 >
-                  Quitar thumbnail
+                  Quitar thumbnail &gt;
                 </button>
               </div>
             </div>
@@ -274,7 +274,7 @@ export default function PostEditorForm({
       <div className="space-y-1.5">
         <label
           htmlFor="summary"
-          className="block text-sm font-medium text-neutral-900"
+          className="block font-roman text-sm sm:text-base"
         >
           Resumen Breve
         </label>
@@ -286,37 +286,37 @@ export default function PostEditorForm({
           onChange={(e) => setSummary(e.target.value)}
           placeholder="Texto breve que acompaña al thumbnail en el catálogo..."
           disabled={isSaving}
-          className="w-full border border-neutral-300 bg-white px-3.5 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none"
+          className="w-full border border-current bg-transparent px-3.5 py-2 font-roman text-sm placeholder:opacity-40 focus:outline-none sm:text-base"
         />
       </div>
 
       {/* 6. Editor de Contenido (Tiptap minimalista) */}
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-neutral-900">
+        <label className="block font-roman text-sm sm:text-base">
           Contenido
         </label>
         <TiptapEditor content={content} onChange={setContent} />
       </div>
 
       {/* Controles de guardado */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-neutral-300 pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-current pt-4">
         <Link
           href="/dashboard"
-          className="border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-800 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
+          className="hyper-link font-heavy text-sm sm:text-base"
         >
-          Cancelar
+          &lt; Cancelar
         </Link>
 
         <button
           type="submit"
           disabled={isSaving || isUploadingThumbnail}
-          className="border border-neutral-900 bg-neutral-900 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="hyper-link cursor-pointer font-heavy text-sm disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
         >
           {isSaving
-            ? "Guardando..."
+            ? "Guardando... >"
             : initialPost
-              ? "Actualizar Entrada"
-              : "Guardar Entrada"}
+              ? "Actualizar entrada >"
+              : "Guardar entrada >"}
         </button>
       </div>
     </form>

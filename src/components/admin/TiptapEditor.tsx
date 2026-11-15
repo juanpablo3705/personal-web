@@ -57,7 +57,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
     editorProps: {
       attributes: {
         class:
-          "min-h-[320px] w-full px-4 py-3 text-sm leading-relaxed text-neutral-900 focus:outline-none [&_p]:mb-3 [&_a]:underline [&_a]:font-medium [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto [&_img]:border [&_img]:border-neutral-300",
+          "min-h-[320px] w-full px-4 py-3 font-roman text-sm leading-relaxed text-[var(--theme-fg)] focus:outline-none sm:text-base [&_p]:mb-3 [&_a]:underline [&_a]:font-heavy [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto [&_img]:border [&_img]:border-current",
       },
     },
     onUpdate: ({ editor: currentEditor }) => {
@@ -181,18 +181,18 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
   const isLink = editor?.isActive("link") ?? false;
 
   return (
-    <div className="border border-neutral-300 bg-white">
+    <div className="border border-current bg-transparent">
       {/* Barra de herramientas superior ultra-minimalista: SOLO 5 botones */}
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-neutral-300 bg-neutral-50 p-2">
+      <div className="flex flex-wrap items-center gap-1.5 border-b border-current bg-transparent p-2">
         <button
           type="button"
           onClick={() => editor?.chain().focus().toggleBold().run()}
           disabled={!editor}
           aria-pressed={isBold}
-          className={`border px-3 py-1 text-xs font-medium transition-colors ${
+          className={`cursor-pointer border border-current px-3 py-1 font-heavy text-xs transition-colors ${
             isBold
-              ? "border-neutral-900 bg-neutral-900 text-white"
-              : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900 hover:bg-neutral-100"
+              ? "bg-[var(--theme-fg)] text-[var(--theme-bg)]"
+              : "bg-transparent text-[var(--theme-fg)] hover:bg-[var(--theme-fg)] hover:text-[var(--theme-bg)]"
           }`}
         >
           Negrita
@@ -203,10 +203,10 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
           onClick={() => editor?.chain().focus().toggleItalic().run()}
           disabled={!editor}
           aria-pressed={isItalic}
-          className={`border px-3 py-1 text-xs font-medium italic transition-colors ${
+          className={`cursor-pointer border border-current px-3 py-1 font-roman text-xs italic transition-colors ${
             isItalic
-              ? "border-neutral-900 bg-neutral-900 text-white"
-              : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900 hover:bg-neutral-100"
+              ? "bg-[var(--theme-fg)] text-[var(--theme-bg)]"
+              : "bg-transparent text-[var(--theme-fg)] hover:bg-[var(--theme-fg)] hover:text-[var(--theme-bg)]"
           }`}
         >
           Cursiva
@@ -217,10 +217,10 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
           onClick={() => editor?.chain().focus().toggleUnderline().run()}
           disabled={!editor}
           aria-pressed={isUnderline}
-          className={`border px-3 py-1 text-xs font-medium underline transition-colors ${
+          className={`cursor-pointer border border-current px-3 py-1 font-roman text-xs underline transition-colors ${
             isUnderline
-              ? "border-neutral-900 bg-neutral-900 text-white"
-              : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900 hover:bg-neutral-100"
+              ? "bg-[var(--theme-fg)] text-[var(--theme-bg)]"
+              : "bg-transparent text-[var(--theme-fg)] hover:bg-[var(--theme-fg)] hover:text-[var(--theme-bg)]"
           }`}
         >
           Subrayado
@@ -231,10 +231,10 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
           onClick={handleSetLink}
           disabled={!editor}
           aria-pressed={isLink}
-          className={`border px-3 py-1 text-xs font-medium transition-colors ${
+          className={`cursor-pointer border border-current px-3 py-1 font-roman text-xs transition-colors ${
             isLink
-              ? "border-neutral-900 bg-neutral-900 text-white"
-              : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900 hover:bg-neutral-100"
+              ? "bg-[var(--theme-fg)] text-[var(--theme-bg)]"
+              : "bg-transparent text-[var(--theme-fg)] hover:bg-[var(--theme-fg)] hover:text-[var(--theme-bg)]"
           }`}
         >
           Enlace
@@ -244,7 +244,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={!editor || isUploadingImage}
-          className="border border-neutral-300 bg-white px-3 py-1 text-xs font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50"
+          className="cursor-pointer border border-current bg-transparent px-3 py-1 font-roman text-xs text-[var(--theme-fg)] transition-colors hover:bg-[var(--theme-fg)] hover:text-[var(--theme-bg)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isUploadingImage ? "Subiendo imagen..." : "Insertar Imagen"}
         </button>
@@ -263,7 +263,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
       {uploadError && (
         <div
           role="alert"
-          className="border-b border-neutral-300 bg-neutral-100 px-3 py-2 text-xs text-neutral-900"
+          className="border-b border-current bg-transparent px-3 py-2 font-roman text-xs text-[var(--theme-fg)]"
         >
           {uploadError}
         </div>
