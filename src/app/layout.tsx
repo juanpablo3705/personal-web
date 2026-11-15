@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Serif } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import { preconnect, preload } from "react-dom";
 import "./globals.css";
 
-// Geist Mono solo se usa en el portal privado: no precargarla en cada visita pública
+// Geist Mono solo se usa en el portal privado: display "block" prohibe mostrar fuente de respaldo
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: "swap",
+  display: "block",
   preload: false,
-});
-
-const notoSerif = Noto_Serif({
-  variable: "--font-noto-serif",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -24,13 +16,14 @@ export const metadata: Metadata = {
   description: "Portafolio de proyectos, blog y perfil profesional.",
 };
 
+const INIT_THEME_AND_FONTS_SCRIPT = `(function(){try{var r=document.documentElement;if(window.location.pathname==="/"){r.classList.add("canvas-inverted");}function show(){r.classList.add("fonts-ready");}if(document.fonts&&document.fonts.load){var t=setTimeout(show,2500);Promise.all([document.fonts.load('400 16px "AvenirLT-Roman"'),document.fonts.load('800 16px "Avenir LT 85 Heavy"'),document.fonts.ready]).then(function(){clearTimeout(t);show();}).catch(function(){clearTimeout(t);show();});}else{show();}}catch(e){document.documentElement.classList.add("fonts-ready");}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Precarga de las fuentes Avenir usadas en todas las páginas para reducir el
-  // parpadeo de tipografía (texto que cambia de fuente) en la primera visita
+  // Precarga prioritaria de las dos fuentes oficiales Avenir auto-alojadas
   preload("/fonts/AvenirLTStd-Roman.woff", {
     as: "font",
     type: "font/woff",
@@ -50,8 +43,14 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistMono.variable} ${notoSerif.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: INIT_THEME_AND_FONTS_SCRIPT }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[var(--blanco)] text-[var(--negro)]">
         {children}
       </body>

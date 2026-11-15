@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-/* Fuentes Avenir auto-alojadas en /public/fonts para garantizar renderizado idéntico en todos los sistemas */
+/* Fuentes Avenir auto-alojadas en /public/fonts.
+   REGLA ESTRICTA: font-display: block prohibe mostrar tipografías de respaldo (FOUT);
+   el texto permanece invisible hasta que la fuente oficial Avenir esté 100% cargada. */
 @font-face {
   font-family: "AvenirLT-Roman";
   src:
@@ -11,7 +13,7 @@
     url("/fonts/AvenirLTStd-Roman.woff") format("woff");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -24,7 +26,7 @@
     url("/fonts/AvenirLTStd-Heavy.woff") format("woff");
   font-weight: 700 900;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 /* Propiedades CSS registradas de tipo <color>:
@@ -47,8 +49,8 @@
   --negro: #0e0e0e;
   --background: var(--blanco);
   --foreground: var(--negro);
-  --font-avenir-roman: "AvenirLT-Roman", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-avenir-heavy: "Avenir LT 85 Heavy", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-avenir-roman: "AvenirLT-Roman";
+  --font-avenir-heavy: "Avenir LT 85 Heavy";
 }
 
 @theme inline {
@@ -58,7 +60,7 @@
   --color-negro: var(--negro);
   --font-sans: var(--font-avenir-roman);
   --font-heavy: var(--font-avenir-heavy);
-  --font-serif: var(--font-noto-serif), "Noto Serif", Georgia, serif;
+  --font-serif: var(--font-avenir-roman);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -80,6 +82,24 @@ body {
   background-color: var(--blanco);
   color: var(--negro);
   font-family: var(--font-avenir-roman);
+}
+
+html.canvas-inverted body {
+  background-color: var(--negro);
+  color: var(--blanco);
+}
+
+/* Bloqueo visual previo a la carga de fuentes oficiales:
+   no se renderiza ningún texto ni barra superior hasta que Avenir Roman y Heavy estén listas */
+html:not(.fonts-ready) body {
+  opacity: 0;
+  visibility: hidden;
+}
+
+html.fonts-ready body {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 250ms ease-in-out;
 }
 
 /* Duración única universal (500ms ease-in-out) en todo el sitio:

@@ -204,9 +204,12 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
   // Sincroniza el lienzo raíz (franja reservada de la barra de scroll) con el tema invertido
   useEffect(() => {
-    if (!isInverted) return;
     const root = document.documentElement;
-    root.classList.add("canvas-inverted");
+    if (isInverted) {
+      root.classList.add("canvas-inverted");
+    } else {
+      root.classList.remove("canvas-inverted");
+    }
     return () => {
       root.classList.remove("canvas-inverted");
     };
@@ -229,7 +232,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
         <Navbar />
 
         <motion.main
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: isFadingOut ? 0 : 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="w-full flex-1 px-5 pb-20 sm:px-8 md:px-12 lg:px-16"
