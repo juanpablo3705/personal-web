@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePublicShell } from "@/components/layout/PublicShell";
 import type { Post } from "@/lib/types/database";
@@ -46,6 +46,7 @@ function findPostAndNeighbors(
 }
 
 const HOME_BLOG_SUMMARY_MAX_CHARS = 255;
+const HOME_MODAL_OPEN_DELAY_MS = 200;
 
 function renderHomeBlogSummary(summary: string, onOpen: () => void) {
   if (summary.length <= HOME_BLOG_SUMMARY_MAX_CHARS) {
@@ -78,18 +79,33 @@ export function HomeCatalogSections({
   entradasBlog,
 }: HomeCatalogSectionsProps) {
   const { setModalOpen } = usePublicShell();
+  const [pendingModal, setPendingModal] = useState<ActiveHomeModal>(null);
   const [activeModal, setActiveModal] = useState<ActiveHomeModal>(null);
 
   const proyectosVisibles = proyectos.slice(0, 4);
   const blogVisibles = entradasBlog.slice(0, 4);
 
+  useEffect(() => {
+    if (!pendingModal) {
+      return;
+    }
+    const timerId = window.setTimeout(() => {
+      setActiveModal(pendingModal);
+    }, HOME_MODAL_OPEN_DELAY_MS);
+
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, [pendingModal]);
+
   const openModal = (type: "project" | "blog", slug: string) => {
     setModalOpen(true);
-    setActiveModal({ type, slug });
+    setPendingModal({ type, slug });
   };
 
   const closeModal = () => {
     setModalOpen(false);
+    setPendingModal(null);
     setActiveModal(null);
   };
 
