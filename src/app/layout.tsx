@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono } from "next/font/google";
 import { preconnect, preload } from "react-dom";
 import { PublicShell } from "@/components/layout/PublicShell";
@@ -15,6 +15,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Juan Pablo Oyanedel — Portafolio y Publicaciones",
   description: "Portafolio de proyectos, blog y perfil profesional.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 const INIT_THEME_AND_FONTS_SCRIPT = `(function(){try{var r=document.documentElement;if(window.location.pathname==="/"){r.classList.add("canvas-inverted");}function show(){r.classList.add("fonts-ready");}if(document.fonts&&document.fonts.load){var t=setTimeout(show,2500);Promise.all([document.fonts.load('400 16px "AvenirLT-Roman"'),document.fonts.load('800 16px "Avenir LT 85 Heavy"'),document.fonts.ready]).then(function(){clearTimeout(t);show();}).catch(function(){clearTimeout(t);show();});}else{show();}}catch(e){document.documentElement.classList.add("fonts-ready");}})();`;
@@ -52,7 +58,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: INIT_THEME_AND_FONTS_SCRIPT }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[var(--blanco)] text-[var(--negro)]">
+      <body className="min-h-full flex flex-col bg-[var(--theme-bg)] text-[var(--theme-fg)]">
         <PublicShell>{children}</PublicShell>
       </body>
     </html>

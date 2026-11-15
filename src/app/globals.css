@@ -66,27 +66,34 @@
 
 /* Reserva siempre el espacio de la barra de scroll para que el menú y el contenido
    no se desplacen lateralmente al cambiar entre páginas cortas/largas ni al abrir un popup.
-   El lienzo raíz sigue al tema invertido para que esa franja reservada no quede blanca
-   cuando el sitio está en negro (popup abierto). */
+   Tanto html como body leen directamente --theme-bg y --theme-fg para compartir el mismo
+   reloj de transición de 500ms que .public-scope (sin barras laterales desfasadas en móvil horizontal). */
 html {
   scrollbar-gutter: stable;
-  background-color: var(--blanco);
-  transition: background-color 500ms ease-in-out;
+  --theme-bg: #fbfbf9;
+  --theme-fg: #0e0e0e;
+  background-color: var(--theme-bg);
+  color: var(--theme-fg);
+  transition:
+    --theme-bg 500ms ease-in-out,
+    --theme-fg 500ms ease-in-out;
 }
 
-html.canvas-inverted {
-  background-color: var(--negro);
+html.canvas-inverted,
+html:has(.public-scope.theme-inverted) {
+  --theme-bg: #0e0e0e;
+  --theme-fg: #fbfbf9;
+}
+
+html:has(.public-scope.theme-normal) {
+  --theme-bg: #fbfbf9;
+  --theme-fg: #0e0e0e;
 }
 
 body {
-  background-color: var(--blanco);
-  color: var(--negro);
+  background-color: var(--theme-bg);
+  color: var(--theme-fg);
   font-family: var(--font-avenir-roman);
-}
-
-html.canvas-inverted body {
-  background-color: var(--negro);
-  color: var(--blanco);
 }
 
 /* Bloqueo visual previo a la carga de fuentes oficiales:
@@ -112,6 +119,13 @@ html.fonts-ready body {
   transition:
     --theme-bg 500ms ease-in-out,
     --theme-fg 500ms ease-in-out;
+}
+
+/* En móvil horizontal con viewport-fit=cover, el fondo cubre el 100% físico de borde a borde
+   mientras el contenido respeta las zonas seguras laterales (notch / Dynamic Island) */
+.public-scope:not(.theme-normal-box) {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 }
 
 .public-scope.theme-normal {
@@ -142,6 +156,12 @@ dialog::backdrop,
 .modal-backdrop-contain {
   overflow: hidden;
   overscroll-behavior: contain;
+}
+
+.modal-backdrop-contain {
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
 }
 
 /* Renderizado diferido para secciones confirmadas debajo del pliegue inicial */
