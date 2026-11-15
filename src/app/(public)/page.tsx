@@ -3,8 +3,8 @@ import { getPublishedPostsFull } from "@/components/ui/post-queries";
 
 export default async function InicioPage() {
   const [proyectos, entradasBlog] = await Promise.all([
-    getPublishedPostsFull("project", 20),
-    getPublishedPostsFull("blog", 20),
+    getPublishedPostsFull("project", 4),
+    getPublishedPostsFull("blog", 4),
   ]);
 
   return (
