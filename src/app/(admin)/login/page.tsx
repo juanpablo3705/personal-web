@@ -94,8 +94,13 @@ export default function LoginPage() {
               id="email"
               name="email"
               type="email"
+              inputMode="email"
               required
               autoComplete="email"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
+              enterKeyHint="next"
               placeholder="tu-correo@ejemplo.com"
               disabled={isPending}
               className="w-full border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100"

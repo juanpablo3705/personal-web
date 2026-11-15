@@ -138,6 +138,7 @@ export function HomeCatalogSections({
                         alt={project.title}
                         className="h-full w-full object-cover"
                         loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-wider sm:text-base">

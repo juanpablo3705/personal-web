@@ -78,15 +78,18 @@ export default function ContactoPage() {
               name="nombre"
               type="text"
               required
+              maxLength={120}
               autoComplete="name"
+              enterKeyHint="next"
               placeholder="Tu nombre completo"
               defaultValue={state.values?.nombre ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.nombre)}
+              aria-describedby={state.fieldErrors?.nombre ? "nombre-error" : undefined}
               className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
             />
             {state.fieldErrors?.nombre && (
-              <p className="font-roman text-sm sm:text-base">{state.fieldErrors.nombre}</p>
+              <p id="nombre-error" className="font-roman text-sm sm:text-base">{state.fieldErrors.nombre}</p>
             )}
           </div>
 
@@ -99,16 +102,22 @@ export default function ContactoPage() {
               id="email"
               name="email"
               type="email"
+              inputMode="email"
               required
               autoComplete="email"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
+              enterKeyHint="next"
               placeholder="tu-correo@ejemplo.com"
               defaultValue={state.values?.email ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.email)}
+              aria-describedby={state.fieldErrors?.email ? "email-error" : undefined}
               className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
             />
             {state.fieldErrors?.email && (
-              <p className="font-roman text-sm sm:text-base">{state.fieldErrors.email}</p>
+              <p id="email-error" className="font-roman text-sm sm:text-base">{state.fieldErrors.email}</p>
             )}
           </div>
 
@@ -122,14 +131,18 @@ export default function ContactoPage() {
               name="asunto"
               type="text"
               required
+              maxLength={180}
+              autoComplete="off"
+              enterKeyHint="next"
               placeholder="Motivo de tu mensaje"
               defaultValue={state.values?.asunto ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.asunto)}
+              aria-describedby={state.fieldErrors?.asunto ? "asunto-error" : undefined}
               className="w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
             />
             {state.fieldErrors?.asunto && (
-              <p className="font-roman text-sm sm:text-base">{state.fieldErrors.asunto}</p>
+              <p id="asunto-error" className="font-roman text-sm sm:text-base">{state.fieldErrors.asunto}</p>
             )}
           </div>
 
@@ -143,14 +156,16 @@ export default function ContactoPage() {
               name="mensaje"
               rows={6}
               required
+              maxLength={5000}
               placeholder="Escribe tu mensaje aquí..."
               defaultValue={state.values?.mensaje ?? ""}
               disabled={isPending}
               aria-invalid={Boolean(state.fieldErrors?.mensaje)}
+              aria-describedby={state.fieldErrors?.mensaje ? "mensaje-error" : undefined}
               className="w-full resize-y border border-current bg-transparent px-3.5 py-2.5 font-roman text-sm placeholder:opacity-40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
             />
             {state.fieldErrors?.mensaje && (
-              <p className="font-roman text-sm sm:text-base">{state.fieldErrors.mensaje}</p>
+              <p id="mensaje-error" className="font-roman text-sm sm:text-base">{state.fieldErrors.mensaje}</p>
             )}
           </div>
 

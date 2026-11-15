@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Noto_Serif } from "next/font/google";
-import { preload } from "react-dom";
+import { preconnect, preload } from "react-dom";
 import "./globals.css";
 
 // Geist Mono solo se usa en el portal privado: no precargarla en cada visita pública
@@ -41,6 +41,11 @@ export default function RootLayout({
     type: "font/woff",
     crossOrigin: "anonymous",
   });
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  if (supabaseUrl) {
+    preconnect(supabaseUrl, { crossOrigin: "anonymous" });
+  }
 
   return (
     <html

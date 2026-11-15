@@ -40,7 +40,7 @@ export default async function ProyectosPage({
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {posts.map((project) => (
+          {posts.map((project, index) => (
             <article
               key={project.id}
               className="flex aspect-square flex-col overflow-hidden"
@@ -60,7 +60,9 @@ export default async function ProyectosPage({
                     src={project.thumbnail_url}
                     alt={project.title}
                     className="h-full w-full object-cover"
-                    loading="lazy"
+                    fetchPriority={index === 0 ? "high" : undefined}
+                    loading={index < 4 ? undefined : "lazy"}
+                    decoding="async"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-wider sm:text-base">

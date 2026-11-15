@@ -208,6 +208,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   return (
     <PublicShellContext.Provider value={{ isModalOpen, setModalOpen }}>
       <div
+        inert={isModalOpen || undefined}
         onClickCapture={handleDocumentClick}
         className={`public-scope min-h-screen flex flex-col ${
           isInverted ? "theme-inverted" : "theme-normal"
