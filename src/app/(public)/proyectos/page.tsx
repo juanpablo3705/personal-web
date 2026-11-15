@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ProyectosCatalogSection } from "@/components/ui/CatalogWithModal";
 import { Pagination } from "@/components/ui/Pagination";
 import {
   getPublishedPostsPaginated,
@@ -32,70 +32,7 @@ export default async function ProyectosPage({
         </h1>
       </header>
 
-      {posts.length === 0 ? (
-        <div className="py-12">
-          <p className="font-roman text-sm sm:text-base">
-            No hay proyectos publicados por el momento.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {posts.map((project, index) => (
-            <article
-              key={project.id}
-              className="flex aspect-square flex-col overflow-hidden"
-            >
-              {/* Mitad superior del cuadrado invisible: Thumbnail (click abre popup) */}
-              <Link
-                href={`/proyectos/${project.slug}`}
-                scroll={false}
-                data-no-scroll="true"
-                data-modal-trigger="true"
-                aria-label={`Ver proyecto ${project.title}`}
-                className="relative block h-1/2 w-full shrink-0 cursor-pointer overflow-hidden focus:outline-none"
-              >
-                {project.thumbnail_url ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={project.thumbnail_url}
-                    alt={project.title}
-                    className="h-full w-full object-cover"
-                    fetchPriority={index === 0 ? "high" : undefined}
-                    loading={index < 4 ? undefined : "lazy"}
-                    decoding="async"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-sm uppercase tracking-wider sm:text-base">
-                    Sin imagen
-                  </div>
-                )}
-              </Link>
-
-              {/* Mitad inferior del cuadrado invisible: Título (único link con ">") y Resumen breve */}
-              <div className="flex flex-1 flex-col overflow-hidden pt-4">
-                <div className="space-y-2 overflow-hidden">
-                  <h2 className="line-clamp-2 font-heavy text-sm sm:text-base">
-                    <Link
-                      href={`/proyectos/${project.slug}`}
-                      scroll={false}
-                      data-no-scroll="true"
-                      data-modal-trigger="true"
-                      className="hyper-link"
-                    >
-                      {project.title} &gt;
-                    </Link>
-                  </h2>
-                  {project.summary && (
-                    <p className="font-roman line-clamp-2 text-sm sm:text-base">
-                      {project.summary}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
+      <ProyectosCatalogSection posts={posts} />
 
       <Pagination
         basePath="/proyectos"

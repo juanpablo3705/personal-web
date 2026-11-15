@@ -3,18 +3,7 @@ import type { Post, PostType } from "@/lib/types/database";
 
 export const POSTS_PER_PAGE = 20;
 
-export type CatalogPostItem = Pick<
-  Post,
-  | "id"
-  | "type"
-  | "status"
-  | "title"
-  | "slug"
-  | "summary"
-  | "thumbnail_url"
-  | "created_at"
-  | "updated_at"
->;
+export type CatalogPostItem = Post;
 
 export type AdjacentPostLink = {
   slug: string;
@@ -60,10 +49,7 @@ export async function getPublishedPostsPaginated(
 
   const { data, count, error } = await supabase
     .from("posts")
-    .select(
-      "id, type, status, title, slug, summary, thumbnail_url, created_at, updated_at",
-      { count: "exact" }
-    )
+    .select("*", { count: "exact" })
     .eq("type", type)
     .eq("status", "published")
     .order("created_at", { ascending: false })
