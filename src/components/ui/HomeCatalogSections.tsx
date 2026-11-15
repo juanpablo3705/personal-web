@@ -46,7 +46,7 @@ function findPostAndNeighbors(
 }
 
 const HOME_BLOG_SUMMARY_MAX_CHARS = 255;
-const HOME_MODAL_OPEN_DELAY_MS = 200;
+const HOME_MODAL_OPEN_DELAY_MS = 300;
 
 function renderHomeBlogSummary(summary: string, onOpen: () => void) {
   if (summary.length <= HOME_BLOG_SUMMARY_MAX_CHARS) {

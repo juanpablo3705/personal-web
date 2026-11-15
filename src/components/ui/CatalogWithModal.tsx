@@ -7,7 +7,7 @@ import { formatBlogDate } from "@/lib/utils";
 import { PostModal } from "./PostModal";
 import type { AdjacentPostLink } from "./post-queries";
 
-const MODAL_OPEN_DELAY_MS = 200;
+const MODAL_OPEN_DELAY_MS = 300;
 const BLOG_SUMMARY_MAX_CHARS = 500;
 
 function findPostAndNeighbors(
