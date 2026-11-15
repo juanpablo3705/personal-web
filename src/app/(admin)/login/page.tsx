@@ -22,7 +22,6 @@ export default function LoginPage() {
     initialState
   );
   const [activeEmail, setActiveEmail] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -51,15 +50,9 @@ export default function LoginPage() {
       </header>
 
       <div className="max-w-[560px] space-y-8">
-        <div className="space-y-2">
-          <p className="font-heavy text-sm sm:text-base">
-            CMS · Portal privado
-          </p>
-          <p className="font-roman text-sm leading-relaxed sm:text-base">
-            Ingresa con tu cuenta de propietario para gestionar entradas de
-            blog, proyectos y actualizar el CV.
-          </p>
-        </div>
+        <p className="font-heavy text-sm sm:text-base">
+          CMS · Portal privado
+        </p>
 
         {activeEmail && (
           <div className="space-y-4 border border-current p-5 font-roman text-sm sm:text-base">
@@ -70,14 +63,14 @@ export default function LoginPage() {
             <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
               <Link
                 href="/dashboard"
-                className="hyper-link font-heavy text-sm sm:text-base"
+                className="hyper-link font-heavy text-sm tracking-wide sm:text-base"
               >
                 Ir al panel &gt;
               </Link>
               <form action={logoutAction}>
                 <button
                   type="submit"
-                  className="hyper-link cursor-pointer font-roman text-sm sm:text-base"
+                  className="hyper-link cursor-pointer font-heavy text-sm tracking-wide sm:text-base"
                 >
                   Cerrar sesión &gt;
                 </button>
@@ -132,59 +125,29 @@ export default function LoginPage() {
             >
               Contraseña *
             </label>
-            <div className="flex items-stretch">
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                required
-                autoComplete="current-password"
-                enterKeyHint="done"
-                placeholder="••••••••"
-                disabled={isPending}
-                className={`${INPUT_CLASS} min-w-0 flex-1`}
-              />
-              <button
-                type="button"
-                disabled={isPending}
-                aria-pressed={showPassword}
-                aria-controls="password"
-                aria-describedby="toggle-password-warning"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="min-h-12 shrink-0 cursor-pointer border-y border-r border-current px-4 font-roman text-sm transition-colors hover:bg-[var(--theme-fg)] hover:text-[var(--theme-bg)] disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
-              >
-                {showPassword ? "Ocultar" : "Mostrar"}
-              </button>
-            </div>
-            <span id="toggle-password-warning" className="sr-only">
-              Atención: activarlo mostrará la contraseña escrita en pantalla.
-            </span>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              enterKeyHint="done"
+              placeholder="••••••••"
+              disabled={isPending}
+              className={INPUT_CLASS}
+            />
           </div>
 
           <div className="pt-2">
             <button
               type="submit"
               disabled={isPending}
-              className="hyper-link cursor-pointer font-heavy text-sm tracking-wide disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+              className="hyper-link cursor-pointer font-heavy text-sm tracking-wide disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
             >
-              {isPending ? "Iniciando sesión..." : "Iniciar sesión >"}
+              {isPending ? "Iniciando sesión... >" : "Iniciar sesión >"}
             </button>
           </div>
         </form>
-
-        <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-current pt-4 font-roman text-sm sm:text-base">
-          <Link href="/" className="hyper-link">
-            &lt; Volver al sitio público
-          </Link>
-
-          {activeEmail && (
-            <form action={logoutAction}>
-              <button type="submit" className="hyper-link cursor-pointer">
-                Cerrar sesión &gt;
-              </button>
-            </form>
-          )}
-        </footer>
       </div>
     </section>
   );
