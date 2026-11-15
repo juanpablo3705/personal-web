@@ -6,6 +6,7 @@ import {
   deletePostAction,
   togglePostStatusAction,
 } from "@/lib/actions/posts";
+import { formatBlogDate } from "@/lib/utils";
 import type { Post } from "@/lib/types/database";
 
 type PostListProps = {
@@ -48,104 +49,114 @@ export default function PostList({ posts }: PostListProps) {
 
   if (posts.length === 0) {
     return (
-      <div className="border border-neutral-300 bg-neutral-50 p-8 text-center text-sm text-neutral-600">
-        No hay entradas registradas todavía. Usa los botones superiores para
-        crear una nueva entrada de Blog o un nuevo Proyecto.
+      <div className="border border-current p-8 font-roman text-sm sm:text-base">
+        No hay entradas registradas todavía. Usa los enlaces superiores para
+        crear una nueva entrada de blog o un nuevo proyecto.
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {errorMessage && (
         <div
           role="alert"
-          className="border border-neutral-900 bg-neutral-100 px-4 py-2.5 text-xs text-neutral-900"
+          aria-live="polite"
+          className="border border-current px-4 py-3 font-roman text-sm sm:text-base"
         >
           {errorMessage}
         </div>
       )}
 
-      <div className="overflow-x-auto border border-neutral-300">
-        <table className="w-full border-collapse text-left text-sm">
+      <div
+        tabIndex={0}
+        role="region"
+        aria-labelledby="posts-table-heading"
+        className="cms-table-wrap"
+      >
+        <table className="cms-table font-roman text-sm sm:text-base">
+          <caption className="sr-only">
+            Listado de publicaciones y proyectos registrados en el CMS
+          </caption>
           <thead>
-            <tr className="border-b border-neutral-300 bg-neutral-100 text-xs font-semibold uppercase tracking-wider text-neutral-700">
-              <th className="px-4 py-3">Título</th>
-              <th className="px-4 py-3">Tipo</th>
-              <th className="px-4 py-3">Estado</th>
-              <th className="px-4 py-3">Fecha</th>
-              <th className="px-4 py-3 text-right">Acciones</th>
+            <tr className="font-heavy text-sm sm:text-base">
+              <th scope="col" className="px-4 py-3.5">
+                Título
+              </th>
+              <th scope="col" className="px-4 py-3.5">
+                Tipo
+              </th>
+              <th scope="col" className="px-4 py-3.5">
+                Estado
+              </th>
+              <th scope="col" className="px-4 py-3.5">
+                Fecha
+              </th>
+              <th scope="col" className="px-4 py-3.5 text-right">
+                Acciones
+              </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-neutral-300 bg-white">
+          <tbody>
             {posts.map((post) => {
               const isRowBusy = isPending && pendingId === post.id;
               const typeLabel = post.type === "blog" ? "Blog" : "Proyecto";
               const statusLabel =
                 post.status === "published" ? "Publicado" : "Borrador";
-              const formattedDate = new Date(
-                post.created_at
-              ).toLocaleDateString("es-ES", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              });
+              const formattedDate = formatBlogDate(post.created_at) || "—";
 
               return (
-                <tr
-                  key={post.id}
-                  className="transition-colors hover:bg-neutral-50"
-                >
-                  <td className="px-4 py-3 font-medium text-neutral-900">
-                    <div>{post.title}</div>
-                    <div className="text-xs font-normal text-neutral-500">
+                <tr key={post.id}>
+                  <th scope="row" className="px-4 py-4 font-roman align-top">
+                    <div className="font-heavy text-sm sm:text-base">
+                      {post.title}
+                    </div>
+                    <div className="mt-1 font-roman text-sm opacity-70">
                       /{post.type === "blog" ? "blog" : "proyectos"}/{post.slug}
                     </div>
+                  </th>
+                  <td className="px-4 py-4 align-top font-roman">
+                    {typeLabel}
                   </td>
-                  <td className="px-4 py-3 text-neutral-700">
-                    <span className="inline-block border border-neutral-300 bg-neutral-50 px-2 py-0.5 text-xs font-medium text-neutral-800">
-                      {typeLabel}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-4 align-top">
                     <span
-                      className={`inline-block border px-2 py-0.5 text-xs font-medium ${
+                      className={`inline-block border border-current px-2 py-0.5 text-xs sm:text-sm ${
                         post.status === "published"
-                          ? "border-neutral-900 bg-neutral-900 text-white"
-                          : "border-neutral-300 bg-white text-neutral-700"
+                          ? "bg-[var(--theme-fg)] font-heavy text-[var(--theme-bg)]"
+                          : "font-roman"
                       }`}
                     >
                       {statusLabel}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-neutral-600">
+                  <td className="px-4 py-4 align-top font-roman italic">
                     {formattedDate}
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="inline-flex flex-wrap items-center justify-end gap-2">
+                  <td className="px-4 py-4 align-top text-right">
+                    <div className="inline-flex flex-wrap items-center justify-end gap-x-5 gap-y-2">
                       <Link
                         href={`/dashboard/editor?id=${post.id}`}
-                        className="border border-neutral-300 bg-white px-3 py-1 text-xs font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
+                        className="hyper-link font-heavy text-sm sm:text-base"
                       >
-                        Editar
+                        Editar &gt;
                       </Link>
                       <button
                         type="button"
                         disabled={isRowBusy}
                         onClick={() => handleToggleStatus(post)}
-                        className="border border-neutral-300 bg-white px-3 py-1 text-xs font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="hyper-link cursor-pointer font-roman text-sm disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
                       >
                         {post.status === "published"
-                          ? "Pasar a Borrador"
-                          : "Publicar"}
+                          ? "Pasar a borrador >"
+                          : "Publicar >"}
                       </button>
                       <button
                         type="button"
                         disabled={isRowBusy}
                         onClick={() => handleDelete(post)}
-                        className="border border-neutral-300 bg-white px-3 py-1 text-xs font-medium text-neutral-900 transition-colors hover:border-neutral-900 hover:bg-neutral-900 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                        className="hyper-link cursor-pointer font-roman text-sm disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
                       >
-                        Eliminar
+                        Eliminar &gt;
                       </button>
                     </div>
                   </td>

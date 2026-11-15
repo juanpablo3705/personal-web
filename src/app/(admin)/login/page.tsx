@@ -13,59 +13,69 @@ const initialState: AuthActionState = {
   error: null,
 };
 
+const INPUT_CLASS =
+  "min-h-12 w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-base placeholder:opacity-40 disabled:cursor-not-allowed disabled:opacity-50";
+
 export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(
     loginAction,
     initialState
   );
   const [activeEmail, setActiveEmail] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     const supabase = createClient();
+
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user?.email) {
+      if (isMounted && data.user?.email) {
         setActiveEmail(data.user.email);
       }
     });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center bg-white px-6 py-12 text-neutral-900">
-      <section className="space-y-6 border border-neutral-300 bg-white p-8">
-        <header className="space-y-2 border-b border-neutral-300 pb-4">
-          <p className="text-xs font-medium uppercase tracking-wider text-neutral-500">
-            Portal Privado
-          </p>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            Acceso de Administrador
-          </h1>
-          <p className="text-sm text-neutral-600">
-            Ingresa con tu cuenta de propietario para gestionar entradas y CV.
-          </p>
-        </header>
+    <section aria-labelledby="login-heading" className="space-y-10 pt-6">
+      <header className="space-y-3 border-b border-current pb-4">
+        <p className="font-heavy text-sm sm:text-base">CMS · Portal privado</p>
+        <h1
+          id="login-heading"
+          className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
+        >
+          Acceso de administrador
+        </h1>
+      </header>
+
+      <div className="max-w-[560px] space-y-8">
+        <p className="font-roman text-sm leading-relaxed sm:text-base">
+          Ingresa con tu cuenta de propietario para gestionar entradas de blog,
+          proyectos y actualizar el CV.
+        </p>
 
         {activeEmail && (
-          <div className="space-y-3 border border-neutral-300 bg-neutral-50 p-4 text-sm">
-            <p className="text-neutral-700">
+          <div className="space-y-4 border border-current p-5 font-roman text-sm sm:text-base">
+            <p>
               Sesión activa como{" "}
-              <span className="font-semibold text-neutral-900">
-                {activeEmail}
-              </span>
-              .
+              <span className="font-heavy">{activeEmail}</span>.
             </p>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
               <Link
                 href="/dashboard"
-                className="inline-flex items-center justify-center border border-neutral-900 bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-neutral-800"
+                className="hyper-link font-heavy text-sm sm:text-base"
               >
-                Ir al Panel →
+                Ir al panel &gt;
               </Link>
               <form action={logoutAction}>
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-800 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
+                  className="hyper-link cursor-pointer font-roman text-sm sm:text-base"
                 >
-                  Cerrar sesión
+                  Cerrar sesión &gt;
                 </button>
               </form>
             </div>
@@ -76,19 +86,23 @@ export default function LoginPage() {
           <div
             role="alert"
             aria-live="polite"
-            className="border border-neutral-900 bg-neutral-100 px-4 py-3 text-sm text-neutral-900"
+            className="border border-current px-4 py-3 font-roman text-sm sm:text-base"
           >
             {state.error}
           </div>
         )}
 
-        <form action={formAction} className="space-y-5">
-          <div className="space-y-2">
+        <form
+          action={formAction}
+          aria-labelledby="login-heading"
+          className="space-y-6"
+        >
+          <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-neutral-900"
+              className="mb-2 block font-roman text-sm sm:text-base"
             >
-              Correo electrónico
+              Correo electrónico *
             </label>
             <input
               id="email"
@@ -96,63 +110,78 @@ export default function LoginPage() {
               type="email"
               inputMode="email"
               required
-              autoComplete="email"
+              autoComplete="username"
               autoCorrect="off"
               autoCapitalize="none"
               spellCheck={false}
               enterKeyHint="next"
               placeholder="tu-correo@ejemplo.com"
               disabled={isPending}
-              className="w-full border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100"
+              className={INPUT_CLASS}
             />
           </div>
 
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-neutral-900"
+              className="mb-2 block font-roman text-sm sm:text-base"
             >
-              Contraseña
+              Contraseña *
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              placeholder="••••••••"
-              disabled={isPending}
-              className="w-full border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-100"
-            />
+            <div className="flex items-stretch">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                required
+                autoComplete="current-password"
+                enterKeyHint="done"
+                placeholder="••••••••"
+                disabled={isPending}
+                className={`${INPUT_CLASS} min-w-0 flex-1`}
+              />
+              <button
+                type="button"
+                disabled={isPending}
+                aria-pressed={showPassword}
+                aria-controls="password"
+                aria-describedby="toggle-password-warning"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="min-h-12 shrink-0 cursor-pointer border-y border-r border-current px-4 font-roman text-sm transition-colors hover:bg-[var(--theme-fg)] hover:text-[var(--theme-bg)] disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+              >
+                {showPassword ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
+            <span id="toggle-password-warning" className="sr-only">
+              Atención: activarlo mostrará la contraseña escrita en pantalla.
+            </span>
           </div>
 
-          <button
-            type="submit"
-            disabled={isPending}
-            className="w-full border border-neutral-900 bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isPending ? "Iniciando sesión..." : "Iniciar sesión"}
-          </button>
-        </form>
-
-        <footer className="flex items-center justify-between border-t border-neutral-300 pt-4 text-xs text-neutral-600">
-          <Link
-            href="/"
-            className="hover:text-neutral-900 hover:underline underline-offset-4"
-          >
-            ← Volver al sitio público
-          </Link>
-
-          <form action={logoutAction}>
+          <div className="pt-2">
             <button
               type="submit"
-              className="text-neutral-600 hover:text-neutral-900 hover:underline underline-offset-4"
+              disabled={isPending}
+              className="hyper-link cursor-pointer font-heavy text-sm tracking-wide disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
             >
-              Cerrar sesión
+              {isPending ? "Iniciando sesión..." : "Iniciar sesión >"}
             </button>
-          </form>
+          </div>
+        </form>
+
+        <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-current pt-4 font-roman text-sm sm:text-base">
+          <Link href="/" className="hyper-link">
+            &lt; Volver al sitio público
+          </Link>
+
+          {activeEmail && (
+            <form action={logoutAction}>
+              <button type="submit" className="hyper-link cursor-pointer">
+                Cerrar sesión &gt;
+              </button>
+            </form>
+          )}
         </footer>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 }

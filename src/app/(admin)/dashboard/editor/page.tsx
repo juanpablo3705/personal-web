@@ -42,36 +42,43 @@ export default async function DashboardEditorPage({
   }
 
   return (
-    <main className="mx-auto w-full max-w-4xl px-6 py-10 text-neutral-900">
-      <section className="space-y-6 border border-neutral-300 bg-white p-8">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-300 pb-4">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-              {initialPost ? "Editar Entrada" : "Nueva Entrada"}
-            </h1>
-            <p className="text-xs text-neutral-600">
-              {initialPost
-                ? `Editando: ${initialPost.title}`
-                : requestedType === "project"
-                  ? "Creando un nuevo proyecto"
-                  : "Creando una nueva entrada de blog"}
-            </p>
-          </div>
-
-          <Link
-            href="/dashboard"
-            className="border border-neutral-300 bg-white px-3.5 py-1.5 text-xs font-medium text-neutral-800 transition-colors hover:border-neutral-900 hover:bg-neutral-100"
+    <section
+      aria-labelledby="editor-heading"
+      className="mx-auto w-full max-w-4xl space-y-8 pt-6"
+    >
+      <header className="flex flex-wrap items-end justify-between gap-4 border-b border-current pb-4">
+        <div className="space-y-2">
+          <p className="font-heavy text-sm sm:text-base">CMS · Editor</p>
+          <h1
+            id="editor-heading"
+            className="font-roman text-2xl leading-[1.32] sm:text-3xl lg:text-[2.1rem]"
           >
-            ← Volver al Panel
-          </Link>
-        </header>
+            {initialPost ? "Editar entrada" : "Nueva entrada"}
+          </h1>
+          <p className="font-roman text-sm opacity-75 sm:text-base">
+            {initialPost
+              ? `Editando: ${initialPost.title}`
+              : requestedType === "project"
+                ? "Creando un nuevo proyecto"
+                : "Creando una nueva entrada de blog"}
+          </p>
+        </div>
 
+        <Link
+          href="/dashboard"
+          className="hyper-link font-heavy text-sm sm:text-base"
+        >
+          &lt; Volver al panel
+        </Link>
+      </header>
+
+      <div className="border border-current p-6 sm:p-8">
         <PostEditorForm
           key={initialPost?.id ?? requestedType}
           initialPost={initialPost}
           defaultType={requestedType}
         />
-      </section>
-    </main>
+      </div>
+    </section>
   );
 }

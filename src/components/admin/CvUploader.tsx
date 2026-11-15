@@ -88,21 +88,21 @@ export default function CvUploader() {
   }
 
   return (
-    <div className="border border-neutral-300 bg-white p-4">
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
+    <div className="border border-current p-5 sm:p-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
           <label
             htmlFor="cv-file-input"
-            className="text-sm font-semibold text-neutral-900"
+            className="font-heavy text-sm sm:text-base"
           >
-            Subir / Actualizar CV (PDF)
+            Actualizar CV (PDF)
           </label>
-          <span className="text-xs text-neutral-500">
+          <span className="font-roman text-sm italic opacity-75 sm:text-base">
             Destino: documents/cv_actual.pdf
           </span>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <input
             id="cv-file-input"
             name="cv"
@@ -110,14 +110,14 @@ export default function CvUploader() {
             accept="application/pdf,.pdf"
             required
             disabled={isPending}
-            className="w-full flex-1 border border-neutral-300 bg-white px-3 py-1.5 text-xs text-neutral-800 file:mr-3 file:border-0 file:bg-neutral-900 file:px-3 file:py-1 file:text-xs file:font-medium file:text-white hover:file:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
+            className="min-h-12 w-full flex-1 border border-current bg-transparent px-3 py-2 font-roman text-sm file:mr-4 file:cursor-pointer file:border file:border-current file:bg-transparent file:px-3 file:py-1.5 file:font-heavy file:text-xs file:text-[var(--theme-fg)] hover:file:bg-[var(--theme-fg)] hover:file:text-[var(--theme-bg)] disabled:cursor-not-allowed disabled:opacity-50 sm:text-base sm:file:text-sm"
           />
           <button
             type="submit"
             disabled={isPending}
-            className="shrink-0 border border-neutral-900 bg-neutral-900 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
+            className="hyper-link shrink-0 cursor-pointer font-heavy text-sm disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
           >
-            {isPending ? "Subiendo CV..." : "Subir / Actualizar CV (PDF)"}
+            {isPending ? "Subiendo CV..." : "Subir CV >"}
           </button>
         </div>
 
@@ -125,9 +125,9 @@ export default function CvUploader() {
           <p
             role="status"
             aria-live="polite"
-            className="border border-neutral-900 bg-neutral-100 px-3 py-2 text-xs font-medium text-neutral-900"
+            className="border border-current px-4 py-3 font-roman text-sm sm:text-base"
           >
-            {state.message}
+            <span className="font-heavy">Confirmado:</span> {state.message}
           </p>
         )}
 
@@ -135,9 +135,9 @@ export default function CvUploader() {
           <p
             role="alert"
             aria-live="polite"
-            className="border border-neutral-900 bg-neutral-50 px-3 py-2 text-xs text-neutral-900"
+            className="border border-current px-4 py-3 font-roman text-sm sm:text-base"
           >
-            {state.error}
+            <span className="font-heavy">Error:</span> {state.error}
           </p>
         )}
       </form>

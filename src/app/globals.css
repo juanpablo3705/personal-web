@@ -190,3 +190,105 @@ dialog::backdrop,
   background-color: var(--theme-fg);
   color: var(--theme-bg);
 }
+
+/* Indicador visible de foco por teclado en controles interactivos */
+.public-scope :is(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--theme-fg);
+  outline-offset: 2px;
+}
+
+/* Tabla responsive accesible del CMS basada en container queries */
+.cms-table-wrap {
+  overflow-x: auto;
+  max-inline-size: 100%;
+  container-type: inline-size;
+  border: 1px solid var(--theme-fg);
+}
+
+.cms-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  --label-type: "Tipo";
+  --label-status: "Estado";
+  --label-date: "Fecha";
+  --label-actions: "Acciones";
+}
+
+.cms-table thead th {
+  border-bottom: 1px solid var(--theme-fg);
+}
+
+.cms-table tbody tr:not(:last-child) th,
+.cms-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-fg) 22%, transparent);
+}
+
+@container (width < 720px) {
+  .cms-table,
+  .cms-table thead,
+  .cms-table tbody,
+  .cms-table tr,
+  .cms-table th,
+  .cms-table td {
+    display: block;
+  }
+
+  .cms-table thead {
+    display: none;
+  }
+
+  .cms-table tbody tr {
+    padding-block: 1rem;
+    padding-inline: 1rem;
+  }
+
+  .cms-table tbody tr:not(:last-child) {
+    border-bottom: 1px solid var(--theme-fg);
+  }
+
+  .cms-table tbody tr:not(:last-child) th,
+  .cms-table tbody tr:not(:last-child) td {
+    border-bottom: 0;
+  }
+
+  .cms-table tbody th,
+  .cms-table tbody td {
+    padding: 0;
+    text-align: left;
+  }
+
+  .cms-table tbody td {
+    margin-block-start: 0.625rem;
+  }
+
+  .cms-table tbody td:nth-of-type(1)::before {
+    content: var(--label-type) ": ";
+    font-family: var(--font-avenir-heavy);
+    font-weight: 800;
+  }
+
+  .cms-table tbody td:nth-of-type(2)::before {
+    content: var(--label-status) ": ";
+    font-family: var(--font-avenir-heavy);
+    font-weight: 800;
+  }
+
+  .cms-table tbody td:nth-of-type(3)::before {
+    content: var(--label-date) ": ";
+    font-family: var(--font-avenir-heavy);
+    font-weight: 800;
+  }
+
+  .cms-table tbody td:nth-of-type(4)::before {
+    content: var(--label-actions) ": ";
+    display: block;
+    margin-block-end: 0.375rem;
+    font-family: var(--font-avenir-heavy);
+    font-weight: 800;
+  }
+
+  .cms-table tbody td:nth-of-type(4) > div {
+    justify-content: flex-start;
+  }
+}
