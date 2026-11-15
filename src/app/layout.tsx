@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import { preconnect, preload } from "react-dom";
+import { PublicShell } from "@/components/layout/PublicShell";
 import "./globals.css";
 
 // Geist Mono solo se usa en el portal privado: display "block" prohibe mostrar fuente de respaldo
@@ -52,7 +53,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-[var(--blanco)] text-[var(--negro)]">
-        {children}
+        <PublicShell>{children}</PublicShell>
       </body>
     </html>
   );

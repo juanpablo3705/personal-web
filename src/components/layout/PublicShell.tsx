@@ -175,6 +175,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       setIsFadingOut(true);
       if (href !== "/") {
         setForcingWhiteBg(true);
+      } else {
+        setIsHomeAtTop(true);
       }
 
       if (navTimeoutRef.current) {
@@ -232,7 +234,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
         <Navbar />
 
         <motion.main
-          initial={false}
+          initial={{ opacity: 0 }}
           animate={{ opacity: isFadingOut ? 0 : 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="w-full flex-1 px-5 pb-20 sm:px-8 md:px-12 lg:px-16"
