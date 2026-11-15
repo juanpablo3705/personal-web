@@ -96,7 +96,7 @@ export default function LoginPage() {
               htmlFor="email"
               className="mb-2 block font-roman text-sm sm:text-base"
             >
-              Correo electrónico *
+              Correo electrónico
             </label>
             <input
               id="email"
@@ -120,7 +120,7 @@ export default function LoginPage() {
               htmlFor="password"
               className="mb-2 block font-roman text-sm sm:text-base"
             >
-              Contraseña *
+              Contraseña
             </label>
             <input
               id="password"
