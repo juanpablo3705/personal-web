@@ -68,11 +68,13 @@
    cuando el sitio está en negro (popup abierto). */
 html {
   scrollbar-gutter: stable;
+  color-scheme: light;
   background-color: var(--blanco);
   transition: background-color 500ms ease-in-out;
 }
 
 html.canvas-inverted {
+  color-scheme: dark;
   background-color: var(--negro);
 }
 
@@ -95,21 +97,42 @@ body {
 }
 
 .public-scope.theme-normal {
+  color-scheme: light;
   --theme-bg: #fbfbf9;
   --theme-fg: #0e0e0e;
 }
 
 .public-scope.theme-inverted {
+  color-scheme: dark;
   --theme-bg: #0e0e0e;
   --theme-fg: #fbfbf9;
 }
 
 /* El cuadro blanco del popup mantiene siempre sus colores fijos blanco/negro */
 .theme-normal-box {
+  color-scheme: light;
   --theme-bg: #fbfbf9;
   --theme-fg: #0e0e0e;
   background-color: #fbfbf9;
   color: #0e0e0e;
+}
+
+/* Contención de scroll en modales sin mutar overflow del body (evita saltos de layout) */
+dialog:modal,
+.modal-scroll-contain {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop,
+.modal-backdrop-contain {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* Renderizado diferido para secciones confirmadas debajo del pliegue inicial */
+.deferred-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 480px;
 }
 
 /* Tipografía utilitaria */

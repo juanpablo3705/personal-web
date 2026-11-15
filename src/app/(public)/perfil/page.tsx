@@ -113,7 +113,7 @@ export default function PerfilPage() {
       {/* 1. LANDING DE PERFIL (misma estructura, dimensiones y posicionamiento que el Home, sobre fondo blanco) */}
       <section
         aria-labelledby="perfil-nombre"
-        className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start pt-2 pb-6"
+        className="flex min-h-[calc(100svh-4.5rem)] flex-col justify-start pt-2 pb-6"
       >
         {/* Bloque superior izquierdo idéntico al Home */}
         <div className="max-w-xs space-y-0.5">
@@ -233,7 +233,7 @@ export default function PerfilPage() {
         </section>
 
         {/* Educación */}
-        <section aria-labelledby="educacion-titulo" className="space-y-6">
+        <section aria-labelledby="educacion-titulo" className="deferred-section space-y-6">
           <h2
             id="educacion-titulo"
             className="border-b border-current pb-3 font-heavy text-sm sm:text-base"
@@ -276,7 +276,7 @@ export default function PerfilPage() {
         </section>
 
         {/* Otras Habilidades */}
-        <section aria-labelledby="habilidades-titulo" className="space-y-6">
+        <section aria-labelledby="habilidades-titulo" className="deferred-section space-y-6">
           <h2
             id="habilidades-titulo"
             className="border-b border-current pb-3 font-heavy text-sm sm:text-base"

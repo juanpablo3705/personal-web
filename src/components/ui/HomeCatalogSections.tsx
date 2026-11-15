@@ -103,7 +103,7 @@ export function HomeCatalogSections({
     <>
       <div className="space-y-24">
         {/* 2. SECCIÓN DE RESUMEN DE PROYECTOS (máximo 4 entradas, separador solo en el subtítulo Proyectos) */}
-        <section aria-labelledby="home-proyectos-titulo" className="space-y-8 pt-8">
+        <section aria-labelledby="home-proyectos-titulo" className="deferred-section space-y-8 pt-8">
           <header className="border-b border-current pb-4 text-center">
             <h2
               id="home-proyectos-titulo"
@@ -182,7 +182,7 @@ export function HomeCatalogSections({
         </section>
 
         {/* 3. SECCIÓN DE RESUMEN DE BLOG (máximo 4 entradas, separador solo en el subtítulo Blog) */}
-        <section aria-labelledby="home-blog-titulo" className="space-y-8 pb-12">
+        <section aria-labelledby="home-blog-titulo" className="deferred-section space-y-8 pb-12">
           <header className="border-b border-current pb-4 text-center">
             <h2
               id="home-blog-titulo"

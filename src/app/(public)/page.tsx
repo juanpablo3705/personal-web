@@ -33,7 +33,7 @@ export default async function InicioPage() {
       {/* 1. LANDING DE PANTALLA COMPLETA (referencia: home-home.png) */}
       <section
         aria-labelledby="landing-nombre"
-        className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start pt-2 pb-16"
+        className="flex min-h-[calc(100svh-4.5rem)] flex-col justify-start pt-2 pb-16"
       >
         {/* Bloque superior izquierdo:
             Juan Pablo Oyanedel (AvenirLT-Roman) y Analista Programador (Avenir LT 85 Heavy) */}

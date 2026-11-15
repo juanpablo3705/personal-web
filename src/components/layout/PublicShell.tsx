@@ -37,6 +37,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
   const navTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const shouldScrollTopRef = useRef(false);
+  const scrollSentinelRef = useRef<HTMLDivElement | null>(null);
 
   const isHomePage = pathname === "/";
 
@@ -49,27 +50,33 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
     /* =========================================================================
      * REGLA DE TRIGGER DE TEMA CRÍTICA (NO CAMBIAR A PÍXELES FIJOS)
      *
-     * `threshold = window.innerHeight * 0.55` calcula el umbral relativo al 55%
-     * de la altura de la pantalla del usuario en ese momento.
+     * El elemento centinela invisible (`scrollSentinelRef`) mide exactamente `55svh`
+     * desde el borde superior del documento (`top: 0`).
      *
-     * Esta fórmula proporcional garantiza que la transición fluida de negro a blanco
-     * ocurra exactamente en el mismo punto relativo del recorrido en cualquier monitor
-     * (laptops 768p/900p, monitores 1080p, 2K, 4K o pantallas retina con trackpad).
-     *
-     * NO reemplazar por una distancia fija en píxeles (ej: 400px o 500px).
+     * Mientras el usuario no haya bajado más del 55% de la altura de su pantalla,
+     * el centinela sigue intersectando el viewport (`entry.isIntersecting === true`).
+     * Al cruzar ese 55%, deja de intersectar y dispara la inversión a blanco sin
+     * ejecutar listeners continuos de scroll ni recalcular en cada tick de rueda.
      * ========================================================================= */
-    const handleScroll = () => {
-      const threshold = window.innerHeight * 0.55;
-      setIsHomeAtTop(window.scrollY < threshold);
-    };
+    const sentinel = scrollSentinelRef.current;
+    if (!sentinel || typeof IntersectionObserver === "undefined") {
+      return;
+    }
 
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry) {
+          setIsHomeAtTop(entry.isIntersecting);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      observer.disconnect();
     };
   }, [isHomePage]);
 
@@ -210,10 +217,15 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       <div
         inert={isModalOpen || undefined}
         onClickCapture={handleDocumentClick}
-        className={`public-scope min-h-screen flex flex-col ${
+        className={`public-scope relative min-h-dvh flex flex-col ${
           isInverted ? "theme-inverted" : "theme-normal"
         }`}
       >
+        <div
+          ref={scrollSentinelRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 left-0 h-[55svh] w-0 select-none overflow-hidden opacity-0"
+        />
         <Navbar />
 
         <motion.main

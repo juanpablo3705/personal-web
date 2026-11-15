@@ -102,9 +102,6 @@ export function PostModal({
   useEffect(() => {
     if (!isVisible) return;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         handleClose();
@@ -114,7 +111,6 @@ export function PostModal({
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isVisible, handleClose]);
@@ -132,7 +128,7 @@ export function PostModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-post-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 sm:p-6 md:p-10"
+      className="modal-backdrop-contain fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 sm:p-6 md:p-10"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           handleClose();
@@ -143,7 +139,7 @@ export function PostModal({
         initial={{ opacity: 0 }}
         animate={{ opacity: isFading ? 0 : 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="public-scope theme-normal-box flex max-h-[88vh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
+        className="public-scope theme-normal-box flex max-h-[88dvh] w-full max-w-4xl flex-col bg-[var(--blanco)] text-[var(--negro)]"
       >
         {/* Espacio en blanco exclusivo superior con hipervínculo "X" (sin etiqueta "blog"/"proyecto" ni bordes) */}
         <header className="flex shrink-0 items-center justify-end bg-[var(--blanco)] px-6 py-4 sm:px-10">
@@ -160,7 +156,7 @@ export function PostModal({
         {/* Área central de lectura */}
         <div
           ref={contentScrollRef}
-          className="flex-1 overflow-y-auto px-6 py-4 sm:px-10 sm:py-6"
+          className="modal-scroll-contain flex-1 overflow-y-auto px-6 py-4 sm:px-10 sm:py-6"
         >
           <article className="space-y-6">
             <header className="space-y-2">
