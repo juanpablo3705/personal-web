@@ -3,8 +3,26 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/admin-auth";
 import type { PostStatus, PostType } from "@/lib/types/database";
+
+const ALLOWED_MEDIA_FOLDERS = new Set(["thumbnails", "uploads", "content"]);
+const ALLOWED_IMAGE_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/avif",
+]);
+const ALLOWED_IMAGE_EXTENSIONS = new Set([
+  "jpg",
+  "jpeg",
+  "png",
+  "webp",
+  "gif",
+  "avif",
+]);
+const MAX_IMAGE_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 export type PostActionState = {
   error: string | null;
@@ -28,6 +46,38 @@ function createSlug(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
+/**
+ * Sanitiza el HTML generado por el editor antes de persistirlo en la base de datos:
+ * elimina etiquetas ejecutables/embebidas peligrosas (<script>, <iframe>, <object>,
+ * <embed>, <style>, <svg>, <math>, <form>) y atributos de ejecución (on*, srcdoc,
+ * javascript:, data:text/html), preservando el formato editorial de Tiptap.
+ */
+function sanitizePostHtml(rawHtml: string): string {
+  if (!rawHtml) return "";
+
+  return rawHtml
+    // 1. Eliminar bloques completos de etiquetas peligrosas con su contenido
+    .replace(
+      /<\s*(script|iframe|object|embed|style|svg|math|form|base|meta|link)\b[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi,
+      ""
+    )
+    // 2. Eliminar etiquetas peligrosas huérfanas o auto-cerradas
+    .replace(
+      /<\s*\/?\s*(script|iframe|object|embed|style|svg|math|form|base|meta|link|input|button|textarea|select)\b[^>]*\/?>/gi,
+      ""
+    )
+    // 3. Eliminar atributos de eventos inline (onload, onerror, onclick, etc.) y srcdoc/formaction
+    .replace(
+      /\s+(on[a-z]+|srcdoc|formaction)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi,
+      ""
+    )
+    // 4. Neutralizar protocolos peligrosos (javascript:, vbscript:, data:text/html) en href/src
+    .replace(
+      /\s+(href|src|xlink:href|action)\s*=\s*(?:"\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^"]*"|'\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^']*'|(?:\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^\s>]+))/gi,
+      ""
+    );
+}
+
 const postSchema = z.object({
   id: z.string().optional(),
   type: z.enum(["blog", "project"], {
@@ -49,13 +99,9 @@ const postSchema = z.object({
 export async function uploadMediaAction(
   formData: FormData
 ): Promise<MediaUploadResult> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const { supabase, isAuthorized } = await getAuthenticatedAdmin();
 
-  if (authError || !user) {
+  if (!isAuthorized) {
     return {
       url: null,
       error: "No tienes autorización para subir archivos.",
@@ -63,7 +109,10 @@ export async function uploadMediaAction(
   }
 
   const file = formData.get("file") as File | null;
-  const folder = String(formData.get("folder") ?? "uploads");
+  const requestedFolder = String(formData.get("folder") ?? "uploads").trim();
+  const folder = ALLOWED_MEDIA_FOLDERS.has(requestedFolder)
+    ? requestedFolder
+    : "uploads";
 
   if (!file || typeof file === "string" || file.size === 0) {
     return {
@@ -72,14 +121,24 @@ export async function uploadMediaAction(
     };
   }
 
-  if (!file.type.startsWith("image/")) {
+  if (file.size > MAX_IMAGE_FILE_BYTES) {
     return {
       url: null,
-      error: "El archivo seleccionado debe ser una imagen.",
+      error: "La imagen supera el tamaño máximo permitido (10 MB).",
     };
   }
 
-  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const rawExt = file.name.split(".").pop()?.toLowerCase() || "";
+  const ext = ALLOWED_IMAGE_EXTENSIONS.has(rawExt) ? rawExt : "";
+
+  if (!ALLOWED_IMAGE_MIME_TYPES.has(file.type) || !ext) {
+    return {
+      url: null,
+      error:
+        "Formato de imagen no permitido. Usa JPG, PNG, WEBP, GIF o AVIF.",
+    };
+  }
+
   const baseName = createSlug(file.name.replace(/\.[^/.]+$/, "")) || "imagen";
   const filePath = `${folder}/${Date.now()}-${baseName}.${ext}`;
 
@@ -114,13 +173,9 @@ export async function savePostAction(
   _prevState: PostActionState,
   formData: FormData
 ): Promise<PostActionState> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const { supabase, isAuthorized } = await getAuthenticatedAdmin();
 
-  if (authError || !user) {
+  if (!isAuthorized) {
     return {
       error: "No tienes autorización para guardar publicaciones.",
     };
@@ -189,6 +244,7 @@ export async function savePostAction(
   }
 
   const now = new Date().toISOString();
+  const safeContent = sanitizePostHtml(parsed.data.content || "");
 
   if (parsed.data.id) {
     const { error: updateError } = await supabase
@@ -200,7 +256,7 @@ export async function savePostAction(
         slug: finalSlug,
         summary: parsed.data.summary || null,
         thumbnail_url: rawThumbnailUrl || null,
-        content: parsed.data.content || "",
+        content: safeContent,
         updated_at: now,
       })
       .eq("id", parsed.data.id);
@@ -218,7 +274,7 @@ export async function savePostAction(
       slug: finalSlug,
       summary: parsed.data.summary || null,
       thumbnail_url: rawThumbnailUrl || null,
-      content: parsed.data.content || "",
+      content: safeContent,
       updated_at: now,
     });
 
@@ -243,13 +299,9 @@ export async function togglePostStatusAction(
   id: string,
   currentStatus: PostStatus
 ): Promise<{ error: string | null }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const { supabase, isAuthorized } = await getAuthenticatedAdmin();
 
-  if (authError || !user) {
+  if (!isAuthorized) {
     return { error: "No autorizado." };
   }
 
@@ -279,13 +331,9 @@ export async function togglePostStatusAction(
 export async function deletePostAction(
   id: string
 ): Promise<{ error: string | null }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const { supabase, isAuthorized } = await getAuthenticatedAdmin();
 
-  if (authError || !user) {
+  if (!isAuthorized) {
     return { error: "No autorizado." };
   }
 

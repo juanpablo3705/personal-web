@@ -51,22 +51,17 @@ export default function ContactoPage() {
         )}
 
         <form action={formAction} className="space-y-6" noValidate>
-          {/*
-            NOTA FUTURA (Anti-spam / Honeypot):
-            Si en el futuro se necesita agregar un campo honeypot contra bots sin usar captchas,
-            insertar aquí un input oculto (y descomentar la validación en src/lib/actions/contacto.ts):
-
-            <div className="hidden" aria-hidden="true">
-              <label htmlFor="website">No completar este campo</label>
-              <input
-                id="website"
-                name="website"
-                type="text"
-                tabIndex={-1}
-                autoComplete="off"
-              />
-            </div>
-          */}
+          {/* Campo Honeypot invisible contra bots automatizados (sin captchas) */}
+          <div className="hidden" aria-hidden="true">
+            <label htmlFor="website">No completar este campo</label>
+            <input
+              id="website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
 
           {/* Campo 1: Nombre */}
           <div className="space-y-2">

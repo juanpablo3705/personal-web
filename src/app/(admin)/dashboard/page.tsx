@@ -3,16 +3,13 @@ import { redirect } from "next/navigation";
 import CvUploader from "@/components/admin/CvUploader";
 import PostList from "@/components/admin/PostList";
 import { logoutAction } from "@/lib/actions/auth";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/admin-auth";
 import type { Post } from "@/lib/types/database";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user, isAuthorized } = await getAuthenticatedAdmin();
 
-  if (!user) {
+  if (!isAuthorized || !user) {
     redirect("/login");
   }
 

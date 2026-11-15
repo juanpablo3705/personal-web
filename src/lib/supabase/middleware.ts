@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isAdminUser } from "@/lib/supabase/admin-auth";
 import type { Database } from "@/lib/types/database";
 
 export async function updateSession(request: NextRequest) {
@@ -51,7 +52,7 @@ export async function updateSession(request: NextRequest) {
 
   const isDashboardRoute = request.nextUrl.pathname.startsWith("/dashboard");
 
-  if (isDashboardRoute && !user) {
+  if (isDashboardRoute && (!user || !isAdminUser(user))) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     const redirectResponse = NextResponse.redirect(loginUrl);

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import PostEditorForm from "@/components/admin/PostEditorForm";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/admin-auth";
 import type { Post, PostType } from "@/lib/types/database";
 
 type EditorPageProps = {
@@ -14,12 +14,9 @@ type EditorPageProps = {
 export default async function DashboardEditorPage({
   searchParams,
 }: EditorPageProps) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user, isAuthorized } = await getAuthenticatedAdmin();
 
-  if (!user) {
+  if (!isAuthorized || !user) {
     redirect("/login");
   }
 

@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { isAdminUser } from "@/lib/supabase/admin-auth";
 import { createClient } from "@/lib/supabase/server";
 
 export type AuthActionState = {
@@ -24,6 +26,19 @@ export async function loginAction(
   _prevState: AuthActionState,
   formData: FormData
 ): Promise<AuthActionState> {
+  const rateLimit = await checkRateLimit({
+    namespace: "admin-login",
+    maxRequests: 5,
+    windowMs: 15 * 60 * 1000,
+  });
+
+  if (!rateLimit.allowed) {
+    return {
+      error:
+        "Demasiados intentos de inicio de sesión. Por favor, espera unos minutos antes de volver a intentarlo.",
+    };
+  }
+
   const rawData = {
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
@@ -38,14 +53,24 @@ export async function loginAction(
     };
   }
 
+  if (!isAdminUser({ email: parsed.data.email })) {
+    return {
+      error:
+        "Credenciales incorrectas. Verifica tu correo electrónico y contraseña.",
+    };
+  }
+
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: parsed.data.email,
     password: parsed.data.password,
   });
 
-  if (error) {
+  if (error || !isAdminUser(data.user)) {
+    if (data?.user && !isAdminUser(data.user)) {
+      await supabase.auth.signOut();
+    }
     return {
       error:
         "Credenciales incorrectas. Verifica tu correo electrónico y contraseña.",

@@ -2,6 +2,7 @@
 
 import { Resend } from "resend";
 import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export type ContactoFieldErrors = {
   nombre?: string;
@@ -61,13 +62,32 @@ export async function sendContactEmailAction(
   _prevState: ContactoActionState,
   formData: FormData
 ): Promise<ContactoActionState> {
-  // NOTA FUTURA (Honeypot):
-  // Si se habilita el campo oculto honeypot en el formulario de /contacto,
-  // verificar aquí:
-  // const honeypot = String(formData.get("website") ?? "").trim();
-  // if (honeypot.length > 0) {
-  //   return { success: true, message: "Tu mensaje ha sido enviado con éxito.", error: null };
-  // }
+  // 1. Trampa anti-bots (Honeypot invisible)
+  const honeypot = String(formData.get("website") ?? "").trim();
+  if (honeypot.length > 0) {
+    return {
+      success: true,
+      message:
+        "Tu mensaje ha sido enviado con éxito. Me pondré en contacto contigo a la brevedad.",
+      error: null,
+    };
+  }
+
+  // 2. Limitador de frecuencia por IP (máximo 3 envíos cada 10 minutos) para proteger la cuota de Resend
+  const rateLimit = await checkRateLimit({
+    namespace: "contact-form",
+    maxRequests: 3,
+    windowMs: 10 * 60 * 1000,
+  });
+
+  if (!rateLimit.allowed) {
+    return {
+      success: false,
+      message: null,
+      error:
+        "Has enviado demasiados mensajes en poco tiempo. Por favor, espera unos minutos antes de intentarlo nuevamente.",
+    };
+  }
 
   const rawValues: ContactoFormValues = {
     nombre: String(formData.get("nombre") ?? ""),

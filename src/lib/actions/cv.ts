@@ -1,7 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/admin-auth";
+
+const MAX_CV_FILE_BYTES = 15 * 1024 * 1024; // 15 MB
 
 export type CvActionState = {
   success: boolean;
@@ -10,17 +12,27 @@ export type CvActionState = {
   publicUrl?: string | null;
 };
 
+function hasPdfMagicBytes(buffer: Uint8Array): boolean {
+  // Un archivo PDF real comienza con la secuencia ASCII "%PDF-" (0x25 0x50 0x44 0x46 0x2D)
+  if (buffer.byteLength < 5) {
+    return false;
+  }
+  return (
+    buffer[0] === 0x25 &&
+    buffer[1] === 0x50 &&
+    buffer[2] === 0x44 &&
+    buffer[3] === 0x46 &&
+    buffer[4] === 0x2d
+  );
+}
+
 export async function uploadCvAction(
   _prevState: CvActionState,
   formData: FormData
 ): Promise<CvActionState> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const { supabase, isAuthorized } = await getAuthenticatedAdmin();
 
-  if (authError || !user) {
+  if (!isAuthorized) {
     return {
       success: false,
       message: null,
@@ -38,6 +50,14 @@ export async function uploadCvAction(
     };
   }
 
+  if (file.size > MAX_CV_FILE_BYTES) {
+    return {
+      success: false,
+      message: null,
+      error: "El archivo PDF supera el tamaño máximo permitido (15 MB).",
+    };
+  }
+
   const isPdf =
     file.type === "application/pdf" ||
     file.name.toLowerCase().endsWith(".pdf");
@@ -52,6 +72,14 @@ export async function uploadCvAction(
 
   const arrayBuffer = await file.arrayBuffer();
   const fileBuffer = new Uint8Array(arrayBuffer);
+
+  if (!hasPdfMagicBytes(fileBuffer)) {
+    return {
+      success: false,
+      message: null,
+      error: "El contenido del archivo no corresponde a un documento PDF válido.",
+    };
+  }
 
   const { error: uploadError } = await supabase.storage
     .from("documents")
@@ -84,6 +112,10 @@ export async function uploadCvAction(
 }
 
 export async function revalidateCvAction(): Promise<void> {
+  const { isAuthorized } = await getAuthenticatedAdmin();
+  if (!isAuthorized) {
+    return;
+  }
   revalidatePath("/perfil");
   revalidatePath("/dashboard");
 }
