@@ -6,7 +6,7 @@ import { usePublicShell } from "@/components/layout/PublicShell";
 import type { Post } from "@/lib/types/database";
 import { formatBlogDate } from "@/lib/utils";
 import { PostModal } from "./PostModal";
-import type { AdjacentPostLink } from "./post-queries";
+import { findPostAndNeighbors } from "./post-neighbors";
 
 type HomeCatalogSectionsProps = {
   proyectos: Post[];
@@ -17,33 +17,6 @@ type ActiveHomeModal = {
   type: "project" | "blog";
   slug: string;
 } | null;
-
-function findPostAndNeighbors(
-  list: Post[],
-  slug: string
-): {
-  post: Post | null;
-  prevPost: AdjacentPostLink | null;
-  nextPost: AdjacentPostLink | null;
-} {
-  const index = list.findIndex((item) => item.slug === slug);
-  if (index === -1) {
-    return { post: null, prevPost: null, nextPost: null };
-  }
-
-  const post = list[index] ?? null;
-  // list está ordenado de más reciente a más antiguo (created_at DESC).
-  // "Siguiente >" debe llevar a la próxima entrada más nueva (hacia index 0).
-  // "< Anterior" debe llevar a la próxima entrada más antigua (hacia el final de la lista).
-  const newerItem = index > 0 ? list[index - 1] : null;
-  const olderItem = index < list.length - 1 ? list[index + 1] : null;
-
-  return {
-    post,
-    prevPost: olderItem ? { slug: olderItem.slug, title: olderItem.title } : null,
-    nextPost: newerItem ? { slug: newerItem.slug, title: newerItem.title } : null,
-  };
-}
 
 const HOME_BLOG_SUMMARY_MAX_CHARS = 255;
 const HOME_MODAL_OPEN_DELAY_MS = 300;
@@ -84,6 +57,12 @@ export function HomeCatalogSections({
 
   const proyectosVisibles = proyectos.slice(0, 4);
   const blogVisibles = entradasBlog.slice(0, 4);
+
+  useEffect(() => {
+    return () => {
+      setModalOpen(false);
+    };
+  }, [setModalOpen]);
 
   useEffect(() => {
     if (!pendingModal) {

@@ -7,10 +7,11 @@ type RateLimitBucket = {
 const buckets = new Map<string, RateLimitBucket>();
 const MAX_BUCKETS = 2000;
 
-function cleanupExpiredBuckets(now: number, windowMs: number) {
-  if (buckets.size <= MAX_BUCKETS) {
+function cleanupBuckets(now: number, windowMs: number) {
+  if (buckets.size < MAX_BUCKETS) {
     return;
   }
+
   for (const [key, bucket] of buckets.entries()) {
     const active = bucket.timestamps.filter((t) => now - t < windowMs);
     if (active.length === 0) {
@@ -19,6 +20,36 @@ function cleanupExpiredBuckets(now: number, windowMs: number) {
       bucket.timestamps = active;
     }
   }
+
+  // tope duro fifo si las 2000 entradas siguen activas en la ventana
+  while (buckets.size >= MAX_BUCKETS) {
+    const oldestKey = buckets.keys().next().value;
+    if (!oldestKey) {
+      break;
+    }
+    buckets.delete(oldestKey);
+  }
+}
+
+function resolveClientIp(headerStore: Headers): string {
+  const vercelForwarded = headerStore
+    .get("x-vercel-forwarded-for")
+    ?.split(",")[0]
+    ?.trim();
+  if (vercelForwarded) {
+    return vercelForwarded;
+  }
+
+  const realIp = headerStore.get("x-real-ip")?.trim();
+  if (realIp) {
+    return realIp;
+  }
+
+  const forwardedFor = headerStore
+    .get("x-forwarded-for")
+    ?.split(",")[0]
+    ?.trim();
+  return forwardedFor || "unknown-ip";
 }
 
 export async function checkRateLimit(options: {
@@ -27,13 +58,10 @@ export async function checkRateLimit(options: {
   windowMs: number;
 }): Promise<{ allowed: boolean; retryAfterSeconds: number }> {
   const headerStore = await headers();
-  const forwardedFor = headerStore.get("x-forwarded-for");
-  const realIp = headerStore.get("x-real-ip");
-  const clientIp =
-    forwardedFor?.split(",")[0]?.trim() || realIp?.trim() || "unknown-ip";
-
+  const clientIp = resolveClientIp(headerStore);
   const now = Date.now();
-  cleanupExpiredBuckets(now, options.windowMs);
+
+  cleanupBuckets(now, options.windowMs);
 
   const key = `${options.namespace}:${clientIp}`;
   const existing = buckets.get(key) ?? { timestamps: [] };
@@ -43,7 +71,10 @@ export async function checkRateLimit(options: {
 
   if (recentTimestamps.length >= options.maxRequests) {
     const oldestInWindow = recentTimestamps[0] ?? now;
-    const retryAfterMs = Math.max(1000, options.windowMs - (now - oldestInWindow));
+    const retryAfterMs = Math.max(
+      1000,
+      options.windowMs - (now - oldestInWindow)
+    );
     buckets.set(key, { timestamps: recentTimestamps });
     return {
       allowed: false,

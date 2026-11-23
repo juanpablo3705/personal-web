@@ -3,26 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import {
+  ALLOWED_IMAGE_MIME_TYPES,
+  getImageExtension,
+  hasValidImageMagicBytes,
+  isSafeHttpsUrl,
+  MAX_IMAGE_FILE_BYTES,
+} from "@/lib/media-validation";
+import { sanitizePostHtml } from "@/lib/sanitize-html";
 import { getAuthenticatedAdmin } from "@/lib/supabase/admin-auth";
 import type { PostStatus, PostType } from "@/lib/types/database";
 
 const ALLOWED_MEDIA_FOLDERS = new Set(["thumbnails", "uploads", "content"]);
-const ALLOWED_IMAGE_MIME_TYPES = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "image/avif",
-]);
-const ALLOWED_IMAGE_EXTENSIONS = new Set([
-  "jpg",
-  "jpeg",
-  "png",
-  "webp",
-  "gif",
-  "avif",
-]);
-const MAX_IMAGE_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
+const MEDIA_PUBLIC_PREFIX = "/storage/v1/object/public/media/";
 
 export type PostActionState = {
   error: string | null;
@@ -46,40 +39,30 @@ function createSlug(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-/**
- * Sanitiza el HTML generado por el editor antes de persistirlo en la base de datos:
- * elimina etiquetas ejecutables/embebidas peligrosas (<script>, <iframe>, <object>,
- * <embed>, <style>, <svg>, <math>, <form>) y atributos de ejecución (on*, srcdoc,
- * javascript:, data:text/html), preservando el formato editorial de Tiptap.
- */
-function sanitizePostHtml(rawHtml: string): string {
-  if (!rawHtml) return "";
+function extractMediaPathsFromText(text: string | null | undefined): string[] {
+  if (!text) {
+    return [];
+  }
 
-  return rawHtml
-    // 1. Eliminar bloques completos de etiquetas peligrosas con su contenido
-    .replace(
-      /<\s*(script|iframe|object|embed|style|svg|math|form|base|meta|link)\b[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi,
-      ""
-    )
-    // 2. Eliminar etiquetas peligrosas huérfanas o auto-cerradas
-    .replace(
-      /<\s*\/?\s*(script|iframe|object|embed|style|svg|math|form|base|meta|link|input|button|textarea|select)\b[^>]*\/?>/gi,
-      ""
-    )
-    // 3. Eliminar atributos de eventos inline (onload, onerror, onclick, etc.) y srcdoc/formaction
-    .replace(
-      /\s+(on[a-z]+|srcdoc|formaction)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi,
-      ""
-    )
-    // 4. Neutralizar protocolos peligrosos (javascript:, vbscript:, data:text/html) en href/src
-    .replace(
-      /\s+(href|src|xlink:href|action)\s*=\s*(?:"\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^"]*"|'\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^']*'|(?:\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^\s>]+))/gi,
-      ""
-    );
+  const paths = new Set<string>();
+  const pattern =
+    /\/storage\/v1\/object\/public\/media\/([a-zA-Z0-9/_\-.]+)/g;
+
+  for (const match of text.matchAll(pattern)) {
+    const rawPath = match[1];
+    if (rawPath && !rawPath.includes("..")) {
+      paths.add(rawPath);
+    }
+  }
+
+  return Array.from(paths);
 }
 
+const postIdSchema = z.uuid("Identificador de publicación inválido.");
+const postStatusSchema = z.enum(["draft", "published"]);
+
 const postSchema = z.object({
-  id: z.string().optional(),
+  id: z.uuid("Identificador de publicación inválido.").optional(),
   type: z.enum(["blog", "project"], {
     message: "Selecciona un tipo válido (Blog o Proyecto).",
   }),
@@ -89,11 +72,23 @@ const postSchema = z.object({
   title: z
     .string()
     .trim()
-    .min(1, "El título es obligatorio."),
-  slug: z.string().trim().optional(),
-  summary: z.string().trim().optional(),
-  thumbnail_url: z.string().trim().optional(),
-  content: z.string().optional(),
+    .min(1, "El título es obligatorio.")
+    .max(300, "El título no puede superar los 300 caracteres."),
+  slug: z.string().trim().max(200).optional(),
+  summary: z.string().trim().max(3000).optional(),
+  thumbnail_url: z
+    .string()
+    .trim()
+    .max(2048)
+    .refine(
+      isSafeHttpsUrl,
+      "La URL de la miniatura debe usar el protocolo HTTPS."
+    )
+    .optional(),
+  content: z
+    .string()
+    .max(200_000, "El contenido supera el límite máximo permitido.")
+    .optional(),
 });
 
 export async function uploadMediaAction(
@@ -128,8 +123,7 @@ export async function uploadMediaAction(
     };
   }
 
-  const rawExt = file.name.split(".").pop()?.toLowerCase() || "";
-  const ext = ALLOWED_IMAGE_EXTENSIONS.has(rawExt) ? rawExt : "";
+  const ext = getImageExtension(file.name);
 
   if (!ALLOWED_IMAGE_MIME_TYPES.has(file.type) || !ext) {
     return {
@@ -139,11 +133,19 @@ export async function uploadMediaAction(
     };
   }
 
-  const baseName = createSlug(file.name.replace(/\.[^/.]+$/, "")) || "imagen";
-  const filePath = `${folder}/${Date.now()}-${baseName}.${ext}`;
-
   const arrayBuffer = await file.arrayBuffer();
   const fileBuffer = new Uint8Array(arrayBuffer);
+
+  if (!hasValidImageMagicBytes(fileBuffer, file.type)) {
+    return {
+      url: null,
+      error:
+        "El contenido del archivo no corresponde a una imagen válida del formato indicado.",
+    };
+  }
+
+  const baseName = createSlug(file.name.replace(/\.[^/.]+$/, "")) || "imagen";
+  const filePath = `${folder}/${Date.now()}-${baseName}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
     .from("media")
@@ -153,9 +155,10 @@ export async function uploadMediaAction(
     });
 
   if (uploadError) {
+    console.error("[posts] Error al subir imagen a Storage:", uploadError);
     return {
       url: null,
-      error: `Error al subir imagen: ${uploadError.message}`,
+      error: "No se pudo subir la imagen en este momento. Inténtalo nuevamente.",
     };
   }
 
@@ -208,7 +211,6 @@ export async function savePostAction(
     };
   }
 
-  // Si se adjuntó un archivo de thumbnail directamente sin subir previamente
   const thumbnailFile = formData.get("thumbnail_file") as File | null;
   if (
     !rawThumbnailUrl &&
@@ -231,7 +233,6 @@ export async function savePostAction(
   const baseSlug =
     createSlug(parsed.data.slug || parsed.data.title) || `entrada-${Date.now()}`;
 
-  // Asegurar que el slug sea único en la tabla posts
   let finalSlug = baseSlug;
   const { data: existingWithSlug } = await supabase
     .from("posts")
@@ -245,8 +246,17 @@ export async function savePostAction(
 
   const now = new Date().toISOString();
   const safeContent = sanitizePostHtml(parsed.data.content || "");
+  let previousSlug: string | null = null;
 
   if (parsed.data.id) {
+    const { data: previousPost } = await supabase
+      .from("posts")
+      .select("slug")
+      .eq("id", parsed.data.id)
+      .maybeSingle();
+
+    previousSlug = previousPost?.slug ?? null;
+
     const { error: updateError } = await supabase
       .from("posts")
       .update({
@@ -262,8 +272,10 @@ export async function savePostAction(
       .eq("id", parsed.data.id);
 
     if (updateError) {
+      console.error("[posts] Error al actualizar entrada:", updateError);
       return {
-        error: `Error al actualizar la entrada: ${updateError.message}`,
+        error:
+          "No se pudo actualizar la entrada en este momento. Inténtalo nuevamente.",
       };
     }
   } else {
@@ -279,8 +291,10 @@ export async function savePostAction(
     });
 
     if (insertError) {
+      console.error("[posts] Error al crear entrada:", insertError);
       return {
-        error: `Error al crear la entrada: ${insertError.message}`,
+        error:
+          "No se pudo crear la entrada en este momento. Inténtalo nuevamente.",
       };
     }
   }
@@ -290,6 +304,10 @@ export async function savePostAction(
   revalidatePath("/proyectos");
   revalidatePath(`/blog/${finalSlug}`);
   revalidatePath(`/proyectos/${finalSlug}`);
+  if (previousSlug && previousSlug !== finalSlug) {
+    revalidatePath(`/blog/${previousSlug}`);
+    revalidatePath(`/proyectos/${previousSlug}`);
+  }
   revalidatePath("/dashboard");
 
   redirect("/dashboard");
@@ -305,24 +323,43 @@ export async function togglePostStatusAction(
     return { error: "No autorizado." };
   }
 
-  const nextStatus: PostStatus =
-    currentStatus === "published" ? "draft" : "published";
+  const parsedId = postIdSchema.safeParse(id);
+  const parsedStatus = postStatusSchema.safeParse(currentStatus);
 
-  const { error } = await supabase
+  if (!parsedId.success || !parsedStatus.success) {
+    return { error: "Parámetros inválidos." };
+  }
+
+  const nextStatus: PostStatus =
+    parsedStatus.data === "published" ? "draft" : "published";
+
+  const { data: updatedPost, error } = await supabase
     .from("posts")
     .update({
       status: nextStatus,
       updated_at: new Date().toISOString(),
     })
-    .eq("id", id);
+    .eq("id", parsedId.data)
+    .select("slug, type")
+    .maybeSingle();
 
   if (error) {
-    return { error: error.message };
+    console.error("[posts] Error al cambiar estado:", error);
+    return {
+      error: "No se pudo actualizar el estado de la publicación.",
+    };
   }
 
   revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath("/proyectos");
+  if (updatedPost?.slug) {
+    revalidatePath(
+      updatedPost.type === "blog"
+        ? `/blog/${updatedPost.slug}`
+        : `/proyectos/${updatedPost.slug}`
+    );
+  }
   revalidatePath("/dashboard");
 
   return { error: null };
@@ -337,15 +374,75 @@ export async function deletePostAction(
     return { error: "No autorizado." };
   }
 
-  const { error } = await supabase.from("posts").delete().eq("id", id);
+  const parsedId = postIdSchema.safeParse(id);
+  if (!parsedId.success) {
+    return { error: "Identificador de publicación inválido." };
+  }
+
+  const { data: targetPost } = await supabase
+    .from("posts")
+    .select("slug, type, thumbnail_url, content")
+    .eq("id", parsedId.data)
+    .maybeSingle();
+
+  const candidatePaths = Array.from(
+    new Set([
+      ...extractMediaPathsFromText(targetPost?.thumbnail_url),
+      ...extractMediaPathsFromText(targetPost?.content),
+    ])
+  );
+
+  const { error } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", parsedId.data);
 
   if (error) {
-    return { error: error.message };
+    console.error("[posts] Error al eliminar entrada:", error);
+    return { error: "No se pudo eliminar la publicación." };
+  }
+
+  // limpieza best-effort de imágenes huérfanas del bucket media
+  if (candidatePaths.length > 0) {
+    try {
+      const { data: otherPosts } = await supabase
+        .from("posts")
+        .select("thumbnail_url, content");
+
+      const referencedUrls = (otherPosts ?? [])
+        .map((p) => `${p.thumbnail_url ?? ""}\n${p.content ?? ""}`)
+        .join("\n");
+
+      const orphanPaths = candidatePaths.filter(
+        (path) => !referencedUrls.includes(`${MEDIA_PUBLIC_PREFIX}${path}`)
+      );
+
+      if (orphanPaths.length > 0) {
+        const { error: removeError } = await supabase.storage
+          .from("media")
+          .remove(orphanPaths);
+        if (removeError) {
+          console.error(
+            "[posts] No se pudieron limpiar archivos huérfanos en Storage:",
+            removeError
+          );
+        }
+      }
+    } catch (cleanupErr) {
+      console.error("[posts] Error al limpiar archivos huérfanos:", cleanupErr);
+    }
   }
 
   revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath("/proyectos");
+  if (targetPost?.slug) {
+    revalidatePath(
+      targetPost.type === "blog"
+        ? `/blog/${targetPost.slug}`
+        : `/proyectos/${targetPost.slug}`
+    );
+  }
   revalidatePath("/dashboard");
 
   return { error: null };

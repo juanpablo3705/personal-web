@@ -18,6 +18,10 @@ export default async function DashboardPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
+  if (error) {
+    console.error("[dashboard] Error al cargar entradas:", error);
+  }
+
   const posts: Post[] = (postsData as Post[] | null) ?? [];
 
   return (
@@ -105,7 +109,8 @@ export default async function DashboardPage() {
             role="alert"
             className="border border-current px-4 py-3 font-roman text-sm sm:text-base"
           >
-            Error al cargar las entradas: {error.message}
+            No se pudieron cargar las entradas en este momento. Intenta recargar
+            la página.
           </div>
         )}
 

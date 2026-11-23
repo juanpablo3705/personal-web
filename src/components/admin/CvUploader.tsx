@@ -6,6 +6,11 @@ import {
   revalidateCvAction,
   type CvActionState,
 } from "@/lib/actions/cv";
+import {
+  hasPdfMagicBytes,
+  MAX_CV_FILE_BYTES,
+  SERVER_ACTION_UPLOAD_LIMIT_BYTES,
+} from "@/lib/media-validation";
 import { createClient } from "@/lib/supabase/client";
 
 const initialState: CvActionState = {
@@ -46,25 +51,48 @@ export default function CvUploader() {
       return;
     }
 
+    if (file.size > MAX_CV_FILE_BYTES) {
+      setState({
+        success: false,
+        message: null,
+        error: "El archivo PDF supera el tamaño máximo permitido (15 MB).",
+      });
+      return;
+    }
+
     setState(initialState);
 
     startTransition(async () => {
-      // Si el archivo supera ~900KB, usamos el cliente directo de Supabase Storage
-      // para evitar el límite por defecto de 1MB en Server Actions de Next.js.
-      if (file.size > 900 * 1024) {
+      // para pdfs > 3.8 mb (límite de server actions / vercel functions), validamos magic bytes antes del upload directo
+      if (file.size > SERVER_ACTION_UPLOAD_LIMIT_BYTES) {
+        const headerBytes = new Uint8Array(
+          await file.slice(0, 16).arrayBuffer()
+        );
+        if (!hasPdfMagicBytes(headerBytes)) {
+          setState({
+            success: false,
+            message: null,
+            error:
+              "El contenido del archivo no corresponde a un documento PDF válido.",
+          });
+          return;
+        }
+
         const supabase = createClient();
         const { error: uploadError } = await supabase.storage
           .from("documents")
           .upload("cv_actual.pdf", file, {
             upsert: true,
             contentType: "application/pdf",
+            cacheControl: "60",
           });
 
         if (uploadError) {
           setState({
             success: false,
             message: null,
-            error: `Error al subir el CV: ${uploadError.message}`,
+            error:
+              "No se pudo subir el CV en este momento. Inténtalo nuevamente.",
           });
           return;
         }

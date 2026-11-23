@@ -1,9 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { hasPdfMagicBytes, MAX_CV_FILE_BYTES } from "@/lib/media-validation";
 import { getAuthenticatedAdmin } from "@/lib/supabase/admin-auth";
-
-const MAX_CV_FILE_BYTES = 15 * 1024 * 1024; // 15 MB
 
 export type CvActionState = {
   success: boolean;
@@ -11,20 +10,6 @@ export type CvActionState = {
   error: string | null;
   publicUrl?: string | null;
 };
-
-function hasPdfMagicBytes(buffer: Uint8Array): boolean {
-  // Un archivo PDF real comienza con la secuencia ASCII "%PDF-" (0x25 0x50 0x44 0x46 0x2D)
-  if (buffer.byteLength < 5) {
-    return false;
-  }
-  return (
-    buffer[0] === 0x25 &&
-    buffer[1] === 0x50 &&
-    buffer[2] === 0x44 &&
-    buffer[3] === 0x46 &&
-    buffer[4] === 0x2d
-  );
-}
 
 export async function uploadCvAction(
   _prevState: CvActionState,
@@ -86,13 +71,15 @@ export async function uploadCvAction(
     .upload("cv_actual.pdf", fileBuffer, {
       upsert: true,
       contentType: "application/pdf",
+      cacheControl: "60",
     });
 
   if (uploadError) {
+    console.error("[cv] Error al subir CV a Storage:", uploadError);
     return {
       success: false,
       message: null,
-      error: `Error al subir el CV: ${uploadError.message}`,
+      error: "No se pudo subir el CV en este momento. Inténtalo nuevamente.",
     };
   }
 
@@ -101,6 +88,7 @@ export async function uploadCvAction(
   } = supabase.storage.from("documents").getPublicUrl("cv_actual.pdf");
 
   revalidatePath("/perfil");
+  revalidatePath("/contacto");
   revalidatePath("/dashboard");
 
   return {
@@ -117,5 +105,6 @@ export async function revalidateCvAction(): Promise<void> {
     return;
   }
   revalidatePath("/perfil");
+  revalidatePath("/contacto");
   revalidatePath("/dashboard");
 }

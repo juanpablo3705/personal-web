@@ -18,10 +18,11 @@
     "@tiptap/react": "^3.32.2",
     "@tiptap/starter-kit": "^3.32.2",
     "motion": "^14.9.0",
-    "next": "16.4.3",
+    "next": "^16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "resend": "^6.37.0",
+    "sanitize-html": "^2.18.2",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -29,8 +30,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.2",
     "eslint": "^9",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "^16.4.6",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

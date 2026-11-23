@@ -5,38 +5,10 @@ import { usePublicShell } from "@/components/layout/PublicShell";
 import type { Post } from "@/lib/types/database";
 import { formatBlogDate } from "@/lib/utils";
 import { PostModal } from "./PostModal";
-import type { AdjacentPostLink } from "./post-queries";
+import { findPostAndNeighbors } from "./post-neighbors";
 
 const MODAL_OPEN_DELAY_MS = 300;
 const BLOG_SUMMARY_MAX_CHARS = 500;
-
-function findPostAndNeighbors(
-  list: Post[],
-  slug: string
-): {
-  post: Post | null;
-  prevPost: AdjacentPostLink | null;
-  nextPost: AdjacentPostLink | null;
-} {
-  const index = list.findIndex((item) => item.slug === slug);
-  if (index === -1) {
-    return { post: null, prevPost: null, nextPost: null };
-  }
-
-  const post = list[index] ?? null;
-  const newerItem = index > 0 ? list[index - 1] : null;
-  const olderItem = index < list.length - 1 ? list[index + 1] : null;
-
-  return {
-    post,
-    prevPost: olderItem
-      ? { slug: olderItem.slug, title: olderItem.title }
-      : null,
-    nextPost: newerItem
-      ? { slug: newerItem.slug, title: newerItem.title }
-      : null,
-  };
-}
 
 function renderBlogSummary(summary: string, onOpen: () => void) {
   if (summary.length <= BLOG_SUMMARY_MAX_CHARS) {
@@ -68,6 +40,12 @@ export function ProyectosCatalogSection({ posts }: { posts: Post[] }) {
   const { setModalOpen } = usePublicShell();
   const [pendingSlug, setPendingSlug] = useState<string | null>(null);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      setModalOpen(false);
+    };
+  }, [setModalOpen]);
 
   useEffect(() => {
     if (!pendingSlug) {
@@ -178,6 +156,12 @@ export function BlogCatalogSection({ posts }: { posts: Post[] }) {
   const { setModalOpen } = usePublicShell();
   const [pendingSlug, setPendingSlug] = useState<string | null>(null);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      setModalOpen(false);
+    };
+  }, [setModalOpen]);
 
   useEffect(() => {
     if (!pendingSlug) {

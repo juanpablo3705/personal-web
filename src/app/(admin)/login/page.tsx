@@ -1,42 +1,11 @@
-"use client";
-
-import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  loginAction,
-  logoutAction,
-  type AuthActionState,
-} from "@/lib/actions/auth";
-import { createClient } from "@/lib/supabase/client";
+import LoginForm from "@/components/admin/LoginForm";
+import { logoutAction } from "@/lib/actions/auth";
+import { getAuthenticatedAdmin } from "@/lib/supabase/admin-auth";
 
-const initialState: AuthActionState = {
-  error: null,
-};
-
-const INPUT_CLASS =
-  "min-h-12 w-full border border-current bg-transparent px-3.5 py-2.5 font-roman text-base placeholder:opacity-40 disabled:cursor-not-allowed disabled:opacity-50";
-
-export default function LoginPage() {
-  const [state, formAction, isPending] = useActionState(
-    loginAction,
-    initialState
-  );
-  const [activeEmail, setActiveEmail] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-    const supabase = createClient();
-
-    supabase.auth.getUser().then(({ data }) => {
-      if (isMounted && data.user?.email) {
-        setActiveEmail(data.user.email);
-      }
-    });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+export default async function LoginPage() {
+  const { user, isAuthorized } = await getAuthenticatedAdmin();
+  const activeEmail = isAuthorized && user?.email ? user.email : null;
 
   return (
     <section aria-labelledby="login-heading" className="space-y-10 pt-6">
@@ -50,7 +19,6 @@ export default function LoginPage() {
       </header>
 
       <div className="max-w-[560px] space-y-8">
-
         {activeEmail && (
           <div className="space-y-4 border border-current p-5 font-roman text-sm sm:text-base">
             <p>
@@ -76,75 +44,7 @@ export default function LoginPage() {
           </div>
         )}
 
-        {state?.error && (
-          <div
-            role="alert"
-            aria-live="polite"
-            className="border border-current px-4 py-3 font-roman text-sm sm:text-base"
-          >
-            {state.error}
-          </div>
-        )}
-
-        <form
-          action={formAction}
-          aria-labelledby="login-heading"
-          className="space-y-6"
-        >
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block font-roman text-sm sm:text-base"
-            >
-              Correo electrónico
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              inputMode="email"
-              required
-              autoComplete="username"
-              autoCorrect="off"
-              autoCapitalize="none"
-              spellCheck={false}
-              enterKeyHint="next"
-              placeholder="tu-correo@ejemplo.com"
-              disabled={isPending}
-              className={INPUT_CLASS}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block font-roman text-sm sm:text-base"
-            >
-              Contraseña
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              enterKeyHint="done"
-              placeholder="••••••••"
-              disabled={isPending}
-              className={INPUT_CLASS}
-            />
-          </div>
-
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={isPending}
-              className="hyper-link cursor-pointer font-heavy text-sm tracking-wide disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
-            >
-              {isPending ? "Iniciando sesión... >" : "Iniciar sesión >"}
-            </button>
-          </div>
-        </form>
+        <LoginForm />
       </div>
     </section>
   );

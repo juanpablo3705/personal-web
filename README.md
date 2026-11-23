@@ -4,7 +4,7 @@ Repositorio del sitio web personal, blog técnico y portafolio de proyectos de J
 
 La plataforma fue concebida bajo principios de esencialidad visual, contraste analógico y rigor compositivo. La experiencia pública se articula a través de una coreografía de scroll basada en proporciones relativas de pantalla, navegación contextual mediante ventanas modales superpuestas sin pérdida de estado, un sistema de inversión cromática sincronizado en tiempo real y una jerarquía tipográfica milimétrica sustentada en una fuente sans-serif suiza de estructura geométrica y proporciones humanistas, optimizada localmente para garantizar máxima nitidez y cadencia visual.
 
-Asimismo, la plataforma integra un entorno de administración privado (`/dashboard`) protegido mediante autenticación de servidor y middleware criptográfico en Supabase Auth. Este portal interno opera como un gestor de contenidos (CMS) desacoplado a medida que centraliza el control editorial completo: gestión del ciclo de vida de publicaciones (control de borradores y publicaciones activas), redacción estructurada mediante un editor enriquecido WYSIWYG (TipTap), administración y actualización en la nube del archivo PDF del CV en Supabase Storage, y monitoreo directo de solicitudes entrantes del formulario de contacto.
+Asimismo, la plataforma integra un entorno de administración privado (`/dashboard`) protegido mediante autenticación de servidor y middleware criptográfico en Supabase Auth. Este portal interno opera como un gestor de contenidos (CMS) desacoplado a medida que centraliza el control editorial completo: gestión del ciclo de vida de publicaciones (control de borradores y publicaciones activas), redacción estructurada mediante un editor enriquecido WYSIWYG (TipTap) y administración y actualización en la nube del archivo PDF del CV en Supabase Storage.
 
 La arquitectura del sistema aprovecha el rendimiento nativo de Server Components y Server Actions en Next.js 16 con Turbopack, garantizando tipado estático estricto, seguridad en mutaciones de datos, tiempos de carga instantáneos y comunicación transaccional a través de Resend.
 
@@ -23,7 +23,7 @@ La arquitectura del sistema aprovecha el rendimiento nativo de Server Components
 * **Lenguaje:** TypeScript (modo estricto)
 * **Estilos y Maquetación:** Tailwind CSS v4 (CSS `@theme` y variables de interpolación nativas `@property`)
 * **Animaciones y Dinámica:** Motion (Framer Motion)
-* **Panel de Administración Privado (CMS):** Dashboard interno protegido con gestión de publicaciones, control de estados (Borrador/Publicado), visor de mensajes y carga dinámica de CV
+* **Panel de Administración Privado (CMS):** Dashboard interno protegido con gestión de publicaciones, control de estados (Borrador/Publicado) y carga dinámica de CV
 * **Editor de Contenidos:** TipTap (WYSIWYG con HTML estructurado)
 * **Base de Datos, Auth & Storage:** Supabase (PostgreSQL, autenticación SSR por cookies y almacenamiento en buckets)
 * **Validación de Esquemas:** Zod

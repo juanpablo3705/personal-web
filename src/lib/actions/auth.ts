@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { isAdminUser } from "@/lib/supabase/admin-auth";
+import { isAdminUser, isAllowedAdminEmail } from "@/lib/supabase/admin-auth";
 import { createClient } from "@/lib/supabase/server";
 
 export type AuthActionState = {
@@ -16,10 +16,12 @@ const loginSchema = z.object({
     .string()
     .trim()
     .min(1, "Por favor, ingresa tu correo electrónico.")
-    .email("Ingresa un formato de correo electrónico válido."),
+    .max(254, "El correo electrónico es demasiado largo.")
+    .pipe(z.email("Ingresa un formato de correo electrónico válido.")),
   password: z
     .string()
-    .min(1, "Por favor, ingresa tu contraseña."),
+    .min(1, "Por favor, ingresa tu contraseña.")
+    .max(200, "La contraseña excede el largo máximo permitido."),
 });
 
 export async function loginAction(
@@ -53,7 +55,7 @@ export async function loginAction(
     };
   }
 
-  if (!isAdminUser({ email: parsed.data.email })) {
+  if (!isAllowedAdminEmail(parsed.data.email)) {
     return {
       error:
         "Credenciales incorrectas. Verifica tu correo electrónico y contraseña.",
@@ -78,6 +80,7 @@ export async function loginAction(
   }
 
   revalidatePath("/dashboard", "layout");
+  revalidatePath("/login");
   redirect("/dashboard");
 }
 

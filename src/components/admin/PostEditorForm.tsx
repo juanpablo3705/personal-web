@@ -8,6 +8,14 @@ import {
   uploadMediaAction,
   type PostActionState,
 } from "@/lib/actions/posts";
+import {
+  ALLOWED_IMAGE_MIME_TYPES,
+  getImageExtension,
+  hasValidImageMagicBytes,
+  IMAGE_INPUT_ACCEPT,
+  MAX_IMAGE_FILE_BYTES,
+  SERVER_ACTION_UPLOAD_LIMIT_BYTES,
+} from "@/lib/media-validation";
 import { createClient } from "@/lib/supabase/client";
 import type { Post, PostStatus, PostType } from "@/lib/types/database";
 
@@ -81,9 +89,22 @@ export default function PostEditorForm({
     setIsUploadingThumbnail(true);
 
     try {
+      const ext = getImageExtension(file.name);
+      if (!ALLOWED_IMAGE_MIME_TYPES.has(file.type) || !ext) {
+        throw new Error(
+          "Formato de imagen no permitido. Usa JPG, PNG, WEBP, GIF o AVIF."
+        );
+      }
+
+      if (file.size > MAX_IMAGE_FILE_BYTES) {
+        throw new Error(
+          "La imagen supera el tamaño máximo permitido (10 MB)."
+        );
+      }
+
       let uploadedUrl: string | null = null;
 
-      if (file.size <= 900 * 1024) {
+      if (file.size <= SERVER_ACTION_UPLOAD_LIMIT_BYTES) {
         const formData = new FormData();
         formData.set("file", file);
         formData.set("folder", "thumbnails");
@@ -93,6 +114,15 @@ export default function PostEditorForm({
         }
         uploadedUrl = result.url;
       } else {
+        const headerBytes = new Uint8Array(
+          await file.slice(0, 32).arrayBuffer()
+        );
+        if (!hasValidImageMagicBytes(headerBytes, file.type)) {
+          throw new Error(
+            "El contenido del archivo no corresponde a una imagen válida."
+          );
+        }
+
         const supabase = createClient();
         const filePath = `thumbnails/${Date.now()}-${sanitizeFileName(file.name)}`;
         const { error: storageError } = await supabase.storage
@@ -103,7 +133,7 @@ export default function PostEditorForm({
           });
 
         if (storageError) {
-          throw new Error(storageError.message);
+          throw new Error("No se pudo subir el thumbnail en este momento.");
         }
 
         const {
@@ -227,7 +257,7 @@ export default function PostEditorForm({
             id="thumbnail-input"
             name="thumbnail_file"
             type="file"
-            accept="image/*"
+            accept={IMAGE_INPUT_ACCEPT}
             onChange={handleThumbnailChange}
             disabled={isSaving || isUploadingThumbnail}
             className="w-full border border-current bg-transparent px-3 py-1.5 font-roman text-xs file:mr-3 file:cursor-pointer file:border file:border-current file:bg-[var(--theme-fg)] file:px-3 file:py-1 file:font-heavy file:text-xs file:text-[var(--theme-bg)]"

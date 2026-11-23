@@ -7,6 +7,14 @@ import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import { uploadMediaAction } from "@/lib/actions/posts";
+import {
+  ALLOWED_IMAGE_MIME_TYPES,
+  getImageExtension,
+  hasValidImageMagicBytes,
+  IMAGE_INPUT_ACCEPT,
+  MAX_IMAGE_FILE_BYTES,
+  SERVER_ACTION_UPLOAD_LIMIT_BYTES,
+} from "@/lib/media-validation";
 import { createClient } from "@/lib/supabase/client";
 
 type TiptapEditorProps = {
@@ -85,18 +93,39 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
       return;
     }
 
-    const formattedUrl =
-      /^(https?:\/\/|mailto:|tel:|\/)/i.test(trimmed)
-        ? trimmed
+    const formattedUrl = /^(https?:\/\/|mailto:|tel:|\/)/i.test(trimmed)
+      ? trimmed
+      : /^[a-z][a-z0-9+.-]*:/i.test(trimmed)
+        ? null
         : `https://${trimmed}`;
+
+    if (!formattedUrl) {
+      setUploadError(
+        "Protocolo de enlace no permitido. Usa https://, http://, mailto:, tel: o una ruta relativa."
+      );
+      return;
+    }
+
+    setUploadError(null);
 
     if (editor.state.selection.empty && !editor.isActive("link")) {
       editor
         .chain()
         .focus()
-        .insertContent(
-          `<a href="${formattedUrl}" target="_blank" rel="noopener noreferrer">${formattedUrl}</a>`
-        )
+        .insertContent({
+          type: "text",
+          text: formattedUrl,
+          marks: [
+            {
+              type: "link",
+              attrs: {
+                href: formattedUrl,
+                target: "_blank",
+                rel: "noopener noreferrer",
+              },
+            },
+          ],
+        })
         .run();
       return;
     }
@@ -123,9 +152,22 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
     setIsUploadingImage(true);
 
     try {
+      const ext = getImageExtension(file.name);
+      if (!ALLOWED_IMAGE_MIME_TYPES.has(file.type) || !ext) {
+        throw new Error(
+          "Formato de imagen no permitido. Usa JPG, PNG, WEBP, GIF o AVIF."
+        );
+      }
+
+      if (file.size > MAX_IMAGE_FILE_BYTES) {
+        throw new Error(
+          "La imagen supera el tamaño máximo permitido (10 MB)."
+        );
+      }
+
       let imageUrl: string | null = null;
 
-      if (file.size <= 900 * 1024) {
+      if (file.size <= SERVER_ACTION_UPLOAD_LIMIT_BYTES) {
         const formData = new FormData();
         formData.set("file", file);
         formData.set("folder", "content");
@@ -135,6 +177,15 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
         }
         imageUrl = result.url;
       } else {
+        const headerBytes = new Uint8Array(
+          await file.slice(0, 32).arrayBuffer()
+        );
+        if (!hasValidImageMagicBytes(headerBytes, file.type)) {
+          throw new Error(
+            "El contenido del archivo no corresponde a una imagen válida."
+          );
+        }
+
         const supabase = createClient();
         const filePath = `content/${Date.now()}-${sanitizeFileName(file.name)}`;
         const { error: storageError } = await supabase.storage
@@ -145,7 +196,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
           });
 
         if (storageError) {
-          throw new Error(storageError.message);
+          throw new Error("No se pudo subir la imagen en este momento.");
         }
 
         const {
@@ -252,7 +303,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept={IMAGE_INPUT_ACCEPT}
           onChange={handleImageFileChange}
           className="hidden"
           aria-hidden="true"

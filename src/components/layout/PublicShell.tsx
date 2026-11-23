@@ -98,6 +98,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       if (resetScrollToTop) {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       }
+      setModalOpen(false);
       setIsFadingOut(false);
       setForcingWhiteBg(false);
     });
@@ -153,6 +154,12 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       const targetPathOnly = href.split("?")[0] ?? href;
 
       if (targetPathOnly === pathname) {
+        if (navTimeoutRef.current) {
+          clearTimeout(navTimeoutRef.current);
+          navTimeoutRef.current = null;
+          setIsFadingOut(false);
+          setForcingWhiteBg(false);
+        }
         if (href === "/" && typeof window !== "undefined") {
           event.preventDefault();
           window.scrollTo({ top: 0, behavior: "smooth" });

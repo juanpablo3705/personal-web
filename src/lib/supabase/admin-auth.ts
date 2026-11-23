@@ -1,21 +1,50 @@
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 
-const FALLBACK_ADMIN_EMAIL = "juanpablo3705@gmail.com";
-
-export function getAllowedAdminEmail(): string {
-  return (
+function getConfiguredAdminEmail(): string | null {
+  const email =
     process.env.ADMIN_EMAIL?.trim() ||
-    process.env.CONTACT_RECEIVER_EMAIL?.trim() ||
-    FALLBACK_ADMIN_EMAIL
-  ).toLowerCase();
+    process.env.CONTACT_RECEIVER_EMAIL?.trim();
+  return email ? email.toLowerCase() : null;
 }
 
-export function isAdminUser(user: Pick<User, "email"> | null | undefined): boolean {
-  if (!user?.email) {
+function getConfiguredAdminUserId(): string | null {
+  const uid = process.env.ADMIN_USER_ID?.trim();
+  return uid || null;
+}
+
+export function isAllowedAdminEmail(email: string | null | undefined): boolean {
+  const allowedEmail = getConfiguredAdminEmail();
+  if (!allowedEmail || !email) {
     return false;
   }
-  return user.email.trim().toLowerCase() === getAllowedAdminEmail();
+  return email.trim().toLowerCase() === allowedEmail;
+}
+
+export function isAdminUser(
+  user: Pick<User, "id" | "email" | "email_confirmed_at"> | null | undefined
+): boolean {
+  if (!user?.email || !user.email_confirmed_at) {
+    return false;
+  }
+
+  const allowedUid = getConfiguredAdminUserId();
+  const allowedEmail = getConfiguredAdminEmail();
+
+  // fail-closed: sin variables de entorno de administrador configuradas se deniega siempre
+  if (!allowedUid && !allowedEmail) {
+    return false;
+  }
+
+  if (allowedUid && user.id !== allowedUid) {
+    return false;
+  }
+
+  if (allowedEmail && user.email.trim().toLowerCase() !== allowedEmail) {
+    return false;
+  }
+
+  return true;
 }
 
 export async function getAuthenticatedAdmin() {

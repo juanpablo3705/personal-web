@@ -36,7 +36,8 @@ const contactoSchema = z.object({
     .string()
     .trim()
     .min(1, "Por favor, ingresa tu correo electrónico.")
-    .email("Por favor, ingresa un correo electrónico válido."),
+    .max(254, "El correo electrónico es demasiado largo.")
+    .pipe(z.email("Por favor, ingresa un correo electrónico válido.")),
   asunto: z
     .string()
     .trim()
@@ -62,7 +63,7 @@ export async function sendContactEmailAction(
   _prevState: ContactoActionState,
   formData: FormData
 ): Promise<ContactoActionState> {
-  // 1. Trampa anti-bots (Honeypot invisible)
+  // trampa honeypot invisible contra bots
   const honeypot = String(formData.get("website") ?? "").trim();
   if (honeypot.length > 0) {
     return {
@@ -70,22 +71,6 @@ export async function sendContactEmailAction(
       message:
         "Tu mensaje ha sido enviado con éxito. Me pondré en contacto contigo a la brevedad.",
       error: null,
-    };
-  }
-
-  // 2. Limitador de frecuencia por IP (máximo 3 envíos cada 10 minutos) para proteger la cuota de Resend
-  const rateLimit = await checkRateLimit({
-    namespace: "contact-form",
-    maxRequests: 3,
-    windowMs: 10 * 60 * 1000,
-  });
-
-  if (!rateLimit.allowed) {
-    return {
-      success: false,
-      message: null,
-      error:
-        "Has enviado demasiados mensajes en poco tiempo. Por favor, espera unos minutos antes de intentarlo nuevamente.",
     };
   }
 
@@ -115,6 +100,22 @@ export async function sendContactEmailAction(
         firstIssue?.message ??
         "Por favor, revisa los campos del formulario e inténtalo nuevamente.",
       fieldErrors,
+      values: rawValues,
+    };
+  }
+
+  const rateLimit = await checkRateLimit({
+    namespace: "contact-form",
+    maxRequests: 3,
+    windowMs: 10 * 60 * 1000,
+  });
+
+  if (!rateLimit.allowed) {
+    return {
+      success: false,
+      message: null,
+      error:
+        "Has enviado demasiados mensajes en poco tiempo. Por favor, espera unos minutos antes de intentarlo nuevamente.",
       values: rawValues,
     };
   }
@@ -171,7 +172,6 @@ export async function sendContactEmailAction(
     });
 
     if (resendError) {
-      // El detalle técnico queda en los logs de Vercel; al visitante solo se le muestra un mensaje genérico
       console.error("[contacto] Error de Resend:", resendError);
       return {
         success: false,

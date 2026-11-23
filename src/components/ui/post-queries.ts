@@ -1,14 +1,17 @@
+import { sanitizePostHtml } from "@/lib/sanitize-html";
 import { createClient } from "@/lib/supabase/server";
 import type { Post, PostType } from "@/lib/types/database";
+import type { AdjacentPostLink } from "./post-neighbors";
+
+export type { AdjacentPostLink };
 
 export const POSTS_PER_PAGE = 20;
+const MAX_PAGE_NUMBER = 1000;
+const NEIGHBOR_SCAN_LIMIT = 500;
+const PUBLIC_POST_COLUMNS =
+  "id, type, status, title, slug, summary, thumbnail_url, content, created_at, updated_at";
 
 export type CatalogPostItem = Post;
-
-export type AdjacentPostLink = {
-  slug: string;
-  title: string;
-};
 
 export type PaginatedPostsResult = {
   posts: CatalogPostItem[];
@@ -25,6 +28,13 @@ export type PostWithNeighbors = {
   nextPost: AdjacentPostLink | null;
 };
 
+function sanitizePostRecord(post: Post): Post {
+  return {
+    ...post,
+    content: post.content ? sanitizePostHtml(post.content) : post.content,
+  };
+}
+
 export function parsePageParam(
   rawPage: string | string[] | undefined
 ): number {
@@ -33,7 +43,7 @@ export function parsePageParam(
   if (Number.isNaN(parsed) || parsed < 1) {
     return 1;
   }
-  return parsed;
+  return Math.min(parsed, MAX_PAGE_NUMBER);
 }
 
 export async function getPublishedPostsPaginated(
@@ -41,7 +51,7 @@ export async function getPublishedPostsPaginated(
   page: number,
   pageSize: number = POSTS_PER_PAGE
 ): Promise<PaginatedPostsResult> {
-  const currentPage = Math.max(1, page);
+  const currentPage = Math.min(Math.max(1, page), MAX_PAGE_NUMBER);
   const from = (currentPage - 1) * pageSize;
   const to = from + pageSize - 1;
 
@@ -49,7 +59,7 @@ export async function getPublishedPostsPaginated(
 
   const { data, count, error } = await supabase
     .from("posts")
-    .select("*", { count: "exact" })
+    .select(PUBLIC_POST_COLUMNS, { count: "exact" })
     .eq("type", type)
     .eq("status", "published")
     .order("created_at", { ascending: false })
@@ -60,9 +70,9 @@ export async function getPublishedPostsPaginated(
     return {
       posts: [],
       totalCount: 0,
-      currentPage,
+      currentPage: 1,
       totalPages: 1,
-      hasPrevPage: currentPage > 1,
+      hasPrevPage: false,
       hasNextPage: false,
     };
   }
@@ -70,8 +80,30 @@ export async function getPublishedPostsPaginated(
   const totalCount = count ?? data.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
+  if (currentPage > totalPages && totalCount > 0) {
+    const clampedFrom = (totalPages - 1) * pageSize;
+    const clampedTo = clampedFrom + pageSize - 1;
+    const { data: fallbackData } = await supabase
+      .from("posts")
+      .select(PUBLIC_POST_COLUMNS)
+      .eq("type", type)
+      .eq("status", "published")
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
+      .range(clampedFrom, clampedTo);
+
+    return {
+      posts: ((fallbackData as Post[] | null) ?? []).map(sanitizePostRecord),
+      totalCount,
+      currentPage: totalPages,
+      totalPages,
+      hasPrevPage: totalPages > 1,
+      hasNextPage: false,
+    };
+  }
+
   return {
-    posts: data as CatalogPostItem[],
+    posts: (data as Post[]).map(sanitizePostRecord),
     totalCount,
     currentPage,
     totalPages,
@@ -88,7 +120,7 @@ export async function getPublishedPostsFull(
 
   const { data, error } = await supabase
     .from("posts")
-    .select("*")
+    .select(PUBLIC_POST_COLUMNS)
     .eq("type", type)
     .eq("status", "published")
     .order("created_at", { ascending: false })
@@ -99,21 +131,26 @@ export async function getPublishedPostsFull(
     return [];
   }
 
-  return data as Post[];
+  return (data as Post[]).map(sanitizePostRecord);
 }
 
 export async function getPublishedPostWithNeighbors(
   type: PostType,
   rawSlug: string
 ): Promise<PostWithNeighbors | null> {
-  const slug = decodeURIComponent(rawSlug);
+  let slug: string;
+  try {
+    slug = decodeURIComponent(rawSlug);
+  } catch {
+    return null;
+  }
+
   const supabase = await createClient();
 
-  // Ejecutar ambas consultas en paralelo para reducir la latencia a la mitad
   const [{ data: post, error }, { data: orderedList }] = await Promise.all([
     supabase
       .from("posts")
-      .select("*")
+      .select(PUBLIC_POST_COLUMNS)
       .eq("type", type)
       .eq("status", "published")
       .eq("slug", slug)
@@ -124,7 +161,8 @@ export async function getPublishedPostWithNeighbors(
       .eq("type", type)
       .eq("status", "published")
       .order("created_at", { ascending: false })
-      .order("id", { ascending: false }),
+      .order("id", { ascending: false })
+      .limit(NEIGHBOR_SCAN_LIMIT),
   ]);
 
   if (error || !post) {
@@ -139,9 +177,6 @@ export async function getPublishedPostWithNeighbors(
       (item) => item.slug === post.slug
     );
 
-    // orderedList está ordenado de más reciente a más antiguo (created_at DESC).
-    // "Siguiente >" debe llevar a la próxima entrada más nueva (hacia index 0).
-    // "< Anterior" debe llevar a la próxima entrada más antigua (hacia el final de la lista).
     if (currentIndex > 0) {
       nextPost = orderedList[currentIndex - 1] ?? null;
     }
@@ -152,7 +187,7 @@ export async function getPublishedPostWithNeighbors(
   }
 
   return {
-    post: post as Post,
+    post: sanitizePostRecord(post as Post),
     prevPost,
     nextPost,
   };
