@@ -7,6 +7,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -15,11 +16,13 @@ import { Navbar } from "./Navbar";
 type PublicShellContextValue = {
   isModalOpen: boolean;
   setModalOpen: (open: boolean) => void;
+  setCustomBg: (color: string | null) => void;
 };
 
 const PublicShellContext = createContext<PublicShellContextValue>({
   isModalOpen: false,
   setModalOpen: () => {},
+  setCustomBg: () => {},
 });
 
 export function usePublicShell() {
@@ -34,12 +37,14 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const [isHomeAtTop, setIsHomeAtTop] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [forcingWhiteBg, setForcingWhiteBg] = useState(false);
+  const [customBg, setCustomBg] = useState<string | null>(null);
 
   const navTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const shouldScrollTopRef = useRef(false);
   const scrollSentinelRef = useRef<HTMLDivElement | null>(null);
 
   const isHomePage = pathname === "/";
+  const isIdeasPage = pathname === "/otros-proyectos";
 
   // En el Home: fondo negro en el landing superior y transición suave a blanco al hacer scroll hacia abajo
   useEffect(() => {
@@ -101,6 +106,9 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       setModalOpen(false);
       setIsFadingOut(false);
       setForcingWhiteBg(false);
+      if (pathname !== "/otros-proyectos") {
+        setCustomBg(null);
+      }
     });
 
     return () => {
@@ -180,6 +188,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       router.prefetch(href);
 
       setIsFadingOut(true);
+      setCustomBg(null);
       if (href !== "/") {
         setForcingWhiteBg(true);
       } else {
@@ -211,27 +220,56 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const isInverted =
     !forcingWhiteBg && (isModalOpen || (isHomePage && isHomeAtTop));
 
-  // Sincroniza el lienzo raíz (franja reservada de la barra de scroll) con el tema invertido
+  const activeCustomBg =
+    !isInverted && !forcingWhiteBg && isIdeasPage ? customBg : null;
+
+  // Sincroniza el lienzo raíz (franja reservada de la barra de scroll y zonas seguras)
+  // usando el mismo reloj @property --theme-bg de 500ms ease-in-out
   useEffect(() => {
     const root = document.documentElement;
     if (isInverted) {
       root.classList.add("canvas-inverted");
+      root.classList.remove("canvas-custom-bg");
+      root.style.removeProperty("--theme-bg");
+    } else if (activeCustomBg) {
+      root.classList.remove("canvas-inverted");
+      root.classList.add("canvas-custom-bg");
+      root.style.setProperty("--theme-bg", activeCustomBg);
     } else {
       root.classList.remove("canvas-inverted");
+      root.classList.remove("canvas-custom-bg");
+      root.style.removeProperty("--theme-bg");
     }
+  }, [isInverted, activeCustomBg]);
+
+  useEffect(() => {
     return () => {
+      const root = document.documentElement;
       root.classList.remove("canvas-inverted");
+      root.classList.remove("canvas-custom-bg");
+      root.style.removeProperty("--theme-bg");
     };
-  }, [isInverted]);
+  }, []);
+
+  const themeClass = isInverted
+    ? "theme-inverted"
+    : activeCustomBg
+      ? "theme-custom-bg"
+      : "theme-normal";
+
+  const customBgStyle = activeCustomBg
+    ? ({ "--theme-bg": activeCustomBg } as CSSProperties)
+    : undefined;
 
   return (
-    <PublicShellContext.Provider value={{ isModalOpen, setModalOpen }}>
+    <PublicShellContext.Provider
+      value={{ isModalOpen, setModalOpen, setCustomBg }}
+    >
       <div
         inert={isModalOpen || undefined}
         onClickCapture={handleDocumentClick}
-        className={`public-scope relative min-h-dvh flex flex-col ${
-          isInverted ? "theme-inverted" : "theme-normal"
-        }`}
+        style={customBgStyle}
+        className={`public-scope relative min-h-dvh flex flex-col ${themeClass}`}
       >
         <div
           ref={scrollSentinelRef}

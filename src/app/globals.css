@@ -90,6 +90,11 @@ html:has(.public-scope.theme-normal) {
   --theme-fg: #0e0e0e;
 }
 
+html.canvas-custom-bg,
+html:has(.public-scope.theme-custom-bg) {
+  --theme-fg: #0e0e0e;
+}
+
 body {
   background-color: var(--theme-bg);
   color: var(--theme-fg);
@@ -136,6 +141,10 @@ html.fonts-ready body {
 .public-scope.theme-inverted {
   --theme-bg: #0e0e0e;
   --theme-fg: #fbfbf9;
+}
+
+.public-scope.theme-custom-bg {
+  --theme-fg: #0e0e0e;
 }
 
 /* El cuadro blanco del popup mantiene siempre sus colores fijos blanco/negro */
