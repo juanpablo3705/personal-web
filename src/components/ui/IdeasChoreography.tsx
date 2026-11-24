@@ -182,12 +182,13 @@ export function IdeasChoreography() {
           }
         }
 
-        // Coherencia en pantallas grandes si el usuario revierte antes de que el bloque superior
-        // haya salido por arriba: al salir por completo el bloque actual por abajo, sincroniza con el superior.
+        // Coherencia en pantallas muy altas si el usuario revierte antes de que el bloque superior
+        // haya salido por arriba: solo sincroniza cuando el bloque superior ya está completamente
+        // despejado debajo del menú (top >= navBottom) y el bloque actual ya salió por abajo.
         if (nextStage === currentStage && currentStage > 0) {
           if (rects[currentStage].top >= vh) {
             for (let k = currentStage - 1; k >= 0; k--) {
-              if (rects[k].top < vh) {
+              if (topVisible[k] && rects[k].top < vh) {
                 nextStage = k;
                 break;
               }
