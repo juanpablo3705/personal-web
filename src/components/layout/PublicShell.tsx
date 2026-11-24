@@ -44,7 +44,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const scrollSentinelRef = useRef<HTMLDivElement | null>(null);
 
   const isHomePage = pathname === "/";
-  const isIdeasPage = pathname === "/otros-proyectos";
+  const isIdeasPage = pathname === "/ideas";
 
   // En el Home: fondo negro en el landing superior y transición suave a blanco al hacer scroll hacia abajo
   useEffect(() => {
@@ -106,7 +106,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       setModalOpen(false);
       setIsFadingOut(false);
       setForcingWhiteBg(false);
-      if (pathname !== "/otros-proyectos") {
+      if (pathname !== "/ideas") {
         setCustomBg(null);
       }
     });

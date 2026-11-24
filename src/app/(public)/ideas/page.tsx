@@ -1,5 +1,5 @@
 import { IdeasChoreography } from "@/components/ui/IdeasChoreography";
 
-export default function OtrosProyectosPage() {
+export default function IdeasPage() {
   return <IdeasChoreography />;
 }

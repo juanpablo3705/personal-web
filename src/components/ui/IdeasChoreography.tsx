@@ -100,95 +100,134 @@ function getSessionIdeasPalette(): readonly [string, string, string, string] {
 export function IdeasChoreography() {
   const { setCustomBg } = usePublicShell();
 
-  const bandcampSentinelRef = useRef<HTMLSpanElement | null>(null);
-  const soundcloud1SentinelRef = useRef<HTMLSpanElement | null>(null);
-  const soundcloud2SentinelRef = useRef<HTMLSpanElement | null>(null);
-  const instagramSentinelRef = useRef<HTMLSpanElement | null>(null);
+  const introRef = useRef<HTMLHeadingElement | null>(null);
+  const bandcampRef = useRef<HTMLDivElement | null>(null);
+  const soundcloud1Ref = useRef<HTMLDivElement | null>(null);
+  const soundcloud2Ref = useRef<HTMLDivElement | null>(null);
+  const instagramRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const palette = getSessionIdeasPalette();
-    const sentinels = [
-      bandcampSentinelRef.current,
-      soundcloud1SentinelRef.current,
-      soundcloud2SentinelRef.current,
-      instagramSentinelRef.current,
+    const rawTargets = [
+      introRef.current, // Stage 0 (blanco)
+      bandcampRef.current, // Stage 1 (color 1)
+      soundcloud1Ref.current, // Stage 2 (color 2)
+      soundcloud2Ref.current, // Stage 3 (color 3)
+      instagramRef.current, // Stage 4 (color 4)
     ];
 
-    if (
-      sentinels.some((el) => !el) ||
-      typeof IntersectionObserver === "undefined"
-    ) {
+    if (rawTargets.some((node) => !node)) {
       return;
     }
 
-    const validSentinels = sentinels as HTMLSpanElement[];
-    const passed = [false, false, false, false];
-    let isAtTop = window.scrollY <= 4;
-    let currentStage = 0;
+    const targets = rawTargets as HTMLElement[];
 
     // Primera carga siempre en blanco oficial
+    let currentStage = 0;
     setCustomBg(null);
 
-    const applyStage = () => {
-      let nextStage = 0;
-      if (!isAtTop) {
-        for (let i = 0; i < passed.length; i++) {
-          if (passed[i]) {
-            nextStage = i + 1;
+    const getNavBottom = () => {
+      const header = document.querySelector("header");
+      return header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+    };
+
+    const measure = () => {
+      const vh = window.innerHeight;
+      const navBottom = getNavBottom();
+      const rects = targets.map((el) => el.getBoundingClientRect());
+      // Al bajar: un elemento termina de asomarse cuando su borde inferior entra en pantalla (bottom <= vh)
+      const bottomVisible = rects.map((r) => r.bottom <= vh);
+      // Al subir: un elemento termina de asomarse desde arriba cuando su borde superior despeja el menú sticky (top >= navBottom)
+      const topVisible = rects.map((r) => r.top >= navBottom);
+      return { vh, navBottom, rects, bottomVisible, topVisible };
+    };
+
+    let prevScrollY = window.scrollY;
+    const initial = measure();
+    let prevBottomVisible = initial.bottomVisible;
+    let prevTopVisible = initial.topVisible;
+    let rafId: number | null = null;
+
+    const evaluate = () => {
+      rafId = null;
+
+      const scrollY = window.scrollY;
+      const isAtTop = scrollY <= 4;
+      const scrollingDown = scrollY > prevScrollY;
+      const scrollingUp = scrollY < prevScrollY;
+
+      const { vh, rects, bottomVisible, topVisible } = measure();
+      let nextStage = currentStage;
+
+      if (isAtTop) {
+        nextStage = 0;
+      } else if (scrollingDown) {
+        // Comportamiento simétrico hacia abajo: cambia cuando el nuevo elemento que entra desde abajo
+        // termina de asomarse por completo (su borde inferior cruza el borde inferior del viewport).
+        for (let i = 1; i < targets.length; i++) {
+          if (!prevBottomVisible[i] && bottomVisible[i] && i > nextStage) {
+            nextStage = i;
+          }
+        }
+
+        // Caso borde en monitores muy altos donde Bandcamp ya estaba visible en scrollY=0:
+        // parte en blanco al cargar y entra al primer color apenas el usuario comienza a bajar.
+        if (currentStage === 0 && nextStage === 0 && bottomVisible[1]) {
+          let highest = 1;
+          for (let i = 2; i < targets.length; i++) {
+            if (bottomVisible[i]) highest = i;
+          }
+          nextStage = highest;
+        }
+      } else if (scrollingUp) {
+        // Comportamiento simétrico hacia arriba: cambia cuando el elemento anterior que viene
+        // apareciendo desde arriba termina de asomarse por completo bajo el menú superior (top >= navBottom).
+        for (let i = targets.length - 2; i >= 0; i--) {
+          if (!prevTopVisible[i] && topVisible[i] && i < nextStage) {
+            nextStage = i;
+          }
+        }
+
+        // Coherencia en pantallas grandes cuando el usuario revierte la marcha sin que el ítem
+        // superior haya llegado a salir por arriba: si el ítem actual ya salió completamente
+        // por abajo de la pantalla, sincroniza con el ítem superior que permanece visible.
+        if (nextStage === currentStage && currentStage > 0) {
+          if (rects[currentStage].top >= vh) {
+            for (let k = currentStage - 1; k >= 0; k--) {
+              if (rects[k].top < vh) {
+                nextStage = k;
+                break;
+              }
+            }
           }
         }
       }
 
-      if (nextStage === currentStage) {
-        return;
-      }
+      prevBottomVisible = bottomVisible;
+      prevTopVisible = topVisible;
+      prevScrollY = scrollY;
 
-      currentStage = nextStage;
-      setCustomBg(nextStage === 0 ? null : palette[nextStage - 1]);
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const idx = validSentinels.indexOf(entry.target as HTMLSpanElement);
-          if (idx === -1) continue;
-
-          if (entry.isIntersecting) {
-            passed[idx] = true;
-          } else {
-            const rootMid = entry.rootBounds
-              ? entry.rootBounds.top + entry.rootBounds.height / 2
-              : window.innerHeight / 2;
-            // Salió por arriba del viewport -> sigue superado; salió por abajo -> revertido
-            passed[idx] = entry.boundingClientRect.top < rootMid;
-          }
-        }
-
-        isAtTop = window.scrollY <= 4;
-        applyStage();
-      },
-      { threshold: 0 }
-    );
-
-    for (const sentinel of validSentinels) {
-      observer.observe(sentinel);
-    }
-
-    // Guardia liviana sin lecturas de layout: asegura fondo blanco al estar en top (scrollY <= 4)
-    // incluso en pantallas muy altas donde Bandcamp quepa desde el inicio.
-    const handleScroll = () => {
-      const nextAtTop = window.scrollY <= 4;
-      if (nextAtTop !== isAtTop) {
-        isAtTop = nextAtTop;
-        applyStage();
+      if (nextStage !== currentStage) {
+        currentStage = nextStage;
+        setCustomBg(nextStage === 0 ? null : palette[nextStage - 1]);
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const scheduleEvaluate = () => {
+      if (rafId === null) {
+        rafId = window.requestAnimationFrame(evaluate);
+      }
+    };
+
+    window.addEventListener("scroll", scheduleEvaluate, { passive: true });
+    window.addEventListener("resize", scheduleEvaluate, { passive: true });
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", scheduleEvaluate);
+      window.removeEventListener("resize", scheduleEvaluate);
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+      }
       setCustomBg(null);
     };
   }, [setCustomBg]);
@@ -200,6 +239,7 @@ export function IdeasChoreography() {
     >
       {/* 1. Frase de apertura centrada */}
       <h1
+        ref={introRef}
         id="ideas-intro"
         className="text-center font-roman text-sm sm:text-base"
       >
@@ -221,7 +261,10 @@ export function IdeasChoreography() {
           </span>
         </p>
 
-        <div className="mx-auto w-full max-w-[350px] md:mx-0 md:justify-self-end">
+        <div
+          ref={bandcampRef}
+          className="mx-auto w-full max-w-[350px] md:mx-0 md:justify-self-end"
+        >
           <iframe
             title="malas decisiones de juan pablo díaz en Bandcamp"
             src="https://bandcamp.com/EmbeddedPlayer/album=75179538/size=large/bgcol=ffffff/linkcol=333333/transparent=true/"
@@ -229,11 +272,6 @@ export function IdeasChoreography() {
             height={687}
             className="block w-full border-0 bg-transparent"
             style={{ height: "687px" }}
-          />
-          <span
-            ref={bandcampSentinelRef}
-            aria-hidden="true"
-            className="pointer-events-none block h-px w-full opacity-0"
           />
         </div>
       </section>
@@ -253,20 +291,17 @@ export function IdeasChoreography() {
         </p>
 
         <div className="min-w-0 md:order-1 md:col-span-6">
-          <iframe
-            title="7 de juan pablo díaz en SoundCloud"
-            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2324696579&color=%232c3433&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-            height={166}
-            loading="lazy"
-            allow="autoplay; encrypted-media"
-            className="block w-full overflow-hidden border-0"
-            style={{ height: "166px" }}
-          />
-          <span
-            ref={soundcloud1SentinelRef}
-            aria-hidden="true"
-            className="pointer-events-none block h-px w-full opacity-0"
-          />
+          <div ref={soundcloud1Ref}>
+            <iframe
+              title="7 de juan pablo díaz en SoundCloud"
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2324696579&color=%232c3433&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+              height={166}
+              loading="lazy"
+              allow="autoplay; encrypted-media"
+              className="block w-full overflow-hidden border-0"
+              style={{ height: "166px" }}
+            />
+          </div>
           <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-xs opacity-65">
             <a
               href="https://soundcloud.com/juanpabloxdiaz"
@@ -304,20 +339,17 @@ export function IdeasChoreography() {
         </p>
 
         <div className="min-w-0 md:col-span-6">
-          <iframe
-            title="11 de juan pablo díaz en SoundCloud"
-            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2324702429&color=%232c3433&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-            height={166}
-            loading="lazy"
-            allow="autoplay; encrypted-media"
-            className="block w-full overflow-hidden border-0"
-            style={{ height: "166px" }}
-          />
-          <span
-            ref={soundcloud2SentinelRef}
-            aria-hidden="true"
-            className="pointer-events-none block h-px w-full opacity-0"
-          />
+          <div ref={soundcloud2Ref}>
+            <iframe
+              title="11 de juan pablo díaz en SoundCloud"
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2324702429&color=%232c3433&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+              height={166}
+              loading="lazy"
+              allow="autoplay; encrypted-media"
+              className="block w-full overflow-hidden border-0"
+              style={{ height: "166px" }}
+            />
+          </div>
           <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-xs opacity-65">
             <a
               href="https://soundcloud.com/juanpabloxdiaz"
@@ -350,7 +382,7 @@ export function IdeasChoreography() {
           dimensión...
         </p>
 
-        <div className="w-full max-w-[400px]">
+        <div ref={instagramRef} className="w-full max-w-[400px]">
           <iframe
             title="Perfil de Instagram @perrosatrapados"
             src="https://www.instagram.com/perrosatrapados/embed/"
@@ -359,11 +391,6 @@ export function IdeasChoreography() {
             loading="lazy"
             className="block w-full overflow-hidden border-0 bg-transparent"
             style={{ height: "480px" }}
-          />
-          <span
-            ref={instagramSentinelRef}
-            aria-hidden="true"
-            className="pointer-events-none block h-px w-full opacity-0"
           />
         </div>
       </section>
