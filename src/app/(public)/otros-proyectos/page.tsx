@@ -73,7 +73,9 @@ export default function OtrosProyectosPage() {
         </div>
 
         <p className="space-y-8 sm:space-y-10 md:col-span-6">
-          <span className="block text-right">música de fondo</span>
+          <span className="block pr-[4ch] text-right md:pr-[6ch]">
+            música de fondo
+          </span>
           <span className="block pl-2 sm:pl-6">
             para momentos muy específicos
           </span>
@@ -86,7 +88,9 @@ export default function OtrosProyectosPage() {
         className="mt-28 grid grid-cols-1 items-center gap-y-12 sm:mt-40 md:grid-cols-12 md:gap-x-12 lg:gap-x-16"
       >
         <p className="space-y-8 sm:space-y-10 md:col-span-6">
-          <span className="block">y una canción pegada</span>
+          <span className="block pl-[4ch] md:pl-[6ch]">
+            y una canción pegada
+          </span>
           <span className="block text-right">
             que se cae de cara al final.
           </span>
