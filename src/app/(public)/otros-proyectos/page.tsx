@@ -14,12 +14,12 @@ export default function OtrosProyectosPage() {
         aria-label="Álbum malas decisiones en Bandcamp"
         className="mt-24 grid grid-cols-1 items-center gap-y-14 sm:mt-32 md:grid-cols-[minmax(0,1fr)_350px] md:gap-x-12 lg:gap-x-20"
       >
-        <p className="space-y-10 sm:space-y-12 md:pr-4">
+        <p className="md:pr-4">
           <span className="block">un montón de</span>
-          <span className="block pl-[32%] sm:pl-[44%] md:pl-[42%]">
+          <span className="mt-10 block pl-[32%] sm:mt-12 sm:pl-[44%] md:pl-[42%]">
             canciones tristes
           </span>
-          <span className="block pl-[14%] sm:pl-[22%] md:pl-[20%]">
+          <span className="mt-16 block pl-[14%] sm:mt-[4.5rem] sm:pl-[22%] md:pl-[20%]">
             que me hacen sentir mejor.
           </span>
         </p>
