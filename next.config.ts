@@ -23,7 +23,7 @@ const cspDirectives = [
   "font-src 'self' data:",
   `img-src 'self' ${supabaseOrigin} data: blob:`,
   `connect-src 'self' ${supabaseOrigin}`,
-  "frame-src https://bandcamp.com https://*.bandcamp.com",
+  "frame-src https://bandcamp.com https://*.bandcamp.com https://w.soundcloud.com https://www.instagram.com https://instagram.com",
   "object-src 'none'",
   "base-uri 'none'",
   "frame-ancestors 'none'",
