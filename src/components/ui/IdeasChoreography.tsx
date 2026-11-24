@@ -70,29 +70,25 @@ function shuffleArray<T>(items: readonly T[]): T[] {
 }
 
 /**
- * Paleta de 4 colores fija durante toda la carga actual de la página ("sesión").
+ * Paleta de 3 colores (Bandcamp, bloque SoundCloud unificado e Instagram)
+ * fija durante toda la carga actual de la página ("sesión").
  * Se renueva aleatoriamente al recargar la página o al entrar otro visitante.
  */
-let sessionIdeasPalette: readonly [string, string, string, string] | null = null;
+let sessionIdeasPalette: readonly [string, string, string] | null = null;
 
-function getSessionIdeasPalette(): readonly [string, string, string, string] {
+function getSessionIdeasPalette(): readonly [string, string, string] {
   if (sessionIdeasPalette) {
     return sessionIdeasPalette;
   }
 
-  const chosenFamilies = shuffleArray(HUE_FAMILIES).slice(0, 4);
+  const chosenFamilies = shuffleArray(HUE_FAMILIES).slice(0, 3);
   const pickedColors = chosenFamilies.map((family) => {
     const candidates = HYPERPOP_COLOR_POOL.filter((c) => c.family === family);
     const chosen = candidates[Math.floor(Math.random() * candidates.length)];
     return blendHexOverPaper(chosen.hex, IDEAS_COLOR_OPACITY);
   });
 
-  sessionIdeasPalette = [
-    pickedColors[0],
-    pickedColors[1],
-    pickedColors[2],
-    pickedColors[3],
-  ];
+  sessionIdeasPalette = [pickedColors[0], pickedColors[1], pickedColors[2]];
 
   return sessionIdeasPalette;
 }
@@ -102,18 +98,16 @@ export function IdeasChoreography() {
 
   const introRef = useRef<HTMLHeadingElement | null>(null);
   const bandcampRef = useRef<HTMLDivElement | null>(null);
-  const soundcloud1Ref = useRef<HTMLDivElement | null>(null);
-  const soundcloud2Ref = useRef<HTMLDivElement | null>(null);
+  const soundcloudBlockRef = useRef<HTMLDivElement | null>(null);
   const instagramRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const palette = getSessionIdeasPalette();
     const rawTargets = [
       introRef.current, // Stage 0 (blanco)
-      bandcampRef.current, // Stage 1 (color 1)
-      soundcloud1Ref.current, // Stage 2 (color 2)
-      soundcloud2Ref.current, // Stage 3 (color 3)
-      instagramRef.current, // Stage 4 (color 4)
+      bandcampRef.current, // Stage 1 (color 1 - Bandcamp)
+      soundcloudBlockRef.current, // Stage 2 (color 2 - bloque SoundCloud completo)
+      instagramRef.current, // Stage 3 (color 3 - Instagram)
     ];
 
     if (rawTargets.some((node) => !node)) {
@@ -135,9 +129,9 @@ export function IdeasChoreography() {
       const vh = window.innerHeight;
       const navBottom = getNavBottom();
       const rects = targets.map((el) => el.getBoundingClientRect());
-      // Al bajar: un elemento termina de asomarse cuando su borde inferior entra en pantalla (bottom <= vh)
+      // Al bajar: un bloque termina de asomarse cuando su borde inferior entra en pantalla (bottom <= vh)
       const bottomVisible = rects.map((r) => r.bottom <= vh);
-      // Al subir: un elemento termina de asomarse desde arriba cuando su borde superior despeja el menú sticky (top >= navBottom)
+      // Al subir: un bloque termina de asomarse desde arriba cuando su borde superior despeja el menú sticky (top >= navBottom)
       const topVisible = rects.map((r) => r.top >= navBottom);
       return { vh, navBottom, rects, bottomVisible, topVisible };
     };
@@ -162,7 +156,7 @@ export function IdeasChoreography() {
       if (isAtTop) {
         nextStage = 0;
       } else if (scrollingDown) {
-        // Comportamiento simétrico hacia abajo: cambia cuando el nuevo elemento que entra desde abajo
+        // Comportamiento simétrico hacia abajo: cambia cuando el nuevo bloque que entra desde abajo
         // termina de asomarse por completo (su borde inferior cruza el borde inferior del viewport).
         for (let i = 1; i < targets.length; i++) {
           if (!prevBottomVisible[i] && bottomVisible[i] && i > nextStage) {
@@ -180,7 +174,7 @@ export function IdeasChoreography() {
           nextStage = highest;
         }
       } else if (scrollingUp) {
-        // Comportamiento simétrico hacia arriba: cambia cuando el elemento anterior que viene
+        // Comportamiento simétrico hacia arriba: cambia cuando el bloque anterior que viene
         // apareciendo desde arriba termina de asomarse por completo bajo el menú superior (top >= navBottom).
         for (let i = targets.length - 2; i >= 0; i--) {
           if (!prevTopVisible[i] && topVisible[i] && i < nextStage) {
@@ -188,9 +182,8 @@ export function IdeasChoreography() {
           }
         }
 
-        // Coherencia en pantallas grandes cuando el usuario revierte la marcha sin que el ítem
-        // superior haya llegado a salir por arriba: si el ítem actual ya salió completamente
-        // por abajo de la pantalla, sincroniza con el ítem superior que permanece visible.
+        // Coherencia en pantallas grandes si el usuario revierte antes de que el bloque superior
+        // haya salido por arriba: al salir por completo el bloque actual por abajo, sincroniza con el superior.
         if (nextStage === currentStage && currentStage > 0) {
           if (rects[currentStage].top >= vh) {
             for (let k = currentStage - 1; k >= 0; k--) {
@@ -276,22 +269,26 @@ export function IdeasChoreography() {
         </div>
       </section>
 
-      {/* 3. SoundCloud #1: en móvil el texto antecede al reproductor; en desktop SoundCloud queda a la izquierda y texto a la derecha */}
-      <section
-        aria-label="Pista 7 en SoundCloud"
-        className="mt-36 grid grid-cols-1 items-center gap-y-12 sm:mt-48 md:grid-cols-12 md:gap-x-12 lg:gap-x-16"
+      {/* 3 y 4. Bloque unificado de SoundCloud (tratado como un solo hito de color) */}
+      <div
+        ref={soundcloudBlockRef}
+        className="mt-36 space-y-28 sm:mt-48 sm:space-y-40"
       >
-        <p className="space-y-8 sm:space-y-10 md:order-2 md:col-span-6">
-          <span className="block pr-[4ch] text-right md:pr-[6ch]">
-            música de fondo
-          </span>
-          <span className="block pl-2 sm:pl-6">
-            para momentos muy específicos
-          </span>
-        </p>
+        {/* SoundCloud #1: en móvil el texto antecede al reproductor; en desktop SoundCloud queda a la izquierda y texto a la derecha */}
+        <section
+          aria-label="Pista 7 en SoundCloud"
+          className="grid grid-cols-1 items-center gap-y-12 md:grid-cols-12 md:gap-x-12 lg:gap-x-16"
+        >
+          <p className="space-y-8 sm:space-y-10 md:order-2 md:col-span-6">
+            <span className="block pr-[4ch] text-right md:pr-[6ch]">
+              música de fondo
+            </span>
+            <span className="block pl-2 sm:pl-6">
+              para momentos muy específicos
+            </span>
+          </p>
 
-        <div className="min-w-0 md:order-1 md:col-span-6">
-          <div ref={soundcloud1Ref}>
+          <div className="min-w-0 md:order-1 md:col-span-6">
             <iframe
               title="7 de juan pablo díaz en SoundCloud"
               src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2324696579&color=%232c3433&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
@@ -301,45 +298,43 @@ export function IdeasChoreography() {
               className="block w-full overflow-hidden border-0"
               style={{ height: "166px" }}
             />
+            <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-xs opacity-65">
+              <a
+                href="https://soundcloud.com/juanpabloxdiaz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hyper-link font-roman"
+              >
+                juan pablo díaz
+              </a>
+              <span aria-hidden="true">·</span>
+              <a
+                href="https://soundcloud.com/juanpabloxdiaz/7a1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hyper-link font-roman"
+              >
+                7
+              </a>
+            </p>
           </div>
-          <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-xs opacity-65">
-            <a
-              href="https://soundcloud.com/juanpabloxdiaz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hyper-link font-roman"
-            >
-              juan pablo díaz
-            </a>
-            <span aria-hidden="true">·</span>
-            <a
-              href="https://soundcloud.com/juanpabloxdiaz/7a1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hyper-link font-roman"
-            >
-              7
-            </a>
+        </section>
+
+        {/* SoundCloud #2: texto a la izquierda + SoundCloud a la derecha */}
+        <section
+          aria-label="Pista 11 en SoundCloud"
+          className="grid grid-cols-1 items-center gap-y-12 md:grid-cols-12 md:gap-x-12 lg:gap-x-16"
+        >
+          <p className="space-y-8 sm:space-y-10 md:col-span-6">
+            <span className="block pl-[4ch] md:pl-[6ch]">
+              y una canción pegada
+            </span>
+            <span className="block text-right">
+              que se cae de cara al final.
+            </span>
           </p>
-        </div>
-      </section>
 
-      {/* 4. Texto a la izquierda + SoundCloud #2 (derecha) */}
-      <section
-        aria-label="Pista 11 en SoundCloud"
-        className="mt-28 grid grid-cols-1 items-center gap-y-12 sm:mt-40 md:grid-cols-12 md:gap-x-12 lg:gap-x-16"
-      >
-        <p className="space-y-8 sm:space-y-10 md:col-span-6">
-          <span className="block pl-[4ch] md:pl-[6ch]">
-            y una canción pegada
-          </span>
-          <span className="block text-right">
-            que se cae de cara al final.
-          </span>
-        </p>
-
-        <div className="min-w-0 md:col-span-6">
-          <div ref={soundcloud2Ref}>
+          <div className="min-w-0 md:col-span-6">
             <iframe
               title="11 de juan pablo díaz en SoundCloud"
               src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2324702429&color=%232c3433&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
@@ -349,28 +344,28 @@ export function IdeasChoreography() {
               className="block w-full overflow-hidden border-0"
               style={{ height: "166px" }}
             />
+            <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-xs opacity-65">
+              <a
+                href="https://soundcloud.com/juanpabloxdiaz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hyper-link font-roman"
+              >
+                juan pablo díaz
+              </a>
+              <span aria-hidden="true">·</span>
+              <a
+                href="https://soundcloud.com/juanpabloxdiaz/11a1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hyper-link font-roman"
+              >
+                11
+              </a>
+            </p>
           </div>
-          <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-xs opacity-65">
-            <a
-              href="https://soundcloud.com/juanpabloxdiaz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hyper-link font-roman"
-            >
-              juan pablo díaz
-            </a>
-            <span aria-hidden="true">·</span>
-            <a
-              href="https://soundcloud.com/juanpabloxdiaz/11a1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hyper-link font-roman"
-            >
-              11
-            </a>
-          </p>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* 5. Cierre centrado + Instagram embed centrado */}
       <section
